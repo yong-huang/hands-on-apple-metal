@@ -1,0 +1,163 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "每帧循环：Uniform 驱动旋转动画",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/animated_triangle.html"
+  },
+  "lanes": [
+    {
+      "id": "cpu",
+      "label": "CPU（Swift）"
+    },
+    {
+      "id": "encode",
+      "label": "Metal 编码"
+    },
+    {
+      "id": "gpu",
+      "label": "GPU"
+    }
+  ],
+  "phases": [
+    {
+      "id": "per-frame",
+      "label": "逐帧更新",
+      "fromCol": 0,
+      "toCol": 2
+    },
+    {
+      "id": "submit",
+      "label": "编码提交",
+      "fromCol": 3,
+      "toCol": 4,
+      "variant": "emphasis"
+    }
+  ],
+  "mainPath": [
+    "view",
+    "time",
+    "uniform",
+    "encoder",
+    "commit",
+    "draw"
+  ],
+  "nodes": [
+    {
+      "id": "view",
+      "lane": "cpu",
+      "col": 0,
+      "type": "frontend",
+      "label": "MTKView 回调",
+      "sublabel": "draw(in:) 每帧触发",
+      "width": 136
+    },
+    {
+      "id": "time",
+      "lane": "cpu",
+      "col": 1,
+      "type": "backend",
+      "label": "计算旋转角",
+      "sublabel": "angle += dt × 速度",
+      "width": 136
+    },
+    {
+      "id": "uniform",
+      "lane": "cpu",
+      "col": 2,
+      "type": "database",
+      "label": "更新 Uniform",
+      "sublabel": "旋转矩阵写入缓冲",
+      "width": 136
+    },
+    {
+      "id": "encoder",
+      "lane": "encode",
+      "col": 3,
+      "type": "backend",
+      "label": "渲染编码器",
+      "sublabel": "setVertexBuffer + draw",
+      "width": 136
+    },
+    {
+      "id": "commit",
+      "lane": "encode",
+      "col": 4,
+      "type": "messagebus",
+      "label": "commit + present",
+      "sublabel": "提交 GPU 时间线",
+      "width": 136
+    },
+    {
+      "id": "draw",
+      "lane": "gpu",
+      "col": 4,
+      "type": "cloud",
+      "label": "GPU 绘制",
+      "sublabel": "矩阵变换顶点并着色",
+      "width": 136
+    }
+  ],
+  "edges": [
+    {
+      "id": "tick",
+      "from": "view",
+      "to": "time",
+      "label": "60 fps",
+      "variant": "default"
+    },
+    {
+      "id": "angle-to-matrix",
+      "from": "time",
+      "to": "uniform",
+      "variant": "default"
+    },
+    {
+      "id": "bind",
+      "from": "uniform",
+      "to": "encoder",
+      "label": "[[buffer(1)]]",
+      "variant": "default"
+    },
+    {
+      "id": "submit",
+      "from": "encoder",
+      "to": "commit",
+      "variant": "emphasis"
+    },
+    {
+      "id": "render",
+      "from": "commit",
+      "to": "draw",
+      "variant": "emphasis"
+    },
+    {
+      "id": "next-frame",
+      "from": "draw",
+      "to": "view",
+      "label": "下一帧",
+      "variant": "dashed",
+      "role": "branch"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "CPU 每帧只做三件事",
+      "items": [
+        "取时间、算矩阵、写进 Uniform 缓冲",
+        "动画逻辑全在 CPU，顶点变换在 GPU——两边只共享一块 256 字节的缓冲"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "循环的本质",
+      "items": [
+        "MTKView 驱动回调，GPU 画完一帧立刻回到下一帧",
+        "把旋转矩阵换掉，其余骨架原封不动——这就是交互式渲染的原型"
+      ]
+    }
+  ]
+}

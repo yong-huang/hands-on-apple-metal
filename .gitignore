@@ -1,0 +1,13 @@
+# Swift 编译产物（各实验 .build/ 目录）
+.build/
+
+# macOS
+.DS_Store
+
+# Xcode 用户状态
+xcuserdata/
+*.xcuserstate
+
+# 编辑器
+.vscode/
+.idea/

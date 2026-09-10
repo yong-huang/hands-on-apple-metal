@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "距离场画圆：length + smoothstep",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/circle.html",
+    "viewBox": [
+      960,
+      500
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "距离"
+    },
+    {
+      "label": "平滑"
+    },
+    {
+      "label": "输出"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "uv",
+      "type": "database",
+      "label": "居中 UV",
+      "sublabel": "原点移到屏幕中心",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "dist",
+      "type": "backend",
+      "label": "length(uv)",
+      "sublabel": "每像素到圆心的距离 d",
+      "stage": 1,
+      "row": 1,
+      "tag": "距离场"
+    },
+    {
+      "id": "radius",
+      "type": "database",
+      "label": "半径 r",
+      "sublabel": "圆的边界值",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "smooth",
+      "type": "backend",
+      "label": "smoothstep 抗锯齿",
+      "sublabel": "边界处 1px 过渡带",
+      "stage": 2,
+      "row": 1,
+      "tag": "软边界"
+    },
+    {
+      "id": "out",
+      "type": "external",
+      "label": "平滑圆形",
+      "sublabel": "圆内 1，圆外 0",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "uv-to-dist",
+      "from": "uv",
+      "to": "dist",
+      "label": "向量",
+      "variant": "default"
+    },
+    {
+      "id": "r-to-smooth",
+      "from": "radius",
+      "to": "smooth",
+      "label": "阈值",
+      "variant": "default"
+    },
+    {
+      "id": "d-to-smooth",
+      "from": "dist",
+      "to": "smooth",
+      "label": "d 与 r 比较",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "alpha-out",
+      "from": "smooth",
+      "to": "out",
+      "label": "0…1 透明度",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "距离场思维",
+      "items": [
+        "先算每个像素到圆心的距离，再拿距离和半径比大小",
+        "整个圆只是「d < r」的等值线——SDF 建模的第一次接触"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "smoothstep 的性格",
+      "items": [
+        "和 step 的硬边界不同，smoothstep 在阈值附近给一段平滑过渡",
+        "过渡带约 1 像素宽，肉眼看到的就是无锯齿的圆边"
+      ]
+    }
+  ]
+}

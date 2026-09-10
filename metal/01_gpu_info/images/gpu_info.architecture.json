@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "MTLDevice：GPU 能力探测",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/gpu_info.html",
+    "viewBox": [
+      1120,
+      620
+    ]
+  },
+  "components": [
+    {
+      "id": "app",
+      "type": "frontend",
+      "label": "实验程序",
+      "sublabel": "runGPUInfo()",
+      "pos": [
+        60,
+        250
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "metal",
+      "type": "backend",
+      "label": "Metal 框架",
+      "sublabel": "MTLDevice 工厂",
+      "pos": [
+        340,
+        250
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "driver",
+      "type": "backend",
+      "label": "GPU 驱动",
+      "sublabel": "IOKit / Metal Driver",
+      "pos": [
+        620,
+        250
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "gpu",
+      "type": "cloud",
+      "label": "Apple M5 Pro",
+      "sublabel": "统一内存 GPU",
+      "tag": "MTLDevice",
+      "pos": [
+        900,
+        250
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "report",
+      "type": "external",
+      "label": "设备报告",
+      "sublabel": "stdout 打印",
+      "pos": [
+        60,
+        470
+      ],
+      "size": [
+        150,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "实验进程（Swift）",
+      "wraps": [
+        "app",
+        "report"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "macOS 系统层",
+      "wraps": [
+        "metal",
+        "driver"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "get-device",
+      "from": "app",
+      "to": "metal",
+      "label": "获取 MTLDevice",
+      "variant": "emphasis"
+    },
+    {
+      "id": "query-cap",
+      "from": "metal",
+      "to": "driver",
+      "label": "能力查询"
+    },
+    {
+      "id": "read-hw",
+      "from": "driver",
+      "to": "gpu",
+      "label": "读取硬件属性"
+    },
+    {
+      "id": "print-report",
+      "from": "app",
+      "to": "report",
+      "label": "print 报告",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelAt": [
+        135,
+        328
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "一条主链路",
+      "items": [
+        "程序向 Metal 要设备，Metal 经驱动读到 GPU 属性，句柄一层层交回",
+        "拿到 MTLDevice 后，队列/缓冲/管线都由它创建"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "统一内存",
+      "items": [
+        "Apple Silicon 的 CPU/GPU 共享同一块物理内存",
+        "recommendedMaxWorkingSetSize ≈ 51.84 GB 就是这张图的底气"
+      ]
+    }
+  ]
+}

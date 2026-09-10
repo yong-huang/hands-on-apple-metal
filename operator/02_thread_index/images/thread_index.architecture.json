@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "线程层级：Grid → Threadgroup → Thread",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/thread_index.html",
+    "viewBox": [
+      1220,
+      560
+    ]
+  },
+  "components": [
+    {
+      "id": "grid",
+      "type": "cloud",
+      "label": "Thread Grid",
+      "sublabel": "256 线程总量",
+      "pos": [
+        40,
+        230
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "tg",
+      "type": "backend",
+      "label": "Threadgroup × 4",
+      "sublabel": "每组 64 线程",
+      "pos": [
+        340,
+        230
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "th",
+      "type": "frontend",
+      "label": "kernel 调用 × 256",
+      "sublabel": "每线程执行一次",
+      "pos": [
+        650,
+        230
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "tig",
+      "type": "database",
+      "label": "thread_position_in_grid",
+      "sublabel": "0…255 全局索引",
+      "pos": [
+        915,
+        80
+      ],
+      "size": [
+        210,
+        64
+      ]
+    },
+    {
+      "id": "tgp",
+      "type": "database",
+      "label": "threadgroup_position_in_grid",
+      "sublabel": "0…3 组号",
+      "pos": [
+        915,
+        230
+      ],
+      "size": [
+        210,
+        64
+      ]
+    },
+    {
+      "id": "tpit",
+      "type": "database",
+      "label": "thread_position_in_threadgroup",
+      "sublabel": "0…63 组内索引",
+      "pos": [
+        915,
+        380
+      ],
+      "size": [
+        210,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "输出缓冲（Shared Memory）",
+      "wraps": [
+        "tig",
+        "tgp",
+        "tpit"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "split",
+      "from": "grid",
+      "to": "tg",
+      "label": "划分"
+    },
+    {
+      "id": "schedule",
+      "from": "tg",
+      "to": "th",
+      "label": "调度",
+      "variant": "emphasis"
+    },
+    {
+      "id": "w-global",
+      "from": "th",
+      "to": "tig",
+      "label": "全局索引",
+      "fromSide": "top",
+      "toSide": "top"
+    },
+    {
+      "id": "w-group",
+      "from": "th",
+      "to": "tgp",
+      "label": "组号"
+    },
+    {
+      "id": "w-local",
+      "from": "th",
+      "to": "tpit",
+      "label": "组内索引",
+      "fromSide": "bottom",
+      "toSide": "bottom"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "三层归属",
+      "items": [
+        "每个线程同时持有三个坐标：全局第几个、属于哪组、组内第几个",
+        "恒等式：全局索引 = 组号 × 64 + 组内索引，实验逐线程验证了它"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "为什么分组",
+      "items": [
+        "线程组是 GPU 调度和共享内存（threadgroup memory）的分配单位",
+        "组内线程可以 simdgroup 协作——规约、tile GEMM 都建立在这层上"
+      ]
+    }
+  ]
+}

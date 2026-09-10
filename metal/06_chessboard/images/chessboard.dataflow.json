@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "棋盘格：fract/step 的空间重复",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/chessboard.html",
+    "viewBox": [920, 440]
+  },
+  "stages": [
+    { "label": "输入" },
+    { "label": "重复" },
+    { "label": "判定" },
+    { "label": "上色" }
+  ],
+  "nodes": [
+    { "id": "pos", "type": "database", "label": "片元坐标", "sublabel": "fragCoord.xy", "stage": 0, "row": 1 },
+    { "id": "fract", "type": "backend", "label": "uv × N 后 fract", "sublabel": "取小数 → 0…1 循环", "stage": 1, "row": 1, "tag": "空间重复" },
+    { "id": "step", "type": "backend", "label": "step 奇偶判定", "sublabel": "(x+y) 0 或 1", "stage": 2, "row": 1, "tag": "硬边界" },
+    { "id": "color", "type": "external", "label": "黑白棋盘", "sublabel": "每像素一个颜色", "stage": 3, "row": 1 }
+  ],
+  "flows": [
+    { "id": "coord-in", "from": "pos", "to": "fract", "label": "连续坐标", "variant": "default" },
+    { "id": "tile", "from": "fract", "to": "step", "label": "每格重复的 0…1", "variant": "emphasis" },
+    { "id": "binary", "from": "step", "to": "color", "label": "0 / 1", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "没有几何也有图案", "items": ["全屏四边形只提供画布，图案完全由片元着色器逐像素算出", "fract 把无限坐标折叠进一个格子，乘 N 控制格子密度"] },
+    { "dot": "emerald", "title": "step 的性格", "items": ["step 输出只有 0 和 1，边缘锐利不带过渡", "相邻格子的 (x+y) 奇偶相反——一个减法就得到棋盘"] }
+  ]
+}

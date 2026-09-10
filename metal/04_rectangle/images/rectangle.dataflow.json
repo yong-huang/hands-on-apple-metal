@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "索引缓冲：4 顶点拼出矩形",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/rectangle.html",
+    "viewBox": [
+      1000,
+      500
+    ]
+  },
+  "stages": [
+    {
+      "label": "顶点资源"
+    },
+    {
+      "label": "组装"
+    },
+    {
+      "label": "图元"
+    },
+    {
+      "label": "输出"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "vbuf",
+      "type": "database",
+      "label": "顶点缓冲 ×4",
+      "sublabel": "四角 + 各自颜色",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "ibuf",
+      "type": "database",
+      "label": "索引缓冲 ×6",
+      "sublabel": "[0,1,2, 2,3,0]",
+      "stage": 0,
+      "row": 2,
+      "tag": "复用顶点"
+    },
+    {
+      "id": "strip",
+      "type": "backend",
+      "label": "TriangleStrip",
+      "sublabel": "drawIndexedPrimitives",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "tris",
+      "type": "backend",
+      "label": "2 个三角形",
+      "sublabel": "条带折叠成图元",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "quad",
+      "type": "external",
+      "label": "四色矩形",
+      "sublabel": "颜色角对角插值",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "verts-in",
+      "from": "vbuf",
+      "to": "strip",
+      "label": "顶点 i",
+      "variant": "default"
+    },
+    {
+      "id": "indices-in",
+      "from": "ibuf",
+      "to": "strip",
+      "label": "索引序列",
+      "variant": "emphasis"
+    },
+    {
+      "id": "fold",
+      "from": "strip",
+      "to": "tris",
+      "label": "条带折叠",
+      "variant": "default"
+    },
+    {
+      "id": "fill",
+      "from": "tris",
+      "to": "quad",
+      "label": "填充",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "索引的用处",
+      "items": [
+        "4 个顶点 + 6 个索引画出矩形；不用索引要重复 2 个顶点",
+        "顶点被复用的次数越多，索引越省——大模型网格全靠它"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "TriangleStrip 技巧",
+      "items": [
+        "相邻三角形共享一条边，第 n 个三角形 = 索引 n, n+1, n+2",
+        "共享边上的两个顶点顺序会自动翻转，无需手工换向"
+      ]
+    }
+  ]
+}

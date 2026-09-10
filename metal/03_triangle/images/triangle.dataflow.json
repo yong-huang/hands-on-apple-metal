@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "渲染管线：顶点到像素的数据流",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/triangle.html",
+    "viewBox": [
+      1075,
+      440
+    ]
+  },
+  "stages": [
+    {
+      "label": "顶点"
+    },
+    {
+      "label": "顶点着色"
+    },
+    {
+      "label": "光栅化"
+    },
+    {
+      "label": "片元着色"
+    },
+    {
+      "label": "显示"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "verts",
+      "type": "database",
+      "label": "顶点缓冲",
+      "sublabel": "3 × position",
+      "stage": 0,
+      "row": 1,
+      "tag": "CPU 备好"
+    },
+    {
+      "id": "vs",
+      "type": "backend",
+      "label": "vertex_main",
+      "sublabel": "逐顶点调用",
+      "stage": 1,
+      "row": 1,
+      "tag": "返回 NDC"
+    },
+    {
+      "id": "raster",
+      "type": "backend",
+      "label": "光栅化器",
+      "sublabel": "硬件固定管线",
+      "stage": 2,
+      "row": 1,
+      "tag": "插值"
+    },
+    {
+      "id": "fs",
+      "type": "backend",
+      "label": "fragment_main",
+      "sublabel": "逐片元调用",
+      "stage": 3,
+      "row": 1,
+      "tag": "返回 RGBA"
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "MTKView 窗口",
+      "sublabel": "drawable present",
+      "stage": 4,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "feed-verts",
+      "from": "verts",
+      "to": "vs",
+      "label": "顶点 0/1/2",
+      "variant": "default"
+    },
+    {
+      "id": "vs-to-raster",
+      "from": "vs",
+      "to": "raster",
+      "label": "clip 位置",
+      "variant": "default"
+    },
+    {
+      "id": "raster-to-fs",
+      "from": "raster",
+      "to": "fs",
+      "label": "插值后的颜色",
+      "variant": "emphasis"
+    },
+    {
+      "id": "fs-to-screen",
+      "from": "fs",
+      "to": "screen",
+      "label": "帧提交",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "两段可编程",
+      "items": [
+        "vertex 与 fragment 之间夹着不可编程的光栅化器",
+        "光栅化器负责把三角形打碎成片元，并插值顶点色"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "调用粒度",
+      "items": [
+        "vertex 每顶点跑 3 次，fragment 每像素跑上万次",
+        "同一份管线状态（MTLRenderPipelineState）把两段着色器绑定成一条管线"
+      ]
+    }
+  ]
+}

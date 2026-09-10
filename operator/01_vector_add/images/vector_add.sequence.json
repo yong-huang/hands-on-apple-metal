@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "向量加法算子：CPU↔GPU 一次往返",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/vector_add.html",
+    "viewBox": [
+      1020,
+      620
+    ],
+    "column_fit": "spread"
+  },
+  "participants": [
+    {
+      "id": "cpu",
+      "type": "frontend",
+      "label": "Swift（CPU）",
+      "sublabel": "准备 + 验证"
+    },
+    {
+      "id": "buf",
+      "type": "database",
+      "label": "Shared Buffer",
+      "sublabel": "统一内存"
+    },
+    {
+      "id": "queue",
+      "type": "messagebus",
+      "label": "CommandQueue",
+      "sublabel": "提交通道"
+    },
+    {
+      "id": "gpu",
+      "type": "cloud",
+      "label": "GPU kernel",
+      "sublabel": "add_arrays"
+    },
+    {
+      "id": "term",
+      "type": "external",
+      "label": "终端",
+      "sublabel": "stdout"
+    }
+  ],
+  "segments": [
+    {
+      "from": 142,
+      "to": 272,
+      "label": "准备"
+    },
+    {
+      "from": 282,
+      "to": 422,
+      "label": "计算"
+    },
+    {
+      "from": 442,
+      "to": 542,
+      "label": "验证"
+    }
+  ],
+  "messages": [
+    {
+      "id": "alloc",
+      "from": "cpu",
+      "to": "buf",
+      "y": 167,
+      "label": "makeBuffer ×3（A/B/C）",
+      "variant": "default"
+    },
+    {
+      "id": "encode-set",
+      "from": "cpu",
+      "to": "queue",
+      "y": 212,
+      "label": "encoder: pipeline + 3×setBuffer",
+      "variant": "default"
+    },
+    {
+      "id": "dispatch",
+      "from": "cpu",
+      "to": "queue",
+      "y": 257,
+      "label": "dispatchThreadgroups 4×256",
+      "variant": "emphasis"
+    },
+    {
+      "id": "commit",
+      "from": "queue",
+      "to": "gpu",
+      "y": 302,
+      "label": "commit()",
+      "variant": "emphasis"
+    },
+    {
+      "id": "kernel",
+      "from": "gpu",
+      "to": "buf",
+      "y": 347,
+      "label": "C[i] = A[i] + B[i]",
+      "variant": "emphasis"
+    },
+    {
+      "id": "done",
+      "from": "gpu",
+      "to": "queue",
+      "y": 392,
+      "label": "执行完成",
+      "variant": "return"
+    },
+    {
+      "id": "wait",
+      "from": "queue",
+      "to": "cpu",
+      "y": 437,
+      "label": "waitUntilCompleted() 返回",
+      "variant": "return"
+    },
+    {
+      "id": "readback",
+      "from": "cpu",
+      "to": "buf",
+      "y": 482,
+      "label": "读回 C 逐元素比对",
+      "variant": "default"
+    },
+    {
+      "id": "verify",
+      "from": "cpu",
+      "to": "term",
+      "y": 527,
+      "label": "✅ 1024/1024 全部一致",
+      "variant": "dashed"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "cpu",
+      "from": 142,
+      "to": 542,
+      "type": "frontend"
+    },
+    {
+      "participant": "buf",
+      "from": 157,
+      "to": 502,
+      "type": "database"
+    },
+    {
+      "participant": "queue",
+      "from": 202,
+      "to": 457,
+      "type": "messagebus"
+    },
+    {
+      "participant": "gpu",
+      "from": 287,
+      "to": 412,
+      "type": "cloud"
+    },
+    {
+      "participant": "term",
+      "from": 512,
+      "to": 542,
+      "type": "external"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "一次算子的最小心跳",
+      "items": [
+        "传数据 → 编码 → 提交 → 等完成 → 读回验证，五步固定套路",
+        "后面所有算子（规约/GEMM/融合）都只是把中间那格 kernel 换掉"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "统一内存的红利",
+      "items": [
+        ".storageModeShared 让 CPU 写、GPU 读同一块缓冲，无需显式拷贝",
+        "waitUntilCompleted() 是唯一的同步点，不等待就读会是旧数据"
+      ]
+    }
+  ]
+}

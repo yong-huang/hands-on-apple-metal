@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "颜色渐变：mix 插值",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/gradient.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "权重"
+    },
+    {
+      "label": "插值"
+    },
+    {
+      "label": "输出"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "uvx",
+      "type": "database",
+      "label": "uv.x",
+      "sublabel": "左 0 → 右 1",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "weight",
+      "type": "backend",
+      "label": "smoothstep 缓动",
+      "sublabel": "t = smoothstep(uv.x)",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "red",
+      "type": "database",
+      "label": "红色",
+      "sublabel": "vec3(1, 0, 0)",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "blue",
+      "type": "database",
+      "label": "蓝色",
+      "sublabel": "vec3(0, 0, 1)",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "mix",
+      "type": "backend",
+      "label": "mix(red, blue, t)",
+      "sublabel": "逐通道线性插值",
+      "stage": 2,
+      "row": 1,
+      "tag": "核心原语"
+    },
+    {
+      "id": "out",
+      "type": "external",
+      "label": "红→蓝渐变",
+      "sublabel": "每个像素一个颜色",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "x-to-t",
+      "from": "uvx",
+      "to": "weight",
+      "label": "横向位置",
+      "variant": "default"
+    },
+    {
+      "id": "t-to-mix",
+      "from": "weight",
+      "to": "mix",
+      "label": "t ∈ 0…1",
+      "variant": "emphasis",
+      "labelAt": [
+        298,
+        234
+      ]
+    },
+    {
+      "id": "red-in",
+      "from": "red",
+      "to": "mix",
+      "variant": "default",
+      "label": "t = 0 端"
+    },
+    {
+      "id": "blue-in",
+      "from": "blue",
+      "to": "mix",
+      "variant": "default",
+      "label": "t = 1 端"
+    },
+    {
+      "id": "pixels",
+      "from": "mix",
+      "to": "out",
+      "label": "插值结果",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "渐变 = 两端颜色 + 权重",
+      "items": [
+        "mix(a, b, t) 是着色器里最常用的插值原语，t 决定偏向哪端",
+        "权重换成 smoothstep 后，渐变在首尾减速，观感更柔和"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "举一反三",
+      "items": [
+        "把 uv.x 换成 uv.y 得到竖直渐变，换成 length(uv) 得到径向渐变",
+        "棋盘(06)、圆(07)、渐变(08)共用同一套全屏四边形脚手架"
+      ]
+    }
+  ]
+}

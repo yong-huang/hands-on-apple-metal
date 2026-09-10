@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "命令缓冲的一生：make → commit → completed",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/command_queue.html",
+    "viewBox": [
+      1040,
+      600
+    ],
+    "column_fit": "spread"
+  },
+  "participants": [
+    {
+      "id": "app",
+      "type": "frontend",
+      "label": "实验程序",
+      "sublabel": "Swift"
+    },
+    {
+      "id": "queue",
+      "type": "messagebus",
+      "label": "MTLCommandQueue",
+      "sublabel": "命令队列"
+    },
+    {
+      "id": "buffer",
+      "type": "backend",
+      "label": "MTLCommandBuffer",
+      "sublabel": "命令缓冲"
+    },
+    {
+      "id": "gpu",
+      "type": "cloud",
+      "label": "GPU",
+      "sublabel": "Apple M5 Pro"
+    },
+    {
+      "id": "term",
+      "type": "external",
+      "label": "终端",
+      "sublabel": "stdout"
+    }
+  ],
+  "segments": [
+    {
+      "from": 140,
+      "to": 300,
+      "label": "创建"
+    },
+    {
+      "from": 310,
+      "to": 460,
+      "label": "提交与执行"
+    },
+    {
+      "from": 470,
+      "to": 530,
+      "label": "观察"
+    }
+  ],
+  "messages": [
+    {
+      "id": "make-queue",
+      "from": "app",
+      "to": "queue",
+      "y": 165,
+      "label": "makeCommandQueue()",
+      "variant": "default"
+    },
+    {
+      "id": "queue-ready",
+      "from": "queue",
+      "to": "app",
+      "y": 205,
+      "label": "队列就绪",
+      "variant": "return"
+    },
+    {
+      "id": "make-buffer",
+      "from": "app",
+      "to": "buffer",
+      "y": 250,
+      "label": "makeCommandBuffer()",
+      "variant": "default"
+    },
+    {
+      "id": "label-buffer",
+      "from": "app",
+      "to": "buffer",
+      "y": 290,
+      "label": "label = \"MyFirstCommandBuffer\"",
+      "variant": "default"
+    },
+    {
+      "id": "commit",
+      "from": "app",
+      "to": "buffer",
+      "y": 335,
+      "label": "commit()",
+      "variant": "emphasis"
+    },
+    {
+      "id": "enqueue",
+      "from": "buffer",
+      "to": "gpu",
+      "y": 375,
+      "label": "空命令缓冲入队",
+      "variant": "emphasis"
+    },
+    {
+      "id": "gpu-done",
+      "from": "gpu",
+      "to": "buffer",
+      "y": 415,
+      "label": "执行完成",
+      "variant": "return"
+    },
+    {
+      "id": "wait-done",
+      "from": "buffer",
+      "to": "app",
+      "y": 455,
+      "label": "waitUntilCompleted() 返回",
+      "variant": "return"
+    },
+    {
+      "id": "print-log",
+      "from": "app",
+      "to": "term",
+      "y": 500,
+      "label": "print 4 行生命周期日志",
+      "variant": "dashed"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "app",
+      "from": 140,
+      "to": 515,
+      "type": "frontend"
+    },
+    {
+      "participant": "queue",
+      "from": 150,
+      "to": 225,
+      "type": "messagebus"
+    },
+    {
+      "participant": "buffer",
+      "from": 235,
+      "to": 475,
+      "type": "backend"
+    },
+    {
+      "participant": "gpu",
+      "from": 360,
+      "to": 435,
+      "type": "cloud"
+    },
+    {
+      "participant": "term",
+      "from": 485,
+      "to": 520,
+      "type": "external"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "三层骨架",
+      "items": [
+        "Device 创建队列，队列生产缓冲，缓冲装真正要执行的命令",
+        "commit() 之后命令异步跑在 GPU 时间线上"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "同步点",
+      "items": [
+        "waitUntilCompleted() 是 CPU 与 GPU 的会合点",
+        "哪怕缓冲是空的，生命周期四个阶段也一步不少"
+      ]
+    }
+  ]
+}

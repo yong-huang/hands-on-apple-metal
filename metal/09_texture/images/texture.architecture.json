@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "纹理采样：MTLTexture + Sampler",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/texture.html",
+    "viewBox": [
+      1160,
+      620
+    ]
+  },
+  "components": [
+    {
+      "id": "quad",
+      "type": "frontend",
+      "label": "全屏四边形",
+      "sublabel": "2 个三角形几何",
+      "pos": [
+        40,
+        70
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "pixels",
+      "type": "database",
+      "label": "像素数组",
+      "sublabel": "程序内生成 RGBA",
+      "pos": [
+        40,
+        470
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "tex",
+      "type": "database",
+      "label": "MTLTexture",
+      "sublabel": "rgba8Unorm",
+      "tag": "GPU 资源",
+      "pos": [
+        330,
+        270
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "sampler",
+      "type": "database",
+      "label": "MTLSamplerState",
+      "sublabel": "linear 过滤",
+      "pos": [
+        330,
+        470
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "fs",
+      "type": "backend",
+      "label": "fragment shader",
+      "sublabel": "tex.sample(uv)",
+      "pos": [
+        660,
+        270
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "out",
+      "type": "external",
+      "label": "屏幕上的贴图",
+      "sublabel": "逐像素采样结果",
+      "pos": [
+        950,
+        270
+      ],
+      "size": [
+        160,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "GPU 资源对象",
+      "wraps": [
+        "tex",
+        "sampler"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "upload",
+      "from": "pixels",
+      "to": "tex",
+      "label": "replace() 上传",
+      "fromSide": "right",
+      "toSide": "bottom"
+    },
+    {
+      "id": "uv-in",
+      "from": "quad",
+      "to": "fs",
+      "label": "uv 坐标"
+    },
+    {
+      "id": "texel",
+      "from": "tex",
+      "to": "fs",
+      "label": "纹素",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "top"
+    },
+    {
+      "id": "filter-rule",
+      "from": "sampler",
+      "to": "fs",
+      "label": "过滤规则",
+      "fromSide": "right",
+      "toSide": "bottom"
+    },
+    {
+      "id": "pixels-out",
+      "from": "fs",
+      "to": "out",
+      "label": "RGBA",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "颜色来源的第三代",
+      "items": [
+        "顶点色(03-05)→逐像素公式(06-08)→纹理采样(09)",
+        "纹理把颜色从公式里解耦：换图不换着色器"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "采样器管什么",
+      "items": [
+        "uv 落在纹素之间时由过滤模式决定取值（linear 插值）",
+        "uv 越界时由寻址模式决定回绕——本实验用 clamp 锁边"
+      ]
+    }
+  ]
+}
