@@ -75,7 +75,7 @@ assert float(relu[3]) == 0.0 and -1 < float(silu[3]) < 0   # 结构断言
     └── activations.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **SiLU/GELU 优于 ReLU 的直观解释？** 负半轴非零保留梯度与信息；平滑性改善优化景观。
 - **GELU 的 tanh 近似误差多大？** 全域 <1e-3，工程标准形；精确式用 erf 但多一次特殊函数开销。

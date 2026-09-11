@@ -75,7 +75,7 @@ float shadow = (lp.z - bias) > shadowMap.sample(..., uv) ? 0.35 : 1.0;
     └── shadow_map.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **Shadow Mapping 的两遍各做什么？** 光深写入（无颜色只写深度）与主渲染采样比较。
 - **阴影粉刺的成因与对策？** 深度量化误差导致自遮挡，加 bias 或改用面偏移；过大则漏影。

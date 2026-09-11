@@ -105,7 +105,7 @@ kernel void print_thread_info(device ThreadInfo* output [[buffer(0)]],
     └── thread_index.svg                    # 双主题矢量版（README 内嵌）
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **Grid / Threadgroup / Thread 的关系？** grid 是本次派发的线程总量，threadgroup 是硬件调度与共享内存的分配单位，thread 是 kernel 的一次调用；三者由 dispatch 参数与内建变量联动。
 - **全局索引怎么由局部坐标算出？** `组号 × threads_per_threadgroup + 组内索引`；多维时逐维展开再线性化。

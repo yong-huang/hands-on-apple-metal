@@ -75,7 +75,7 @@ ref = mx.fast.scaled_dot_product_attention(q, k, v, scale=1.0 / D**0.5)
     └── attention.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **为什么除以 √d？** 点积方差 ∝ d，不缩放则 softmax 梯度消失（饱和）。
 - **融合 SDPA 快在哪？** 不物化 S×S 的注意力矩阵（flash attention 思想），显存与带宽双省。

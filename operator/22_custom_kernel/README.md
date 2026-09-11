@@ -70,7 +70,7 @@ add_kernel = metal_kernel(name="my_vector_add",
     └── custom_kernel.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **MLX metal_kernel 与原生 Metal 的关系？** 底层同样是 MSL + Metal，但签名/编译/绑定由 MLX 托管——开发效率换部分控制粒度。
 - **grid 语义为什么要变？** MLX 选择"总线程数"抽象以匹配 dispatchThreads；使用者的心智模型要从"组数"切换。

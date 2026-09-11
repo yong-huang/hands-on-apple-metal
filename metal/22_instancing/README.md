@@ -79,7 +79,7 @@ float2 p = v.position * d.scale + d.offset;
     └── instancing.svg            # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **实例化解决什么瓶颈？** CPU 端 draw call 提交开销；同一几何多副本场景下降数量级。
 - **[[instance_id]] 与 [[vertex_id]] 的正交性？** 顶点着色器被调用 vid×iid 次，两者组合定位"哪个物体的哪个顶点"。

@@ -76,7 +76,7 @@ class MyLinear(nn.Module):
     └── nn_module.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **MLX Module 的参数注册机制？** 属性赋值 mx.array 即自动收集——相比 PyTorch 的 register_parameter 更隐式。
 - **safetensors 相比 pickle 的优势？** 不执行任意代码（安全）、支持零拷贝内存映射、跨框架通用。

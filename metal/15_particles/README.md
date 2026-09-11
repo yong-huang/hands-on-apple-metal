@@ -74,7 +74,7 @@ enc.drawPrimitives(type: .point, vertexStart: 0, vertexCount: particleCount)
     └── particles.svg            # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **粒子系统为什么适合 GPU？** 万级粒子彼此独立、同构更新——数据并行的教科书场景；CPU 循环一帧就到瓶颈。
 - **compute 与 render 如何保证顺序？** 同一 commandBuffer 内按编码顺序执行；跨 buffer 才需要事件/栅栏。

@@ -71,7 +71,7 @@ kv_write = metal_kernel(name="kv_ring_write", input_names=["k_new","v_new","pos"
     └── kv_cache.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **KV Cache 省了什么？** 生成期 K/V 的重复计算：每步从 O(S) 降到 O(1) 次投影。
 - **环形覆盖的代价？** 旧槽位被覆盖后不可读——滑动窗口注意力的语义选择，或配合换页策略。

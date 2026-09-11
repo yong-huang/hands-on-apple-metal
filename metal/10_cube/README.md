@@ -77,7 +77,7 @@ encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 36)
     └── cube.svg               # 双主题矢量版（上文内嵌）
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **透视投影矩阵做了什么？** 把视锥体压缩成标准立方体：x/y 除以深度产生近大远小，z 归一到 [0,1] 供深度测试。
 - **深度测试的完整链路？** view 声明深度格式 → 管线声明 depthAttachmentPixelFormat → Pass 深度附件 clear=1 → DepthStencilState(less, write)。

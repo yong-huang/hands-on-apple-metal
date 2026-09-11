@@ -79,7 +79,7 @@ def bench(fn, iters=20, warmup=3):
     └── benchmark.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **基准测试的三大纪律？** 预热、多轮统计（min+median）、性能与精度同报。
 - **为什么报 min 又报 median？** min 是能力上限（抗干扰），median 是典型体验——只报其一都会误导优化决策。

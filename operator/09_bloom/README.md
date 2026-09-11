@@ -72,7 +72,7 @@ add.encode(commandBuffer: cb, primaryTexture: scene, secondaryTexture: blurred, 
     └── bloom.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **Bloom 的阈值语义？** ThresholdToZero 保留超阈值的原值（而非置 255）——高光强度信息保留，辉光才有层次。
 - **流水线中间数据的显存管理？** 每段一张纹理即可复用池化；同一命令缓冲内生命期由 GPU 顺序保证。

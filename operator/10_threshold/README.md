@@ -71,7 +71,7 @@ if v > 0 { keptCols += 1; if Float(v) < tNorm * 255 - 1 { zeroOk = false } }
     └── threshold.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **ThresholdToZero 与 ThresholdBinary 的区别？** 前者保留原值，后者置最大值——选错会让下游量化语义失效。
 - **为什么验证要留 LSB 余量？** 8-bit 存储的舍入让边界值偏差 ≤1；断言过严会误报。

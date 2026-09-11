@@ -80,7 +80,7 @@ sdesc.sAddressMode = .clampToEdge; sdesc.tAddressMode = .clampToEdge
     └── texture.svg                    # 双主题矢量版（README 内嵌）
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **纹理与缓冲的分工？** 缓冲是线性字节数组（顶点/Uniform/计算数据）；纹理是带格式和布局的二维图像，支持按 uv 采样、硬件过滤与压缩格式。
 - **过滤模式 linear/nearest 的取舍？** linear 双线性插值，放大平滑；nearest 保留像素感且省 ALU，像素风/调试用。缩小场景要 mipmap 配合。

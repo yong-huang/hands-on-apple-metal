@@ -86,7 +86,7 @@ intersector.encodeIntersection(commandBuffer: cb, intersectionType: .nearest,
     └── raytracer.svg            # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **光线追踪 vs 光栅化的本质区别？** 反向遍历问题域：屏幕→场景 vs 场景→屏幕；决定各自擅长效果（反射/精确遮挡 vs 速度）。
 - **加速结构解决什么？** 暴力求交 O(光线×三角形)；BVH 类结构把查询降到对数级。

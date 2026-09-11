@@ -85,7 +85,7 @@ buffer.waitUntilCompleted()                    // CPU 同步点：等到 GPU 干
     └── command_queue.svg              # 双主题矢量版（README 内嵌）
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **Metal 命令提交的层次？** Device → CommandQueue → CommandBuffer → CommandEncoder → commit；队列管排队，缓冲装命令，编码器往缓冲里写具体指令。
 - **`commit()` 后命令何时执行？** 异步。CPU 立即返回，GPU 在自己的时间线上按序消费队列里的缓冲。

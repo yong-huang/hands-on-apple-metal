@@ -73,7 +73,7 @@ let results = graph.run(feeds: [input: feed], targetTensors: [output], targetOpe
     └── mpsgraph.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **MPSGraph 与 MPS 滤镜的关系？** 滤镜是预制算子（立即执行）；Graph 是声明式图（编译优化后执行），可组合可微分。
 - **图执行相比逐算子编码的优势？** 编译器跨算子做融合与内存规划——16 的 mx.compile 在 MPS 世界的对应物。

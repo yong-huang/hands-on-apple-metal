@@ -76,7 +76,7 @@ event.wait(untilSignaledValue: 1, timeoutMS: 5000)
     └── ml_encoder.svg          # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **MTL4 相比传统 Metal 的本质变化？** 从"框架托管"转向"显式声明"：内存、绑定、常驻、同步全部显式化。
 - **ArgumentTable 解决什么？** 资源绑定与命令编码解耦：表可复用、可热替换，大幅减少重复绑定命令。

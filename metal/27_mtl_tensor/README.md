@@ -78,7 +78,7 @@ let tensor = try device.makeTensor(descriptor: desc)
     └── mtl_tensor.svg            # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **MTLTensor 相比 MTLBuffer 的增量？** 内建维度语义、ML 对齐 stride、与 ML 编码器/Shader ML 的原生集成。
 - **为什么张量默认 private？** ML 数据面以 GPU 吞吐为主；CPU 访问走显式 GPU 路径更利于调度。

@@ -94,7 +94,7 @@ device.recommendedMaxWorkingSetSize       // ~51.84 GB
     └── gpu_info.svg                # 双主题矢量版（README 内嵌）
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **`MTLDevice` 是什么？** GPU 硬件的能力契约 + 对象工厂；`MTLCreateSystemDefaultDevice()` 获取，所有队列/缓冲/管线/纹理都由它创建。
 - **统一内存带来什么改变？** CPU/GPU 共享物理内存，`storageModeShared` 缓冲零拷贝双端访问；不再需要显式的 host→device 传输。

@@ -78,7 +78,7 @@ do {
     └── shader_ml.svg          # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **Shader ML 是什么？** Metal 4 允许 MSL 内核以 tensor 为参数、着色器内推理——推理与渲染共享 GPU 时间线。
 - **为什么运行时编译器编译不了 tensor 内核？** tensor 模板属 ML 专用前端，与通用 makeLibrary 分层提供。

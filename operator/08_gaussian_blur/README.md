@@ -69,7 +69,7 @@ blur.encode(commandBuffer: cb, sourceTexture: src, destinationTexture: dst)
     └── gaussian_blur.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **高斯模糊可分离吗？** 可：二维核 = 两次一维卷积（水平+垂直），复杂度从 O(k²) 降到 O(2k)——MPS 内部即如此实现。
 - **sigma 大时的实现策略？** 大核可用多次盒模糊近似（三次盒模糊 ≈ 高斯），MPS 大 sigma 时切换策略（本实验方差回升的实测旁证）。

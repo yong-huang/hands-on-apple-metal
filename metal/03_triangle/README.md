@@ -80,7 +80,7 @@ encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
     └── triangle.svg              # 双主题矢量版（README 内嵌）
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **渲染一条三角形的最小对象集？** MTKView（上下文）、MTLRenderPipelineState（管线）、MTLBuffer（顶点）、每帧 RenderCommandEncoder + drawable 呈现。
 - **NDC 是什么？** 与视口无关的归一化坐标，中心原点、范围 [-1,1]，y 轴向上；光栅化时再映射到实际分辨率。

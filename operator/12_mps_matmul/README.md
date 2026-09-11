@@ -73,7 +73,7 @@ gemm.encode(commandBuffer: cb, leftMatrix: matA, rightMatrix: matB, resultMatrix
     └── mps_matmul.svg          # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **MPSMatrix 为什么是视图不是值？** 与 texture 同源的设计：内存归你管，语义由描述符声明——零拷贝切片的前提。
 - **beta ≠ 0 的用途？** 累加进既有结果（如多层并行累加、residual 连接的批量实现）。

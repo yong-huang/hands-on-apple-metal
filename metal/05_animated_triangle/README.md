@@ -83,7 +83,7 @@ encoder.setVertexBuffer(uniformBuffer, offset: 0, index: 1)
     └── animated_triangle.svg              # 双主题矢量版（README 内嵌）
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **Uniform 与顶点属性的区别？** 顶点属性每顶点一份、由光栅化插值；Uniform 每绘制一份、全局相同，适合矩阵/时间等帧级参数。
 - **动画为什么不能靠重写顶点缓冲？** CPU 重算并重传全部顶点开销大；传一个矩阵让 GPU 在 vertex shader 里做变换，数据量从 O(N) 降到 O(1)。

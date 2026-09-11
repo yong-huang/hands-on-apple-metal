@@ -73,7 +73,7 @@ for (uint k = 0; k < TILE; k++) acc += tileA[lid.y][k] * tileB[k][lid.x];
     └── matmul_tiled.svg            # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **Tiling 提速的本质？** 算术强度提升：每字节访存摊到更多 FLOP，从带宽受限向算力受限移动（Roofline 视角）。
 - **为什么两道 barrier 缺一不可？** 第一道保证 tile 就绪；第二道防止下一轮覆盖未被读完的数据。

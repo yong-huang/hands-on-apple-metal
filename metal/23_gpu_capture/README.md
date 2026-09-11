@@ -87,7 +87,7 @@ manager.stopCapture()
     └── gpu_capture.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **gputrace 里能看到什么？** 逐命令时间线、kernel 参数、缓冲内容、API 调用栈——GPU 侧的"断点+性能表"。
 - **程序化捕获与 Xcode 手动捕获的区别？** 前者可嵌入自动化回归、按需开窗；后者交互式但依赖 Xcode 会话。

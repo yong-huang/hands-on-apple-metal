@@ -99,7 +99,7 @@ commandBuffer.waitUntilCompleted()               // 唯一同步点：不等待�
     └── vector_add.svg               # 双主题矢量版（README 内嵌）
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **CPU 加法与 GPU 加法的本质区别？** GPU 把"一个循环"翻转为"一个线程的任务 + N 份硬件并行"；编程模型从控制流变为数据并行。
 - **统一内存下还需要拷贝数据吗？** `storageModeShared` 缓冲双端直读，无需显式拷贝；但离散显卡/`private` 模式仍需 blit encoder 搬运——统一内存是 Apple Silicon 的特有红利。

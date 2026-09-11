@@ -80,7 +80,7 @@ encoder.drawIndexedPrimitives(
     └── rectangle.svg             # 双主题矢量版（README 内嵌）
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **索引缓冲解决什么问题？** 顶点复用：数据存一份、顺序另存，省显存省 vertex 调用；大网格的标配。
 - **TriangleStrip 与 Triangle 的取舍？** Strip 连续图元只要 N+2 个索引，适合条带状网格；Triangle 灵活适合散片，多花 3N 个索引。

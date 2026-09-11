@@ -73,7 +73,7 @@ q[d] = Σ_c nv(c) * wq[d*512+c];   // nv = x[c]*rms*wn[c]
     └── fused_rmsnorm_qkv.svg           # 双主题矢量版
 ```
 
-## 7. 面试要点
+## 7. 深入要点
 
 - **手写融合 vs mx.compile？** 手写可跨归约/矩阵乘边界、控制内存驻留；compile 安全便捷但限逐元素子图。
 - **融合最容易错的地方？** 权重布局约定（out,in vs in,out）与归约的 barrier——两者错位都不报错只出错数。
