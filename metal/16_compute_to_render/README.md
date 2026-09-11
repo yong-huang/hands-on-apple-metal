@@ -43,7 +43,7 @@ kernel 不记得上一帧：`顶点[i] = 圆公式(i)`。每次全量重算，�
 
 ### 4.2 命令缓冲的顺序语义
 
-compute encoder 先编码、render encoder 后编码 → GPU 严格按序执行。跨命令缓冲才需要事件/栅栏（见 30 的跨队列版本）。
+compute encoder 先编码、render encoder 后编码 → GPU 严格按序执行。跨命令缓冲才需要事件/栅栏（见 26 的跨队列版本）。
 
 ### 4.3 lineStrip 图元
 
@@ -91,4 +91,4 @@ cb.present(drawable); cb.commit()
 
 同缓冲编排的最短闭环完成。现在可以挑战真正的"大家伙"了：换掉整个渲染范式，用光线追踪重新成像。
 
-→ 下一篇：[21 · 光线追踪](../21_raytracer/README.md)
+→ 下一篇：[21 · 光线追踪](../17_raytracer/README.md)
