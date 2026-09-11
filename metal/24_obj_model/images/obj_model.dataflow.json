@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "加载 OBJ 模型并渲染",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/obj_model.html",
+    "viewBox": [
+      1085,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "资产"
+    },
+    {
+      "label": "解析"
+    },
+    {
+      "label": "上传"
+    },
+    {
+      "label": "着色"
+    },
+    {
+      "label": "显示"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "obj",
+      "type": "database",
+      "label": "cube.obj",
+      "sublabel": "8 顶点 6 法线 12 面",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "parser",
+      "type": "backend",
+      "label": "最小解析器",
+      "sublabel": "v / vn / f 三类行",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "vbuf",
+      "type": "database",
+      "label": "顶点缓冲",
+      "sublabel": "36 展开顶点",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "fs",
+      "type": "backend",
+      "label": "光照 fragment",
+      "sublabel": "漫反射 + 环境光",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "旋转彩色立方体",
+      "sublabel": "",
+      "stage": 4,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "o",
+      "from": "obj",
+      "to": "parser",
+      "label": "逐行解析",
+      "variant": "default"
+    },
+    {
+      "id": "p",
+      "from": "parser",
+      "to": "vbuf",
+      "label": "展开索引",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f",
+      "from": "vbuf",
+      "to": "fs",
+      "label": "位置 + 法线",
+      "variant": "default"
+    },
+    {
+      "id": "s",
+      "from": "fs",
+      "to": "screen",
+      "label": "present",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "OBJ 的三行语法",
+      "items": [
+        "v 顶点 / vn 法线 / f 面（索引 1-based）",
+        "解析器 40 行就能写完"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "引擎化前夜",
+      "items": [
+        "把「解析→缓冲」封装后，换模型只换文件",
+        "骨骼/材质就是在这条链上加节点"
+      ]
+    }
+  ]
+}

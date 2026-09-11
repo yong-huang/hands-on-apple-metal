@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "MPSGraph 计算图",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/mpsgraph.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "建图"
+    },
+    {
+      "label": "执行"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "data",
+      "type": "database",
+      "label": "渐变数据",
+      "sublabel": "128² float32",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "graph",
+      "type": "backend",
+      "label": "MPSGraph 建图",
+      "sublabel": "(x−0.5)×2 → clamp",
+      "stage": 1,
+      "row": 1,
+      "tag": "3 个节点"
+    },
+    {
+      "id": "run",
+      "type": "backend",
+      "label": "run 同步执行",
+      "sublabel": "编译 + 调度一体",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "值域统计",
+      "sublabel": "min=0 max=1",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "d",
+      "from": "data",
+      "to": "graph",
+      "label": "占位符喂入",
+      "variant": "default"
+    },
+    {
+      "id": "g",
+      "from": "graph",
+      "to": "run",
+      "label": "整图编译",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "run",
+      "to": "v",
+      "label": "NDArray 回读",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "图执行层",
+      "items": [
+        "占位符 → 算子节点 → run：声明式，框架负责编译调度",
+        "TensorFlow-Metal 的底层就是它"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "验证",
+      "items": [
+        "min=0 验证 clamp 下限；max=1.0 验证整链精确",
+        "数值吻合 → 图序正确"
+      ]
+    }
+  ]
+}

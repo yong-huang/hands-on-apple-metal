@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "MLX 惰性执行",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/mlx_lazy.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "建图"
+    },
+    {
+      "label": "触发"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "x",
+      "type": "database",
+      "label": "x 256MB",
+      "sublabel": "8192² float32",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "chain",
+      "type": "backend",
+      "label": "20 层算子记账",
+      "sublabel": "只建图不算账",
+      "stage": 1,
+      "row": 1,
+      "tag": "构建 <1ms"
+    },
+    {
+      "id": "ev",
+      "type": "backend",
+      "label": "mx.eval",
+      "sublabel": "整链一次执行",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "numpy 参照",
+      "sublabel": "allclose 通过",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "c",
+      "from": "x",
+      "to": "chain",
+      "label": "逐层依赖",
+      "variant": "default"
+    },
+    {
+      "id": "e",
+      "from": "chain",
+      "to": "ev",
+      "label": "一次性下发",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "ev",
+      "to": "v",
+      "label": "比对",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "惰性的价值",
+      "items": [
+        "框架看到整段计算 → 融合/免物化/流水化",
+        "每层强制 eval 反而更慢（实测对比）"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "心智模型",
+      "items": [
+        "MLX 操作 = 记账；eval = 结账",
+        "调试注意：打印前必须 eval"
+      ]
+    }
+  ]
+}

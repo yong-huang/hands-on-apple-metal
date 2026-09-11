@@ -19,12 +19,6 @@ class TriangleViewController: NSViewController, MTKViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 20260809:
-        // 大致流程：
-        // 1、Setup Metal
-        // 2、Setup MTKView
-        // 3、Setup pipeline        
-        // 4、Setup vertex data
 
         // Setup Metal
         guard let device = MTLCreateSystemDefaultDevice() else {
@@ -32,21 +26,6 @@ class TriangleViewController: NSViewController, MTKViewDelegate {
         }
         self.device = device
         
-        // 20260809:
-        // MTKView 是渲染上下文 - 它负责：
-        // - 管理 Metal 设备（device）
-        // - 创建 drawable（实际的金属纹理/表面）
-        // - 处理窗口大小变化
-        // - 调用 draw(in:) 方法触发每一帧的绘制
-
-        // drawable 才是真正的"画布" - MTKView 会创建一个或多个 drawable，这是 Metal 实际渲染的目标表面。
-        // 每次 commit() 时，MTKView 会把当前 drawable 呈现到屏幕上。
-        
-        // draw(in:) 是画画的动作 - 在这个方法里你：
-        // - 创建命令缓冲区（command buffer）
-        // - 设置管线状态、顶点数据
-        // - 执行绘制操作
-        // - 提交命令让 GPU 渲染
 
         // 所以类比来说：
         // - MTKView = 画板框架，负责管理整个绘画流程
@@ -60,7 +39,7 @@ class TriangleViewController: NSViewController, MTKViewDelegate {
         metalView.clearColor = MTLClearColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
         view.addSubview(metalView)
         
-        // 20260809: 在draw中会用到commandQueue
+        // 在draw中会用到commandQueue
 
         // Setup command queue
         guard let commandQueue = device.makeCommandQueue() else {
@@ -77,30 +56,6 @@ class TriangleViewController: NSViewController, MTKViewDelegate {
     
     func setupPipeline() {
 
-        // 20260809:
-        // 顶点着色器：它的核心任务是处理 3D 模型中每个顶点的原始数据，比如位置、颜色、法线等，然后输出变换后的顶点位置和其他后续阶段（如片元着色器）需要的数据。
-
-        // 在 Apple Metal 图形 API 中，除了**顶点着色器 (Vertex Shader)**外，还有以下几种主要类型的着色器：
-        
-        // 1. 片元着色器 (Fragment Shader / Pixel Shader)
-        // - 每个像素都会调用一次
-        // - 负责计算最终要渲染到帧缓冲区的颜色值
-        // - 在 Metal 中通常使用 fragment 函数命名
-        
-        // 2. 几何着色器 (Geometry Shader)（可选）
-        // - 将顶点数据转换为图元（如三角形、线、点）
-        // - 可以将一个或多个顶点转换成新的图元
-        // - Metal 支持但使用较少，因为现代 GPU 硬件对它的优化有限
-        
-        // 3. 计算着色器 (Compute Shader)
-        // - 用于通用并行计算任务
-        // - 不直接渲染图形，而是处理数据（如图像后处理、物理模拟）
-        // - 在 Metal 中通常使用 kernel 函数命名
-        
-        // 4. 统一着色器 (Unified Shader)
-        // - Metal 的硬件架构特点：现代 GPU 拥有统一的渲染管道和计算单元
-        // - Vertex、Fragment、Compute 功能由同一组硬件执行，通过调度决定用途
-        // - 开发者编写不同阶段的 shader（vertex/fragment/compute），Metal 负责在合适的时候调用
         
         // 5. 其他相关着色器类型
         // - ** tessellation shaders (细分着色器)**：将图元细分为更小的图元（顶点和几何着色器的组合）
@@ -261,7 +216,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 // Function to run triangle rendering
 func runTriangle() {
 
-    // 20260809:
     // 大致套路：
     // 1、拿app对象
     // 2、app.delegate = delegate

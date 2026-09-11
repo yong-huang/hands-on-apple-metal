@@ -1,26 +1,33 @@
 # hands-on-metal
 
-Apple Metal 动手学习系列：通过 **11 个可真实跑通的小实验**，从渲染第一个三角形到写出 GPU 向量加法算子。每条线统一结构：原理讲解（README）、一键演示脚本（xxx.sh）、架构图三件套（images/）。
+Apple Metal 动手学习系列：**54 个可真实跑通的实验**，从渲染第一个三角形
+一路写到 Metal 4 张量与融合算子。每条线统一结构：原理讲解（README）、
+一键演示脚本（xxx.sh）、架构图三件套（images/）。
 
-> 🖼️ **交互式架构图**：每个实验都配有由 [Archify](https://github.com/tt-a1i/archify) 生成、通过 showcase 级校验的图，共 11 张三件套：图源 JSON（Typed JSON IR）+ 可交互 HTML（缩放 / 节点聚焦 / 连线追踪 / 深浅主题）+ 双主题矢量 SVG（README 内嵌）。开启 GitHub Pages 后可[在线查看](https://yong-huang.github.io/hands-on-metal/)；克隆到本地用浏览器打开对应实验的 `images/*.html` 也可以。
+> 🖼️ **交互式架构图**：每个实验自带图三件套——图源 JSON（Typed JSON IR）、
+> 可交互 HTML（缩放 / 节点聚焦 / 连线追踪 / 深浅主题）与双主题矢量 SVG（README 内嵌），
+> 全部通过质量门禁校验，由 [Archify](https://github.com/tt-a1i/archify) 工具生成。
+> 开启 GitHub Pages 后可[在线查看](https://yong-huang.github.io/hands-on-metal/)。
 
 ## 两条学习线
 
-| 线 | 目录 | 主线 | 已完成实验 |
+| 线 | 目录 | 主线 | 实验 |
 |:--|:--|:--|:--|
-| **渲染线** | `metal/` | 设备 → 命令队列 → 三角形 → 索引 → 动画 → 片元三部曲 → 纹理，打通图形管线主干 | 9 个（01-09） |
-| **算子线** | `operator/` | 命令骨架 → 线程模型，为规约 / GEMM / MLX 自定义内核打地基 | 2 个（01-02） |
+| **渲染线** | `metal/` | 设备 → 命令队列 → 三角形 → 3D → 光照/阴影/延迟 → Metal 4 | 24 个（12,13,17-20 与算子线重复，见路线图标注） |
+| **算子线** | `operator/` | 规约 → GEMM → MPS → MLX → 自定义内核 → 融合/量化/引擎 | 30 个 |
 
-两条线共享同一套 Metal 底座（`MTLDevice` / `MTLCommandQueue`），渲染线管"画"，算子线管"算"——先渲染后计算，或两条线交替推进都可以。
+两条线共享同一套 Metal 底座（`MTLDevice` / `MTLCommandQueue`）：
+渲染线管「画」，算子线管「算」。先渲染后计算，或交替推进皆可。
 
 ## 环境要求
 
-- Apple Silicon Mac（M1 及以上）+ macOS 13+
-- Xcode Command Line Tools（`xcode-select --install`）——**跑实验只需要 `swiftc`，不需要打开 Xcode 工程**；着色器在程序内嵌，由 Metal 运行时编译
-- 渲染线实验（03-09）会打开 GUI 窗口；算子线实验纯命令行输出
+- Apple Silicon Mac（M1+）+ macOS 13+（Metal 4 实验 27-30 需 macOS 26+）
+- Xcode Command Line Tools（`xcode-select --install`）——跑实验只需要 `swiftc`
+- 算子线 14-30 需 MLX：`pip3 install mlx`
+- 渲染线 GUI 实验会开窗口；脚本化验证用 `AUTO_QUIT=秒数` 自动退出
 
 ```bash
-scripts/load_resources.sh   # 一键体检：芯片 / swiftc / Metal 设备是否就绪
+scripts/load_resources.sh   # 一键体检：芯片 / swiftc / Metal 设备
 ```
 
 ## 目录结构
@@ -29,49 +36,96 @@ scripts/load_resources.sh   # 一键体检：芯片 / swiftc / Metal 设备是�
 hands-on-metal/
 ├── README.md             # 本文档：系列总目录
 ├── LICENSE               # MIT
-├── metal.md              # 路线图：渲染+计算 30 项目清单（已标注与算子线的重复项）
-├── operator.md           # 路线图：算子开发 30 项目清单（已标注与渲染线的重复项）
+├── metal.md              # 路线图：30 项目清单（已标注重复项与完成状态）
+├── operator.md           # 路线图：30 项目清单（同上）
 ├── scripts/
 │   └── load_resources.sh # 公共脚本：Metal 环境体检
-├── metal/                # 渲染线
-│   └── NN_xxx/           # 每个实验统一结构：
-│       ├── README.md     #   教程文档（原理 + 实操，内嵌双主题矢量架构图）
-│       ├── xxx.sh        #   主演示脚本：build → observe → clean
-│       ├── xxx.swift     #   实验程序本体（着色器内嵌，运行时编译）
-│       ├── main.swift    #   入口包装（GUI 实验支持 AUTO_QUIT 自动退出）
-│       └── images/       #   架构图三件套：xxx.<type>.json / xxx.html / xxx.svg
-├── operator/             # 算子线（结构同上）
-├── blog/ 与旧 Xcode 工程  # 遗留内容：见下方「遗留说明」
+├── metal/NN_xxx/         # 渲染线：README + xxx.sh + Swift 程序 + images 三件套
+├── operator/NN_xxx/      # 算子线：结构同上（14+ 为 Python/MLX）
 ```
 
-## 渲染线实验列表（metal/）
+每个实验目录：README（8 编号章节）· `xxx.sh`（build→observe→clean）·
+程序本体（Swift 单文件 / Python 单文件）· images 三件套。
+
+## 渲染线实验（metal/）
 
 | # | 实验 | 主题 |
 |:--|:--|:--|
-| 01 | [获取 GPU 设备](metal/01_gpu_info/README.md) | `MTLDevice` 能力契约、统一内存 |
-| 02 | [第一个命令队列](metal/02_command_queue/README.md) | Queue/Buffer 三层骨架、异步模型 |
-| 03 | [第一个三角形](metal/03_triangle/README.md) | MTKView、渲染管线、NDC |
-| 04 | [索引缓冲画矩形](metal/04_rectangle/README.md) | 索引缓冲、TriangleStrip |
-| 05 | [旋转动画三角形](metal/05_animated_triangle/README.md) | Uniform Buffer、每帧循环 |
-| 06 | [片元着色器棋盘格](metal/06_chessboard/README.md) | 全屏四边形、fract/step |
-| 07 | [距离场画圆](metal/07_circle/README.md) | length 距离场、smoothstep 抗锯齿 |
-| 08 | [颜色渐变](metal/08_gradient/README.md) | mix 权重插值 |
-| 09 | [纹理贴图](metal/09_texture/README.md) | MTLTexture、Sampler、采样管线 |
+| 01 | [01 获取 GPU 设备](metal/01_gpu_info/README.md) | MTLDevice 能力契约、统一内存 |
+| 02 | [02 第一个命令队列](metal/02_command_queue/README.md) | Queue/Buffer 三层骨架、异步模型 |
+| 03 | [03 第一个三角形](metal/03_triangle/README.md) | MTKView、渲染管线、NDC |
+| 04 | [04 索引缓冲画矩形](metal/04_rectangle/README.md) | 索引缓冲、TriangleStrip |
+| 05 | [05 旋转动画三角形](metal/05_animated_triangle/README.md) | Uniform Buffer、每帧循环 |
+| 06 | [06 片元着色器棋盘格](metal/06_chessboard/README.md) | 全屏四边形、fract/step |
+| 07 | [07 距离场画圆](metal/07_circle/README.md) | length 距离场、smoothstep 抗锯齿 |
+| 08 | [08 颜色渐变](metal/08_gradient/README.md) | mix 权重插值 |
+| 09 | [09 纹理贴图](metal/09_texture/README.md) | MTLTexture、Sampler、采样管线 |
+| 10 | [10 3D 立方体](metal/10_cube/README.md) | 透视投影、MVP、深度测试 |
+| 11 | [11 光照立方体](metal/11_lit_cube/README.md) | 法线、漫反射 + 环境光 |
+| 14 | [14 GPU 灰度滤镜](metal/14_grayscale/README.md) | compute 读写纹理、CPU 回读验证 |
+| 15 | [15 GPU 粒子系统](metal/15_particles/README.md) | 万级粒子状态更新、point 图元 |
+| 16 | [16 Compute→Render](metal/16_compute_to_render/README.md) | 同命令缓冲编排、程序化几何 |
+| 21 | [21 光线追踪](metal/21_raytracer/README.md) | MPSRayIntersector、重心坐标着色 |
+| 22 | [22 实例化渲染](metal/22_instancing/README.md) | 400 实例 1 次 draw |
+| 23 | [23 帧捕获](metal/23_gpu_capture/README.md) | MTLCaptureManager、.gputrace |
+| 24 | [24 OBJ 模型](metal/24_obj_model/README.md) | 最小解析器、资产到渲染 |
+| 25 | [25 阴影贴图](metal/25_shadow_map/README.md) | 光深 Pass、采样比较、Metal z 坑 |
+| 26 | [26 延迟着色](metal/26_deferred/README.md) | G-Buffer、MRT、屏幕空间光照 |
+| 27 | [27 MTLTensor](metal/27_mtl_tensor/README.md) | Metal 4 张量、shape 语义 |
+| 28 | [28 MTL4 命令栈](metal/28_ml_encoder/README.md) | Allocator/ArgumentTable/ResidencySet |
+| 29 | [29 Shader ML 探测](metal/29_shader_ml/README.md) | tensor 模板编译链卡点定位 |
+| 30 | [30 ML+图形混合管线](metal/30_ml_graphics/README.md) | MTL4 队列 + SharedEvent + 渲染 |
 
-## 算子线实验列表（operator/）
+> 缺号 12/13/17-20 与算子线重复（两份路线图内已标注），实现走算子线版本。
+
+## 算子线实验（operator/）
 
 | # | 实验 | 主题 |
 |:--|:--|:--|
-| 01 | [向量加法算子](operator/01_vector_add/README.md) | compute kernel、五步骨架、统一内存 |
-| 02 | [线程索引与网格配置](operator/02_thread_index/README.md) | Grid/Threadgroup/Thread 层级、内建变量 |
+| 01 | [01 向量加法算子](operator/01_vector_add/README.md) | compute kernel、五步骨架 |
+| 02 | [02 线程索引](operator/02_thread_index/README.md) | Grid/Threadgroup/Thread 层级 |
+| 03 | [03 向量点积规约](operator/03_reduction/README.md) | threadgroup 内存、树形归并 |
+| 04 | [04 GEMM Naive](operator/04_matmul_naive/README.md) | 基线内核 11.7 GFLOPS |
+| 05 | [05 GEMM Tiled](operator/05_matmul_tiled/README.md) | 分块复用 90 GFLOPS |
+| 06 | [06 Roofline 测量](operator/06_roofline/README.md) | 实测 220 GB/s / 2.26 TFLOPS |
+| 07 | [07 Sobel 边缘检测](operator/07_sobel/README.md) | MPS 三步曲 |
+| 08 | [08 高斯模糊](operator/08_gaussian_blur/README.md) | sigma 参数化验证 |
+| 09 | [09 Bloom 辉光](operator/09_bloom/README.md) | 三滤镜流水线 |
+| 10 | [10 阈值二值化](operator/10_threshold/README.md) | 解析解验证 |
+| 11 | [11 MPSGraph](operator/11_mpsgraph/README.md) | 声明式计算图 |
+| 12 | [12 MPS 矩阵乘法](operator/12_mps_matmul/README.md) | 1270 GFLOPS 商业内核 |
+| 13 | [13 逐元素加法](operator/13_mps_elementwise/README.md) | float4 向量化 75 GB/s |
+| 14 | [14 MLX 与统一内存](operator/14_mlx_metal/README.md) | 零拷贝、惰性触发 |
+| 15 | [15 惰性执行](operator/15_mlx_lazy/README.md) | 20 层记账一次 eval |
+| 16 | [16 GELU 融合](operator/16_gelu_compile/README.md) | mx.compile 3× 提速 |
+| 17 | [17 RMSNorm](operator/17_rmsnorm/README.md) | 手写对齐 mx.fast |
+| 18 | [18 数值稳定 Softmax](operator/18_softmax/README.md) | log-sum-exp、反例触发 |
+| 19 | [19 激活函数对比](operator/19_activations/README.md) | ReLU/SiLU/GELU 曲线与性能 |
+| 20 | [20 Attention](operator/20_attention/README.md) | 手写 SDPA vs 融合内核 |
+| 21 | [21 自定义 nn.Module](operator/21_nn_module/README.md) | 参数注册与 safetensors |
+| 22 | [22 自定义 Metal 内核](operator/22_custom_kernel/README.md) | mx.fast.metal_kernel |
+| 23 | [23 自定义 GEMV](operator/23_gemv/README.md) | 一行一组 + 组内规约 |
+| 24 | [24 融合 RMSNorm+QKV](operator/24_fused_rmsnorm_qkv/README.md) | 手写融合、权重约定 |
+| 25 | [25 INT4 量化 GEMV](operator/25_int4_gemv/README.md) | 解量化融合、显存 −75% |
+| 26 | [26 KV Cache](operator/26_kv_cache/README.md) | 环形写入、零拷贝读取 |
+| 27 | [27 融合 GEMM+GELU](operator/27_fused_gemm_act/README.md) | epilogue 融合 |
+| 28 | [28 轻量推理引擎](operator/28_mini_engine/README.md) | 5 算子注册表 + 图编排 |
+| 29 | [29 自定义滤镜](operator/29_custom_filter/README.md) | MPS + 自研内核流水线 |
+| 30 | [30 基准测试框架](operator/30_benchmark/README.md) | 预热/多轮/双回归 |
 
 ## 学习路线
 
-1. **渲染主干（1 周）**：metal 01 → 09 按序推进，前一个实验都是后一个的地基；每篇 README 的「面试要点」可在复习时自测。
-2. **算子入门（2-3 天）**：operator 01 → 02，把渲染线学的命令队列直接复用到计算场景。
-3. **继续深入**：两份路线图（`metal.md` / `operator.md`）各规划了 30 个项目；⚠️ 其中 6 对项目互为重复（见两份路线图内的标注），**二选一即可**，推荐走算子线版本（更深入、含性能对比）。
+1. **渲染主干**：metal 01 → 09（2D 入门）→ 10/11（3D）→ 21-26（进阶渲染）
+2. **算子主干**：operator 01 → 13（Metal 手写/MPS）→ 14-30（MLX 与融合/量化）
+3. **Metal 4 前沿**：metal 27 → 28 → 29 → 30（数据面 → 命令栈 → 编译链 → 混合管线）
+4. 深入方向见两份路线图；重复项（6 对）二选一，推荐算子线版本。
+
+## 性能速览（Apple M5 Pro 实测）
+
+手写 Tiled GEMM 90 GFLOPS → MPS 1270 GFLOPS ｜ MLX FP32 MatMul 峰值 19.3 TFLOPS ｜
+带宽上限 220 GB/s（拐点 ≈10 FLOP/B）｜ INT4 权重显存 −75%
 
 ## 遗留说明
 
-- `metal/blog/` 是本系列早期按项目写的博客，内容已全部并入各实验 README，仅作历史存档保留；
-- `metal/LearnMetal/`、`operator/LearnMetalOperator/` 是早期 Xcode 工程，已被各实验目录内"swiftc 独立编译"的方式取代（**实验目录是唯一权威代码**）。确认新结构可用后，这三处可以删除。
+- 早期博客（metal/blog）与两处 Xcode 工程均已删除，git 历史可查；
+  博客内容已并入各实验 README，各实验目录是唯一权威代码路径。

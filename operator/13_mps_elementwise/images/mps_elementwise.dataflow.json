@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "逐元素加法与带宽实测",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/mps_elementwise.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "计算"
+    },
+    {
+      "label": "输出"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "a",
+      "type": "database",
+      "label": "A 2048²",
+      "sublabel": "16 MB float32",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "b",
+      "type": "database",
+      "label": "B 2048²",
+      "sublabel": "",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "k",
+      "type": "backend",
+      "label": "mat_add",
+      "sublabel": "float4 向量化",
+      "stage": 1,
+      "row": 1,
+      "tag": "每线程 16B×3"
+    },
+    {
+      "id": "c",
+      "type": "database",
+      "label": "C = A + B",
+      "sublabel": "",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "验证 + 带宽",
+      "sublabel": "75 GB/s",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "ia",
+      "from": "a",
+      "to": "k",
+      "label": "读",
+      "variant": "default"
+    },
+    {
+      "id": "ib",
+      "from": "b",
+      "to": "k",
+      "label": "读",
+      "variant": "default"
+    },
+    {
+      "id": "o",
+      "from": "k",
+      "to": "c",
+      "label": "写",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "c",
+      "to": "v",
+      "label": "128 点比对",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "带宽受限算子",
+      "items": [
+        "逐元素算子天花板 = 显存带宽（06 实测 220 GB/s）",
+        "float4 把每线程流量提到 16 字节粒度"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "MPS 的边界",
+      "items": [
+        "MPS 无公开加法类——二元算子手写 kernel 更直接",
+        "MPSMatrix 的抽象仍可复用"
+      ]
+    }
+  ]
+}

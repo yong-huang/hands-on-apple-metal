@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "矩阵乘法 Tiled：分块复用",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/matmul_tiled.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "分块计算"
+    },
+    {
+      "label": "输出"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "a",
+      "type": "database",
+      "label": "A 512×512",
+      "sublabel": "",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "b",
+      "type": "database",
+      "label": "B 512×512",
+      "sublabel": "",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "k",
+      "type": "backend",
+      "label": "matmul_tiled",
+      "sublabel": "tile=16 共享内存复用",
+      "stage": 1,
+      "row": 1,
+      "tag": "90 GFLOPS"
+    },
+    {
+      "id": "c",
+      "type": "database",
+      "label": "C 512×512",
+      "sublabel": "",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "CPU 抽样验证",
+      "sublabel": "128 点一致",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "ia",
+      "from": "a",
+      "to": "k",
+      "label": "协作搬 tile",
+      "variant": "default"
+    },
+    {
+      "id": "ib",
+      "from": "b",
+      "to": "k",
+      "label": "协作搬 tile",
+      "variant": "default"
+    },
+    {
+      "id": "o",
+      "from": "k",
+      "to": "c",
+      "label": "块内点乘",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "c",
+      "to": "v",
+      "label": "比对",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Tiled 的账",
+      "items": [
+        "Naive 全局读量 = M·N·K×2；Tiled ÷16",
+        "每块两道 barrier：搬完才算、算完才能搬"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "实测",
+      "items": [
+        "512³：90 vs 12 GFLOPS——与大模型 GEMM 优化方向一致"
+      ]
+    }
+  ]
+}

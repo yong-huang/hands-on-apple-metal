@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Compute 灰度滤镜：纹理作为计算输出",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/grayscale.html",
+    "viewBox": [
+      1070,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "生成"
+    },
+    {
+      "label": "输入"
+    },
+    {
+      "label": "计算"
+    },
+    {
+      "label": "消费"
+    },
+    {
+      "label": "显示"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cpu",
+      "type": "frontend",
+      "label": "CPU 生成测试图",
+      "sublabel": "512² 渐变 + 色带",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "src",
+      "type": "database",
+      "label": "src 纹理",
+      "sublabel": "shaderRead",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "ck",
+      "type": "backend",
+      "label": "grayscale_kernel",
+      "sublabel": "0.299R + 0.587G + 0.114B",
+      "stage": 2,
+      "row": 1,
+      "tag": "32×32 组"
+    },
+    {
+      "id": "dst",
+      "type": "database",
+      "label": "dst 纹理",
+      "sublabel": "read + write",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "verify",
+      "type": "external",
+      "label": "CPU 回读验证",
+      "sublabel": "R=G=B 抽查 5 点",
+      "stage": 4,
+      "row": 0,
+      "tag": "getBytes"
+    },
+    {
+      "id": "render",
+      "type": "backend",
+      "label": "全屏采样显示",
+      "sublabel": "",
+      "stage": 4,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "u",
+      "from": "cpu",
+      "to": "src",
+      "label": "replace()",
+      "variant": "default"
+    },
+    {
+      "id": "k",
+      "from": "src",
+      "to": "ck",
+      "label": "逐纹素读",
+      "variant": "emphasis"
+    },
+    {
+      "id": "w",
+      "from": "ck",
+      "to": "dst",
+      "label": "逐纹素写",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "dst",
+      "to": "verify",
+      "label": "回读",
+      "variant": "dashed"
+    },
+    {
+      "id": "r",
+      "from": "dst",
+      "to": "render",
+      "label": "当纹理画",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "纹理进入计算管线",
+      "items": [
+        "compute 不能 sample，但可以 read/write 逐纹素",
+        "亮度加权系数来自人眼感光曲线"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "验证即算子开发",
+      "items": [
+        "shared 存储 CPU 直接回读",
+        "✅ R=G=B 就是灰度的定义——验证闭环"
+      ]
+    }
+  ]
+}

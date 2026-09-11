@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "程序化帧捕获：MTLCaptureManager",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/gpu_capture.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "工作负载"
+    },
+    {
+      "label": "捕获"
+    },
+    {
+      "label": "产物"
+    },
+    {
+      "label": "分析"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "app",
+      "type": "backend",
+      "label": "计算负载 ×3",
+      "sublabel": "ping-pong 串联 ×8",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "cap",
+      "type": "backend",
+      "label": "MTLCaptureManager",
+      "sublabel": "捕获命令队列",
+      "stage": 1,
+      "row": 1,
+      "tag": "需注入捕获层"
+    },
+    {
+      "id": "trace",
+      "type": "database",
+      "label": "捕获文件",
+      "sublabel": "gputrace 落盘 384B",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "verify",
+      "type": "external",
+      "label": "双回归",
+      "sublabel": "计算正确 + 文件存在",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "xcode",
+      "type": "external",
+      "label": "Xcode 离线分析",
+      "sublabel": "逐命令 GPU 明细",
+      "stage": 3,
+      "row": 0
+    }
+  ],
+  "flows": [
+    {
+      "id": "w",
+      "from": "app",
+      "to": "cap",
+      "label": "被捕获",
+      "variant": "emphasis"
+    },
+    {
+      "id": "t",
+      "from": "cap",
+      "to": "trace",
+      "label": "逐命令记录",
+      "variant": "default"
+    },
+    {
+      "id": "v",
+      "from": "cap",
+      "to": "verify",
+      "label": "校验",
+      "variant": "dashed"
+    },
+    {
+      "id": "x",
+      "from": "trace",
+      "to": "xcode",
+      "label": "打开",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "程序化捕获",
+      "items": [
+        "MTLCaptureDescriptor 以队列为对象直接输出 .gputrace",
+        "命令行启动必须 METAL_CAPTURE_ENABLED=1——本实验最大的坑"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "用法",
+      "items": [
+        "Xcode 打开 gputrace 逐条查看命令与 kernel 耗时",
+        "自动回归与性能存档的标准姿势"
+      ]
+    }
+  ]
+}

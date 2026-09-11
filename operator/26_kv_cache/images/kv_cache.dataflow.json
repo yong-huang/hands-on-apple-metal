@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "KV Cache：环形写入与增量读取",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/kv_cache.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "缓存"
+    },
+    {
+      "label": "写入"
+    },
+    {
+      "label": "读取"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cap",
+      "type": "database",
+      "label": "环形缓存 1024 槽",
+      "sublabel": "K/V 各 [1024,256]",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "wk",
+      "type": "backend",
+      "label": "kv_ring_write",
+      "sublabel": "pos % CAP 回绕覆盖",
+      "stage": 1,
+      "row": 1,
+      "tag": "300 步"
+    },
+    {
+      "id": "attn",
+      "type": "backend",
+      "label": "增量 attention",
+      "sublabel": "最近 300 token",
+      "stage": 2,
+      "row": 1,
+      "tag": "零拷贝转置"
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "语义验证",
+      "sublabel": "槽位 299 有效",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "w",
+      "from": "cap",
+      "to": "wk",
+      "label": "追加写",
+      "variant": "emphasis"
+    },
+    {
+      "id": "r",
+      "from": "wk",
+      "to": "attn",
+      "label": "布局连续",
+      "variant": "default"
+    },
+    {
+      "id": "vv",
+      "from": "attn",
+      "to": "v",
+      "label": "断言",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "缓存的算子视角",
+      "items": [
+        "生成每步只算新 K/V，注意力读全部历史",
+        "环形覆盖 = 定长显存跑无限上下文"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "布局",
+      "items": [
+        "槽位内 256 元素连续 → 转置零拷贝进注意力"
+      ]
+    }
+  ]
+}

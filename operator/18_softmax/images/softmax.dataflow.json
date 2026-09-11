@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "数值稳定的 Softmax",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/softmax.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "朴素版"
+    },
+    {
+      "label": "稳定版"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "x2",
+      "type": "database",
+      "label": "大数值输入",
+      "sublabel": "logits 1000+",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "naive",
+      "type": "backend",
+      "label": "朴素 softmax",
+      "sublabel": "exp 溢出 → nan",
+      "stage": 1,
+      "row": 0,
+      "tag": "反例"
+    },
+    {
+      "id": "stable",
+      "type": "backend",
+      "label": "log-sum-exp",
+      "sublabel": "减 max 再 exp",
+      "stage": 1,
+      "row": 2,
+      "tag": "数学等价"
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "mx.softmax 对照",
+      "sublabel": "逐元素一致",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "n",
+      "from": "x2",
+      "to": "naive",
+      "label": "直接 exp",
+      "variant": "default"
+    },
+    {
+      "id": "s",
+      "from": "x2",
+      "to": "stable",
+      "label": "减 max",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "stable",
+      "to": "v",
+      "label": "对照",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "log-sum-exp 技巧",
+      "items": [
+        "exp 单调 → 减常数不改结果，但压进安全区",
+        "大 logits 在 attention 里是常态"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "反例的价值",
+      "items": [
+        "朴素版 nan 被真实触发——错误模式要亲眼见过"
+      ]
+    }
+  ]
+}

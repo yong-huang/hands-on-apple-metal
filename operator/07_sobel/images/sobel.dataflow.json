@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "MPS Sobel 边缘检测",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/sobel.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "算子"
+    },
+    {
+      "label": "输出"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "img",
+      "type": "database",
+      "label": "灰底白方块图",
+      "sublabel": "256² rgba8",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "k",
+      "type": "backend",
+      "label": "MPSImageSobel",
+      "sublabel": "3×3 梯度卷积",
+      "stage": 1,
+      "row": 1,
+      "tag": "苹果调优内核"
+    },
+    {
+      "id": "out",
+      "type": "database",
+      "label": "边缘响应图",
+      "sublabel": "",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "边缘 vs 平坦抽查",
+      "sublabel": "255 vs 0",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "i",
+      "from": "img",
+      "to": "k",
+      "label": "编码",
+      "variant": "default"
+    },
+    {
+      "id": "o",
+      "from": "k",
+      "to": "out",
+      "label": "梯度模长",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "out",
+      "to": "v",
+      "label": "回读",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "MPS 的用法",
+      "items": [
+        "建滤镜 → encode → commit，三步换滤镜不换骨架",
+        "Sobel 本质：x/y 两方向差分卷积取梯度模长"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "验证思路",
+      "items": [
+        "构造有明确边缘的合成图",
+        "边缘 vs 平坦区响应差距即正确性"
+      ]
+    }
+  ]
+}

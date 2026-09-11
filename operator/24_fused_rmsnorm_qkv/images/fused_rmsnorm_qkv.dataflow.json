@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "融合 RMSNorm + QKV",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/fused_rmsnorm_qkv.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "融合内核"
+    },
+    {
+      "label": "对照"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "xw",
+      "type": "database",
+      "label": "x + 4 组权重",
+      "sublabel": "单 token 解码形态",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "fused",
+      "type": "backend",
+      "label": "融合内核",
+      "sublabel": "norm → 三投影一气呵成",
+      "stage": 1,
+      "row": 0,
+      "tag": "9.5e-07"
+    },
+    {
+      "id": "sep",
+      "type": "backend",
+      "label": "分离执行",
+      "sublabel": "norm + 3×matmul",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "数值对齐",
+      "sublabel": "最大差 1e-6 量级",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "f",
+      "from": "xw",
+      "to": "fused",
+      "label": "一次读入",
+      "variant": "emphasis"
+    },
+    {
+      "id": "s",
+      "from": "xw",
+      "to": "sep",
+      "label": "四次内核",
+      "variant": "default"
+    },
+    {
+      "id": "vv",
+      "from": "fused",
+      "to": "v",
+      "label": "对答案",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "融合省什么",
+      "items": [
+        "中间激活写回+读回 ×2 + 3 次内核启动",
+        "权重约定 (out,in) 行主序——两边必须一致（实测对齐过）"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "数值",
+      "items": [
+        "融合前后 9.5e-07：融合是搬运优化，不改数学"
+      ]
+    }
+  ]
+}

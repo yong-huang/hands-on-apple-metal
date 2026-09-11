@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "MLX 自定义 Metal 内核",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/custom_kernel.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "内核"
+    },
+    {
+      "label": "输出"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "ab",
+      "type": "database",
+      "label": "a + b 数组",
+      "sublabel": "float32 ×4096",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "k",
+      "type": "backend",
+      "label": "my_vector_add",
+      "sublabel": "只写函数体，签名 MLX 代生成",
+      "stage": 1,
+      "row": 1,
+      "tag": "grid=总线程数"
+    },
+    {
+      "id": "out",
+      "type": "database",
+      "label": "out = a + b",
+      "sublabel": "",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "反例演示",
+      "sublabel": "线程不足后半区未写",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "i",
+      "from": "ab",
+      "to": "k",
+      "label": "声明式 IO",
+      "variant": "emphasis"
+    },
+    {
+      "id": "o",
+      "from": "k",
+      "to": "out",
+      "label": "写入",
+      "variant": "default"
+    },
+    {
+      "id": "vv",
+      "from": "out",
+      "to": "v",
+      "label": "断言",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "mx.fast.metal_kernel",
+      "items": [
+        "声明 IO 名 → 只写 MSL 函数体",
+        "grid 是总线程数而非组数——语义差异实测踩过"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "反例",
+      "items": [
+        "线程只派一半 → 后半区是旧数据：算子要自己保证覆盖"
+      ]
+    }
+  ]
+}

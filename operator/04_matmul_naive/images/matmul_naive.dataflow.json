@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "矩阵乘法 Naive：基线内核",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/matmul_naive.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "计算"
+    },
+    {
+      "label": "输出"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "a",
+      "type": "database",
+      "label": "A 256×256",
+      "sublabel": "行主序",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "b",
+      "type": "database",
+      "label": "B 256×256",
+      "sublabel": "",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "k",
+      "type": "backend",
+      "label": "matmul_naive",
+      "sublabel": "每线程算一个元素",
+      "stage": 1,
+      "row": 1,
+      "tag": "2D 网格"
+    },
+    {
+      "id": "c",
+      "type": "database",
+      "label": "C 256×256",
+      "sublabel": "",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "CPU 抽样验证",
+      "sublabel": "128 点逐位一致",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "ia",
+      "from": "a",
+      "to": "k",
+      "label": "A 行",
+      "variant": "default"
+    },
+    {
+      "id": "ib",
+      "from": "b",
+      "to": "k",
+      "label": "B 列",
+      "variant": "default"
+    },
+    {
+      "id": "o",
+      "from": "k",
+      "to": "c",
+      "label": "点乘结果",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "c",
+      "to": "v",
+      "label": "比对",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "最朴素的映射",
+      "items": [
+        "线程 (row,col) 沿 K 串行点乘",
+        "整数倍系数初始化让 CPU/GPU 逐位可比"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "基线的意义",
+      "items": [
+        "11.7 GFLOPS 远低于带宽上限——重复读 K×2 倍数据",
+        "它是 05 Tiled 优化的对照组"
+      ]
+    }
+  ]
+}

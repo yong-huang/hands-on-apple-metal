@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Bloom 辉光：三滤镜组合",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/bloom.html",
+    "viewBox": [
+      1085,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "滤镜链"
+    },
+    {
+      "label": "叠加"
+    },
+    {
+      "label": "验证"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "scene",
+      "type": "database",
+      "label": "场景图",
+      "sublabel": "暗背景 + 亮点/暗点",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "thr",
+      "type": "backend",
+      "label": "阈值提取高光",
+      "sublabel": "ThresholdToZero",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "blur",
+      "type": "backend",
+      "label": "高斯晕开",
+      "sublabel": "sigma=8",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "add",
+      "type": "backend",
+      "label": "叠加回原图",
+      "sublabel": "MPSImageAdd",
+      "stage": 3,
+      "row": 1,
+      "tag": "辉光生成"
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "光晕环抽查",
+      "sublabel": "10 → 54 暗点不变",
+      "stage": 4,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "s",
+      "from": "scene",
+      "to": "thr",
+      "label": "编码",
+      "variant": "default"
+    },
+    {
+      "id": "t",
+      "from": "thr",
+      "to": "blur",
+      "label": "高光图",
+      "variant": "emphasis"
+    },
+    {
+      "id": "b",
+      "from": "blur",
+      "to": "add",
+      "label": "辉光图",
+      "variant": "default"
+    },
+    {
+      "id": "vv",
+      "from": "add",
+      "to": "v",
+      "label": "回读",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "组合拳",
+      "items": [
+        "提取 → 晕开 → 叠回：三条 MPS 滤镜串成流水线",
+        "暗点不产生辉光——阈值语义被验证"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "流水线思维",
+      "items": [
+        "复杂效果 = 简单算子的有向组合",
+        "中间纹理就是流水线的传送带"
+      ]
+    }
+  ]
+}

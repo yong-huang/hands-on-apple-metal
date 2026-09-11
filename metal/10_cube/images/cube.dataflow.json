@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "3D 立方体：MVP 矩阵与深度测试",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/cube.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "资源"
+    },
+    {
+      "label": "顶点着色"
+    },
+    {
+      "label": "深度测试"
+    },
+    {
+      "label": "显示"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "verts",
+      "type": "database",
+      "label": "顶点缓冲 ×36",
+      "sublabel": "6 面 × 6 顶点",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "mvp",
+      "type": "database",
+      "label": "MVP 矩阵",
+      "sublabel": "P × V × M 每帧更新",
+      "stage": 0,
+      "row": 2,
+      "tag": "Uniform"
+    },
+    {
+      "id": "vs",
+      "type": "backend",
+      "label": "vertex_main",
+      "sublabel": "变换到裁剪空间",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "depth",
+      "type": "database",
+      "label": "深度缓冲",
+      "sublabel": "depth16Unorm 近遮远",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "旋转立方体",
+      "sublabel": "MTKView",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "v",
+      "from": "verts",
+      "to": "vs",
+      "label": "逐顶点",
+      "variant": "default"
+    },
+    {
+      "id": "m",
+      "from": "mvp",
+      "to": "vs",
+      "label": "乘矩阵",
+      "variant": "emphasis"
+    },
+    {
+      "id": "d",
+      "from": "vs",
+      "to": "depth",
+      "label": "深度测试",
+      "variant": "default"
+    },
+    {
+      "id": "s",
+      "from": "depth",
+      "to": "screen",
+      "label": "present",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "进入 3D 的三件新事物",
+      "items": [
+        "36 顶点 = 6 面 × 2 三角形，无索引从简",
+        "MVP 把模型空间直接打进裁剪空间",
+        "深度缓冲让「前面遮住后面」成为规则"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Metal 的 z 约定",
+      "items": [
+        "裁剪空间 z ∈ [0,1]，与 OpenGL 的 [-1,1] 不同",
+        "照抄 GL ortho 公式会让场景静默消失（25 实测复现）"
+      ]
+    }
+  ]
+}

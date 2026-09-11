@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "算子基准测试框架",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/benchmark.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "框架"
+    },
+    {
+      "label": "扫描"
+    },
+    {
+      "label": "报告"
+    },
+    {
+      "label": "回归"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "bench",
+      "type": "backend",
+      "label": "预热 + 多轮计时",
+      "sublabel": "min/median 统计",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "sizes",
+      "type": "database",
+      "label": "MatMul 128→2048",
+      "sublabel": "5 个规模",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "report",
+      "type": "external",
+      "label": "性能报告",
+      "sublabel": "峰值 19.3 TFLOPS",
+      "stage": 2,
+      "row": 1,
+      "tag": "延迟/算力/带宽"
+    },
+    {
+      "id": "acc",
+      "type": "external",
+      "label": "精度回归",
+      "sublabel": "512³ 误差 7.7e-04",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "b",
+      "from": "sizes",
+      "to": "bench",
+      "label": "逐规模计时",
+      "variant": "emphasis"
+    },
+    {
+      "id": "t",
+      "from": "bench",
+      "to": "report",
+      "label": "汇总",
+      "variant": "default"
+    },
+    {
+      "id": "a",
+      "from": "report",
+      "to": "acc",
+      "label": "同框架精度回归",
+      "variant": "dashed",
+      "route": "straight"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "框架三要素",
+      "items": [
+        "预热吸收编译成本；多轮取 min/median",
+        "性能 + 精度双回归——只测速度不算基准"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "读报告",
+      "items": [
+        "小规模瓶颈在启动开销 → batching",
+        "带宽远低于 06 上限 → 查布局与分块"
+      ]
+    }
+  ]
+}

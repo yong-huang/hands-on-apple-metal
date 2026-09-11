@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "INT4 量化 GEMV：解量化融合",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/int4_gemv.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "权重"
+    },
+    {
+      "label": "量化"
+    },
+    {
+      "label": "内核"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "w",
+      "type": "database",
+      "label": "FP32 权重 512×1024",
+      "sublabel": "2 MB",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "quant",
+      "type": "backend",
+      "label": "逐组 INT4 打包",
+      "sublabel": "组 16 元素 + scale",
+      "stage": 1,
+      "row": 1,
+      "tag": "256 KB（−75%）"
+    },
+    {
+      "id": "k",
+      "type": "backend",
+      "label": "int4_gemv 内核",
+      "sublabel": "解量化藏在寄存器里",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "双验证",
+      "sublabel": "内核对齐 + 误差符合理论",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "q",
+      "from": "w",
+      "to": "quant",
+      "label": "打包",
+      "variant": "default"
+    },
+    {
+      "id": "g",
+      "from": "quant",
+      "to": "k",
+      "label": "nibble + scale",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "k",
+      "to": "v",
+      "label": "对答案",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "INT4 的账",
+      "items": [
+        "显存 −75%；解量化与点乘融合无额外往返",
+        "每权重 15 级 → 高斯数据理论误差 ~10%（实测 8.9%）"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "诚实边界",
+      "items": [
+        "真实 LLM 权重更平滑 + 端到端容错，<1% 困惑度损失成立",
+        "合成数据验正确性，精度结论以真实模型为准"
+      ]
+    }
+  ]
+}

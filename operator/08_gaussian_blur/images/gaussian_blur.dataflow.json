@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "MPS 高斯模糊：sigma 可调",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/gaussian_blur.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "算子"
+    },
+    {
+      "label": "输出"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "img",
+      "type": "database",
+      "label": "棋盘噪声图",
+      "sublabel": "方差 5487 基线",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "k",
+      "type": "backend",
+      "label": "高斯模糊",
+      "sublabel": "MPSImageGaussianBlur",
+      "stage": 1,
+      "row": 1,
+      "width": 150
+    },
+    {
+      "id": "out",
+      "type": "database",
+      "label": "模糊输出",
+      "sublabel": "",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "梯度能量统计",
+      "sublabel": "3.13 → 0.52",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "i",
+      "from": "img",
+      "to": "k",
+      "label": "编码",
+      "variant": "default"
+    },
+    {
+      "id": "o",
+      "from": "k",
+      "to": "out",
+      "label": "高斯核卷积",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "out",
+      "to": "v",
+      "label": "平滑度统计",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "sigma 的语义",
+      "items": [
+        "高斯核宽度 ∝ sigma：越大越模糊",
+        "验证用相邻像素梯度能量——比方差对内部实现更稳"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "调优视角",
+      "items": [
+        "大 sigma 内部会切换实现策略",
+        "基准自己的数据，不背通用结论"
+      ]
+    }
+  ]
+}

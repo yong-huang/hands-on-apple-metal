@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "轻量推理引擎算子层",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/mini_engine.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "注册表"
+    },
+    {
+      "label": "编排"
+    },
+    {
+      "label": "输出"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "reg",
+      "type": "backend",
+      "label": "算子注册表 ×5",
+      "sublabel": "MatMul/Add/ReLU/Softmax/LN",
+      "stage": 0,
+      "row": 1,
+      "tag": "统一 forward"
+    },
+    {
+      "id": "graph",
+      "type": "messagebus",
+      "label": "计算图 7 节点",
+      "sublabel": "链式编排",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "out",
+      "type": "database",
+      "label": "概率输出",
+      "sublabel": "Softmax 归一",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "Σ=1.000000",
+      "sublabel": "合法分布",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "r",
+      "from": "reg",
+      "to": "graph",
+      "label": "实例注册",
+      "variant": "default"
+    },
+    {
+      "id": "g",
+      "from": "graph",
+      "to": "out",
+      "label": "顺序执行",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "out",
+      "to": "v",
+      "label": "结构断言",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "框架化最小集",
+      "items": [
+        "算子协议 → 注册表 → 图编排",
+        "新增算子 = 注册一个类型，引擎零改动"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "结构验证",
+      "items": [
+        "概率和 = 1 与非负性：无参照值也能验的结构性质"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "光线追踪：MPSRayIntersector",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/raytracer.html",
+    "viewBox": [
+      1085,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "求交"
+    },
+    {
+      "label": "着色"
+    },
+    {
+      "label": "产物"
+    },
+    {
+      "label": "显示"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "rays",
+      "type": "database",
+      "label": "主光线 26 万根",
+      "sublabel": "origin + direction",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "accel",
+      "type": "backend",
+      "label": "MPS 加速结构",
+      "sublabel": "纯位置缓冲",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "isect",
+      "type": "backend",
+      "label": "MPSRayIntersector",
+      "sublabel": "最近交点 + 重心坐标",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "shade",
+      "type": "backend",
+      "label": "CPU 着色",
+      "sublabel": "重心插值顶点色",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "tex",
+      "type": "database",
+      "label": "结果纹理 512²",
+      "sublabel": "",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "光追成像",
+      "sublabel": "",
+      "stage": 4,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "r",
+      "from": "rays",
+      "to": "isect",
+      "label": "逐光线",
+      "variant": "default"
+    },
+    {
+      "id": "a",
+      "from": "accel",
+      "to": "isect",
+      "label": "加速查询",
+      "variant": "default"
+    },
+    {
+      "id": "i",
+      "from": "isect",
+      "to": "shade",
+      "label": "交点数据",
+      "variant": "emphasis"
+    },
+    {
+      "id": "t",
+      "from": "shade",
+      "to": "tex",
+      "label": "写像素",
+      "variant": "default"
+    },
+    {
+      "id": "s",
+      "from": "tex",
+      "to": "screen",
+      "label": "显示",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "与光栅化的分野",
+      "items": [
+        "从相机出发找每个像素「撞到了谁」",
+        "MPS 只负责求交，着色逻辑完全归你"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Swift 侧布局镜像",
+      "items": [
+        "ray/intersection 结构体只在 MSL 定义，Swift 手写布局一致的镜像",
+        "加速结构只吃紧凑 float3 位置——混入颜色会静默出错"
+      ]
+    }
+  ]
+}

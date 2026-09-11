@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "向量点积规约：两阶段树形归并",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/reduction.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "规约"
+    },
+    {
+      "label": "收尾"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "prod",
+      "type": "database",
+      "label": "乘积 ×1M",
+      "sublabel": "CPU 预先逐元素乘",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "k1",
+      "type": "backend",
+      "label": "组内树形规约",
+      "sublabel": "共享内存 + barrier",
+      "stage": 1,
+      "row": 1,
+      "tag": "4096 组 × 256"
+    },
+    {
+      "id": "k2",
+      "type": "backend",
+      "label": "组间收尾",
+      "sublabel": "跨步串行 + 归并",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "res",
+      "type": "external",
+      "label": "相对误差 2.4e-05",
+      "sublabel": "",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "a",
+      "from": "prod",
+      "to": "k1",
+      "label": "分段喂入",
+      "variant": "default"
+    },
+    {
+      "id": "d",
+      "from": "k2",
+      "to": "res",
+      "label": "比对",
+      "variant": "emphasis"
+    },
+    {
+      "id": "b2",
+      "from": "k1",
+      "to": "k2",
+      "label": "4096 部分和",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "两阶段的心跳",
+      "items": [
+        "组内树形：8 步把 256 个数归成一个",
+        "组间收尾每线程先串行吃 16 个——漏了这步结果就错（实测踩过）"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "共享内存",
+      "items": [
+        "threadgroup 内存是同组线程的黑板",
+        "每步 barrier：没人能用半成品相加"
+      ]
+    }
+  ]
+}

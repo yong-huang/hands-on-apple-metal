@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "ReLU / SiLU / GELU 对比",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/activations.html",
+    "viewBox": [
+      1085,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "三种激活"
+    },
+    {
+      "label": "性能"
+    },
+    {
+      "label": "验证"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "x",
+      "type": "database",
+      "label": "输入",
+      "sublabel": "曲线扫描 + 4096²",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "acts",
+      "type": "backend",
+      "label": "ReLU/SiLU/GELU",
+      "sublabel": "形状与公式对比",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "perf",
+      "type": "backend",
+      "label": "前向计时",
+      "sublabel": "4096² ×50 轮",
+      "stage": 2,
+      "row": 1,
+      "tag": "带宽受限"
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "结构验证",
+      "sublabel": "负半轴形状差异",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "i",
+      "from": "x",
+      "to": "acts",
+      "label": "逐点施加",
+      "variant": "default"
+    },
+    {
+      "id": "p",
+      "from": "acts",
+      "to": "perf",
+      "label": "大规模计时",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "vv",
+      "from": "perf",
+      "to": "v",
+      "label": "结构断言",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "三种性格",
+      "items": [
+        "ReLU 硬归零；SiLU/GELU 保留微弱负值",
+        "GELU tanh 近似是工程标准形"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "性能视角",
+      "items": [
+        "都是逐元素/带宽受限——差距远小于结构差异"
+      ]
+    }
+  ]
+}

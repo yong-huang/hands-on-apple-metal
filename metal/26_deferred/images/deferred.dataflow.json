@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "延迟着色：G-Buffer + 屏幕空间光照",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/deferred.html",
+    "viewBox": [
+      1085,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "资源"
+    },
+    {
+      "label": "G-Buffer"
+    },
+    {
+      "label": "目标"
+    },
+    {
+      "label": "光照"
+    },
+    {
+      "label": "显示"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "scene",
+      "type": "database",
+      "label": "场景 ×78 顶点",
+      "sublabel": "地面 + 双立方体",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "gpass",
+      "type": "backend",
+      "label": "Pass1 G-Buffer",
+      "sublabel": "MRT 两张输出",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "albedo",
+      "type": "database",
+      "label": "反照率",
+      "sublabel": "color(0)",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "normal",
+      "type": "database",
+      "label": "法线",
+      "sublabel": "color(1) 编码 [0,1]",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "lpass",
+      "type": "backend",
+      "label": "Pass2 全屏光照",
+      "sublabel": "逐像素 N·L",
+      "stage": 3,
+      "row": 1,
+      "tag": "与几何解耦"
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "延迟光照画面",
+      "sublabel": "",
+      "stage": 4,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "s",
+      "from": "scene",
+      "to": "gpass",
+      "label": "写属性",
+      "variant": "default"
+    },
+    {
+      "id": "a",
+      "from": "gpass",
+      "to": "albedo",
+      "label": "写",
+      "variant": "emphasis"
+    },
+    {
+      "id": "n",
+      "from": "gpass",
+      "to": "normal",
+      "label": "写",
+      "variant": "emphasis"
+    },
+    {
+      "id": "al",
+      "from": "albedo",
+      "to": "lpass",
+      "label": "读",
+      "variant": "default"
+    },
+    {
+      "id": "nn",
+      "from": "normal",
+      "to": "lpass",
+      "label": "读",
+      "variant": "default"
+    },
+    {
+      "id": "o",
+      "from": "lpass",
+      "to": "screen",
+      "label": "present",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "延迟的含义",
+      "items": [
+        "几何只写属性，光照推迟到全屏一次做——光源数不拖累几何",
+        "MRT：一次 draw 同时写两张目标"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "验证方式",
+      "items": [
+        "回读统计：红/蓝立方体占比 4.35%/5.02%、朝上法线 53%",
+        "G-Buffer 是天然调试可视化对象"
+      ]
+    }
+  ]
+}

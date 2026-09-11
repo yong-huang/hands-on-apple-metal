@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Scaled Dot-Product Attention",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/attention.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "手写"
+    },
+    {
+      "label": "参照"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "qkv",
+      "type": "database",
+      "label": "Q/K/V [2,4,256,64]",
+      "sublabel": "标准四维布局",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "man",
+      "type": "backend",
+      "label": "手写 SDPA",
+      "sublabel": "QKᵀ/√d → softmax → V",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "fast",
+      "type": "backend",
+      "label": "mx.fast.sdpa",
+      "sublabel": "融合内核",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "最大差 3.3e-04",
+      "sublabel": "累加顺序差",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "m",
+      "from": "qkv",
+      "to": "man",
+      "label": "三步矩阵乘",
+      "variant": "default"
+    },
+    {
+      "id": "f",
+      "from": "qkv",
+      "to": "fast",
+      "label": "一次调用",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "man",
+      "to": "v",
+      "label": "对答案",
+      "variant": "dashed"
+    },
+    {
+      "id": "vf",
+      "from": "fast",
+      "to": "v",
+      "label": "对答案",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "算子分解",
+      "items": [
+        "两段 matmul 夹一个带 max 抖性的 softmax",
+        "权重行和=1 的结构断言 + 数值双验证"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "容差设定",
+      "items": [
+        "1e-4 太苛：融合内核累加顺序不同",
+        "1e-3 才是合理容差——知道自己的容差是素养"
+      ]
+    }
+  ]
+}

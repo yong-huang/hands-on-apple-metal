@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "RMSNorm：手写 vs mx.fast",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/rmsnorm.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "实现"
+    },
+    {
+      "label": "参照"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "xw",
+      "type": "database",
+      "label": "x [4,128,512] + w",
+      "sublabel": "模拟 LLM 激活",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "mine",
+      "type": "backend",
+      "label": "手写 RMSNorm",
+      "sublabel": "mean(x²) → rsqrt → ×w",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "fast",
+      "type": "backend",
+      "label": "mx.fast.rms_norm",
+      "sublabel": "内置融合内核",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "最大差 9.5e-07",
+      "sublabel": "数值一致",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "m",
+      "from": "xw",
+      "to": "mine",
+      "label": "手算",
+      "variant": "default"
+    },
+    {
+      "id": "f",
+      "from": "xw",
+      "to": "fast",
+      "label": "内置",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "mine",
+      "to": "v",
+      "label": "对答案",
+      "variant": "dashed"
+    },
+    {
+      "id": "vf",
+      "from": "fast",
+      "to": "v",
+      "label": "对答案",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "对答案式开发",
+      "items": [
+        "自研算子必须与黄金参照逐元素比对",
+        "RMS 行均值 ≈1 是结构性自检"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "易错点",
+      "items": [
+        "eps 加在均值上（不是开方后）",
+        "keepdims 缺失会触发广播错位"
+      ]
+    }
+  ]
+}

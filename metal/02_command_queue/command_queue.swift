@@ -7,14 +7,6 @@ func runCommandQueue() {
         return
     }
     
-    // 20260809:
-    // 程序输出：
-    // === Program 2: Command Queue ===
-    // GPU Device: Apple M5 Pro
-    // Command Queue created
-    // Command Buffer: MyFirstCommandBuffer
-    // Command Buffer committed
-    // Command Buffer completed
 
     // GPU 任务执行的核心层次结构：
 

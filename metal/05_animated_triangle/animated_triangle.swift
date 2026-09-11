@@ -3,7 +3,6 @@ import Metal
 import MetalKit
 import simd
 
-// 20260810:
 // AnimatedVertex 结构体：
 // - position	SIMD3<Float>	顶点在三维空间中的位置，包含 x、y、z 三个浮点坐标值
 // - color	SIMD4<Float>	顶点的颜色，包含红 (r)、绿 (g)、蓝 (b) 和透明度 (a) 四个分量
@@ -78,7 +77,6 @@ class AnimatedTriangleViewController: NSViewController, MTKViewDelegate {
     }
     
     func setupPipeline() {
-        // 20260809: 同样是顶点着色器+片元着色器
         // Metal shader source
         let shaderSource = """
         #include <metal_stdlib>
@@ -138,7 +136,6 @@ class AnimatedTriangleViewController: NSViewController, MTKViewDelegate {
             fatalError("Failed to create shader functions")
         }
         
-        // 20260810: 先后调用顶点着色器和片元着色器函数
         // Create pipeline descriptor
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
@@ -155,7 +152,6 @@ class AnimatedTriangleViewController: NSViewController, MTKViewDelegate {
     
     func setupVertexData() {
 
-        // 20260810: 使用到了AnimatedVertex这个数据结构，用来设置三个顶点的位置及颜色
         // Define vertices for a triangle
         let vertices: [AnimatedVertex] = [
             AnimatedVertex(position: SIMD3<Float>( 0.0,  0.5, 0.0), color: SIMD4<Float>(1.0, 0.0, 0.0, 1.0)), // Top - Red
@@ -173,7 +169,6 @@ class AnimatedTriangleViewController: NSViewController, MTKViewDelegate {
     
     func setupUniformBuffer() {
 
-        // 20260810:
         // Uniform Buffer：
         // 这是一个特殊的缓冲区（MTLBuffer），用于存储"uniform data"——即着色器需要访问但不会随每个顶点变化的数据。
         // 在这个例子中，它存储的是变换矩阵（modelViewProjectionMatrix）。

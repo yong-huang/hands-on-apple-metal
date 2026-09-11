@@ -3,36 +3,6 @@ import Foundation
 
 func runGPUInfo() {
     
-    // 20260809:
-    // 拿到的device信息：
-    // === Running GPU Info ===
-    // ╔══════════════════════════════════════════════════════════════╗
-    // ║              GPU DEVICE INFORMATION                         ║
-    // ╚══════════════════════════════════════════════════════════════╝
-
-    // 📱 BASIC DEVICE INFO
-    // ────────────────────────────────────────────────────────────
-    // Device Name:              Apple M5 Pro
-    // Device Registry ID:       4294968611
-
-    // 🧵 THREAD & COMPUTE CAPABILITIES
-    // ────────────────────────────────────────────────────────────
-    // Max Threads Per Threadgroup:
-    //     Width:  1024
-    //     Height: 1024
-    //     Depth:  1024
-    // Thread Execution Width:   1024
-    // Max Threadgroup Memory Length: 32768 bytes
-    //     (~32 KB)
-
-    // 💾 MEMORY INFORMATION
-    // ────────────────────────────────────────────────────────────
-    // Has Unified Memory:       true
-    // Recommended Max Working Set Size:
-    //     55662788608 bytes
-    //     (~51.84 GB)
-    // Max Buffer Length:        41747087360 bytes
-    //     (~39813 MB)
 
     // ⚙️ DEVICE PROPERTIES
     // ────────────────────────────────────────────────────────────

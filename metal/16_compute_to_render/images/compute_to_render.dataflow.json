@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Compute → Render：同缓冲编排",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/compute_to_render.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "编排"
+    },
+    {
+      "label": "生成"
+    },
+    {
+      "label": "消费"
+    },
+    {
+      "label": "显示"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cb",
+      "type": "messagebus",
+      "label": "同一 commandBuffer",
+      "sublabel": "GPU 按编码顺序执行",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "ck",
+      "type": "backend",
+      "label": "generate_circle",
+      "sublabel": "256 顶点一次算完",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "vbuf",
+      "type": "database",
+      "label": "顶点缓冲 512B",
+      "sublabel": "compute 输出 = render 输入",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "verify",
+      "type": "external",
+      "label": "回读抽查",
+      "sublabel": "|len|=0.7000",
+      "stage": 3,
+      "row": 0,
+      "tag": "getBytes"
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "青色圆环",
+      "sublabel": "lineStrip ×256",
+      "stage": 3,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "c",
+      "from": "cb",
+      "to": "ck",
+      "label": "先编码计算",
+      "variant": "default"
+    },
+    {
+      "id": "g",
+      "from": "ck",
+      "to": "vbuf",
+      "label": "写入顶点",
+      "variant": "emphasis"
+    },
+    {
+      "id": "s",
+      "from": "vbuf",
+      "to": "screen",
+      "label": "lineStrip 消费",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "vbuf",
+      "to": "verify",
+      "label": "回读",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "编排即同步",
+      "items": [
+        "同一 commandBuffer 内 GPU 自动按序执行，无需 CPU 等待",
+        "与 15 的区别：无状态生成 vs 跨帧累积"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "生成式几何",
+      "items": [
+        "几何不必来自 CPU 建模，内核就是建模工具",
+        "回读验证 |len|=0.7000 全部落在圆上"
+      ]
+    }
+  ]
+}

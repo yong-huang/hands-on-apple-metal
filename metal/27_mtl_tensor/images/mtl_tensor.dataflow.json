@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Metal 4 · MTLTensor",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/mtl_tensor.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "程序"
+    },
+    {
+      "label": "描述"
+    },
+    {
+      "label": "创建"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "app",
+      "type": "frontend",
+      "label": "实验程序",
+      "sublabel": "macOS 26 API",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "desc",
+      "type": "database",
+      "label": "TensorDescriptor",
+      "sublabel": "dimensions + dataType",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "tensor",
+      "type": "database",
+      "label": "MTLTensor",
+      "sublabel": "[4,8,6] float32",
+      "stage": 2,
+      "row": 1,
+      "tag": "带 shape 语义"
+    },
+    {
+      "id": "probe",
+      "type": "external",
+      "label": "能力探测",
+      "sublabel": "buffer=nil 私有分配",
+      "stage": 3,
+      "row": 1,
+      "tag": "如实记录"
+    }
+  ],
+  "flows": [
+    {
+      "id": "d",
+      "from": "app",
+      "to": "desc",
+      "label": "声明形状",
+      "variant": "default"
+    },
+    {
+      "id": "c",
+      "from": "desc",
+      "to": "tensor",
+      "label": "makeTensor",
+      "variant": "emphasis"
+    },
+    {
+      "id": "p",
+      "from": "tensor",
+      "to": "probe",
+      "label": "属性访问",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "张量成为一等资源",
+      "items": [
+        "比 buffer 多 shape/strides 语义，是 ML 的原生数据面",
+        "ML 用途下 stride 按 64 字节对齐"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "实测记录",
+      "items": [
+        "创建与属性查询本机可用（macOS 26.5）",
+        "CPU replace/getBytes 在私有分配上不生效——数据走 GPU 路径"
+      ]
+    }
+  ]
+}

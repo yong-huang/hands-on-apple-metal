@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "阴影贴图：两遍渲染",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/shadow_map.html",
+    "viewBox": [
+      1085,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "资源"
+    },
+    {
+      "label": "光深"
+    },
+    {
+      "label": "阴影图"
+    },
+    {
+      "label": "主渲染"
+    },
+    {
+      "label": "显示"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "scene",
+      "type": "database",
+      "label": "场景 ×42 顶点",
+      "sublabel": "地面 + 悬浮立方体",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "lpass",
+      "type": "backend",
+      "label": "Pass1 光深渲染",
+      "sublabel": "光源视角正交",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "smap",
+      "type": "database",
+      "label": "阴影图",
+      "sublabel": "depth32Float 1024²",
+      "stage": 2,
+      "row": 1,
+      "tag": "遮挡标记伴随"
+    },
+    {
+      "id": "mpass",
+      "type": "backend",
+      "label": "Pass2 主渲染",
+      "sublabel": "采样比较 + bias",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "带阴影画面",
+      "sublabel": "",
+      "stage": 4,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "s",
+      "from": "scene",
+      "to": "lpass",
+      "label": "几何",
+      "variant": "default"
+    },
+    {
+      "id": "w",
+      "from": "lpass",
+      "to": "smap",
+      "label": "写深度",
+      "variant": "emphasis"
+    },
+    {
+      "id": "c",
+      "from": "smap",
+      "to": "mpass",
+      "label": "采样比较",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m",
+      "from": "mpass",
+      "to": "screen",
+      "label": "present",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "两次看世界",
+      "items": [
+        "Pass1 站在光源位置把深度存成图",
+        "Pass2 问：光源看到的深度比我近？是 = 阴影"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Metal z 坑（实测）",
+      "items": [
+        "裁剪空间 z ∈ [0,1]，GL 式 ortho 把场景整体裁掉且零报错",
+        "比较用 NDC z + bias 防「阴影粉刺」"
+      ]
+    }
+  ]
+}

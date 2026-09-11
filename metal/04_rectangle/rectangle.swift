@@ -117,7 +117,7 @@ class RectangleViewController: NSViewController, MTKViewDelegate {
     
     func setupVertexAndIndexData() {
 
-        // 20260810: 顶点坐标
+        // 顶点坐标
         // NDC（标准化设备坐标）范围：[-1, +1] × [-1, +1]
         // - (-0.8, 0.6) → 左上角红色矩形
         // - (0.8, 0.6) → 右上角绿色矩形
@@ -178,7 +178,6 @@ class RectangleViewController: NSViewController, MTKViewDelegate {
             return
         }
         
-        // 20260810:
         // 渲染流程
         // - 创建 pipeline state → 绑定 vertex/fragment function
         // - 设置 vertex buffer → 传递 4 个顶点数据
@@ -192,7 +191,6 @@ class RectangleViewController: NSViewController, MTKViewDelegate {
         // Set vertex buffer
         renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
         
-        // 20260810:
         // 调用drawIndexedPrimitives，用两个三角形构建一个矩形
 
         // Triangle Strip 的工作规则非常简单：
@@ -230,7 +228,7 @@ class RectangleAppDelegate: NSObject, NSApplicationDelegate {
     var viewController: RectangleViewController!
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // 20260810: 创建窗口，后边就在这个窗口中绘图
+        // 创建窗口，后边就在这个窗口中绘图
         // Create window
         let windowRect = NSRect(x: 0, y: 0, width: 800, height: 600)
         window = NSWindow(

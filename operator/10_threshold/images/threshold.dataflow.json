@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "MPS 阈值二值化",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/threshold.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "算子"
+    },
+    {
+      "label": "输出"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "img",
+      "type": "database",
+      "label": "灰度渐变图",
+      "sublabel": "0→255 水平",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "k",
+      "type": "backend",
+      "label": "ThresholdToZero",
+      "sublabel": "T ∈ 0.25/0.5/0.75",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "out",
+      "type": "database",
+      "label": "二值化输出",
+      "sublabel": "",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "列数统计",
+      "sublabel": "192/128/64 吻合理论",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "i",
+      "from": "img",
+      "to": "k",
+      "label": "编码",
+      "variant": "default"
+    },
+    {
+      "id": "o",
+      "from": "k",
+      "to": "out",
+      "label": "x>T ? x:0",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "out",
+      "to": "v",
+      "label": "与解析解比对",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "参数化验证",
+      "items": [
+        "渐变图让保留列数有解析解：w − ceil(T×255)",
+        "三组阈值与理论完全吻合"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "算子语义",
+      "items": [
+        "低于阈值清零、高于原样保留——硬截断",
+        "T 的取值语义是各库差异点"
+      ]
+    }
+  ]
+}

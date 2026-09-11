@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "融合 GEMM + GELU",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/fused_gemm_act.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "融合内核"
+    },
+    {
+      "label": "对照"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "ab",
+      "type": "database",
+      "label": "A/B 1024²",
+      "sublabel": "",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "gemm",
+      "type": "backend",
+      "label": "GEMM 主循环",
+      "sublabel": "点乘累加",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "gelu",
+      "type": "backend",
+      "label": "GELU epilogue",
+      "sublabel": "寄存器内 3 行",
+      "stage": 2,
+      "row": 0,
+      "tag": "融合"
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "64 点验证",
+      "sublabel": "与 CPU 一致",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "g",
+      "from": "ab",
+      "to": "gemm",
+      "label": "喂入",
+      "variant": "default",
+      "route": "straight"
+    },
+    {
+      "id": "e",
+      "from": "gemm",
+      "to": "gelu",
+      "label": "累加直接激活",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "gelu",
+      "to": "v",
+      "label": "比对",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "epilogue 融合",
+      "items": [
+        "激活吃寄存器里的累加值：省 8MB 写+读",
+        "LLM 推理 80% 算子是 GEMM+激活",
+        "分离对照：GEMM 后独立跑一次逐元素激活"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "验证顺序坑",
+      "items": [
+        "缓冲里是最后一次运行的结果——先跑融合再验证（实测翻过车）",
+        "分离对照：GEMM 后独立跑一次逐元素激活"
+      ]
+    }
+  ]
+}

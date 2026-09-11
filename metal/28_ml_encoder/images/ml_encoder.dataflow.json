@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Metal 4 · MTL4 命令栈",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/ml_encoder.html",
+    "viewBox": [
+      900,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "新架构"
+    },
+    {
+      "label": "执行"
+    },
+    {
+      "label": "结论"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "stack",
+      "type": "backend",
+      "label": "MTL4 命令栈",
+      "sublabel": "Allocator+Queue+Buffer",
+      "stage": 0,
+      "row": 1,
+      "tag": "显式 begin/end"
+    },
+    {
+      "id": "k",
+      "type": "backend",
+      "label": "compute kernel",
+      "sublabel": "1024 元素 ×2 全对",
+      "stage": 1,
+      "row": 1,
+      "tag": "参数表绑定"
+    },
+    {
+      "id": "ev",
+      "type": "database",
+      "label": "SharedEvent",
+      "sublabel": "无 waitUntilCompleted",
+      "stage": 2,
+      "row": 0,
+      "tag": "跨栈同步"
+    },
+    {
+      "id": "ml",
+      "type": "external",
+      "label": "ML 编码器探测",
+      "sublabel": "可创建，等 Core ML 包",
+      "stage": 2,
+      "row": 2,
+      "tag": "诚实结论"
+    }
+  ],
+  "flows": [
+    {
+      "id": "s",
+      "from": "stack",
+      "to": "k",
+      "label": "批量 commit",
+      "variant": "emphasis"
+    },
+    {
+      "id": "e",
+      "from": "k",
+      "to": "ev",
+      "label": "signal + wait",
+      "variant": "default"
+    },
+    {
+      "id": "m",
+      "from": "k",
+      "to": "ml",
+      "label": "插槽位置",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Metal 4 三大变化",
+      "items": [
+        "命令内存显式归 Allocator 管",
+        "资源绑定集中到参数表；资源必须进 ResidencySet",
+        "完成同步用 SharedEvent（没有 waitUntilCompleted）"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "ML 派发的卡点",
+      "items": [
+        "编码器已可用；唯一缺的是 Xcode 26 编译的 Core ML 包"
+      ]
+    }
+  ]
+}

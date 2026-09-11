@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "GELU 与 mx.compile 融合",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/gelu_compile.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "手写链路"
+    },
+    {
+      "label": "融合"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "x",
+      "type": "database",
+      "label": "x 4096²",
+      "sublabel": "64 MB",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "man",
+      "type": "backend",
+      "label": "手写 GELU",
+      "sublabel": "5 个逐元素算子",
+      "stage": 1,
+      "row": 0,
+      "tag": "5×64MB 流量"
+    },
+    {
+      "id": "fus",
+      "type": "backend",
+      "label": "mx.compile",
+      "sublabel": "缝成一个内核",
+      "stage": 1,
+      "row": 2,
+      "tag": "1×64MB"
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "数值 + 提速",
+      "sublabel": "allclose 1e-6",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "m",
+      "from": "x",
+      "to": "man",
+      "label": "逐算子",
+      "variant": "default"
+    },
+    {
+      "id": "f",
+      "from": "x",
+      "to": "fus",
+      "label": "融合执行",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "man",
+      "to": "v",
+      "label": "比对",
+      "variant": "dashed"
+    },
+    {
+      "id": "vf",
+      "from": "fus",
+      "to": "v",
+      "label": "比对",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "融合的公式",
+      "items": [
+        "带宽受限算子：N 个串联算子省 N−1 次往返",
+        "5 算子链路 5×64MB → 融合 1×64MB"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "mx.compile",
+      "items": [
+        "编译期缝内核，数值逐元素不变",
+        "预热吸收编译成本后再计时"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "自定义滤镜接入 MPS 流水线",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/custom_filter.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "滤镜链"
+    },
+    {
+      "label": "验证"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "img",
+      "type": "database",
+      "label": "渐变图 256²",
+      "sublabel": "256 级灰度",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "blur",
+      "type": "backend",
+      "label": "MPS 高斯模糊",
+      "sublabel": "sigma=1.5 去噪",
+      "stage": 1,
+      "row": 0,
+      "tag": "现成算子"
+    },
+    {
+      "id": "post",
+      "type": "backend",
+      "label": "posterize 自定义",
+      "sublabel": "量化到 4 级",
+      "stage": 2,
+      "row": 2,
+      "tag": "自研算子"
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "灰度级统计",
+      "sublabel": "输出恰 4 级",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "b",
+      "from": "img",
+      "to": "blur",
+      "label": "前处理",
+      "variant": "default"
+    },
+    {
+      "id": "p",
+      "from": "blur",
+      "to": "post",
+      "label": "后处理",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "post",
+      "to": "v",
+      "label": "统计验证",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "差异化 = 现成 + 自研",
+      "items": [
+        "MPS 做通用前处理，自研内核做差异化后处理",
+        "纹理在两种内核间自然流转"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "验证",
+      "items": [
+        "输入 256 级 → 输出恰 4 级 [32,96,159,223]：解析验证"
+      ]
+    }
+  ]
+}

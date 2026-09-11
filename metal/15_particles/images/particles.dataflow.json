@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "GPU 粒子系统：状态在缓冲里",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/particles.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "状态"
+    },
+    {
+      "label": "更新"
+    },
+    {
+      "label": "渲染"
+    },
+    {
+      "label": "显示"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "pos",
+      "type": "database",
+      "label": "位置缓冲 ×10000",
+      "sublabel": "float2 ×N",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "vel",
+      "type": "database",
+      "label": "速度缓冲 ×10000",
+      "sublabel": "float2 ×N",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "ck",
+      "type": "backend",
+      "label": "update_particles",
+      "sublabel": "积分 + 边界反弹",
+      "stage": 1,
+      "row": 1,
+      "tag": "每帧"
+    },
+    {
+      "id": "rp",
+      "type": "backend",
+      "label": "render points",
+      "sublabel": "颜色编码速度",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "粒子烟花",
+      "sublabel": "",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "p",
+      "from": "pos",
+      "to": "ck",
+      "label": "读位置",
+      "variant": "default"
+    },
+    {
+      "id": "vv",
+      "from": "vel",
+      "to": "ck",
+      "label": "读速度",
+      "variant": "default"
+    },
+    {
+      "id": "g",
+      "from": "ck",
+      "to": "rp",
+      "label": "新位置",
+      "variant": "emphasis"
+    },
+    {
+      "id": "o",
+      "from": "rp",
+      "to": "screen",
+      "label": "present",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "状态外置",
+      "items": [
+        "粒子没有实体，只有两块缓冲里的数字",
+        "CPU 每帧只递一个 dt，一万粒子 GPU 自治"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "同缓冲两种用法",
+      "items": [
+        "compute 按工作索引写，render 按顶点索引读",
+        "颜色 = 速度编码：慢青快橙"
+      ]
+    }
+  ]
+}

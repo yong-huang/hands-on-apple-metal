@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "自定义 nn.Module",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/nn_module.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "定义"
+    },
+    {
+      "label": "前向"
+    },
+    {
+      "label": "存取"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "def",
+      "type": "frontend",
+      "label": "MyLinear 64→32",
+      "sublabel": "参数注册 + __call__",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "fwd",
+      "type": "backend",
+      "label": "前向",
+      "sublabel": "x @ W.T + b",
+      "stage": 1,
+      "row": 1,
+      "tag": "与手算一致"
+    },
+    {
+      "id": "save",
+      "type": "database",
+      "label": "safetensors",
+      "sublabel": "save / load weights",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "逐位一致",
+      "sublabel": "重建层输出相同",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "d",
+      "from": "def",
+      "to": "fwd",
+      "label": "实例化",
+      "variant": "default"
+    },
+    {
+      "id": "f",
+      "from": "fwd",
+      "to": "save",
+      "label": "状态落盘",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "save",
+      "to": "v",
+      "label": "加载重建",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "框架化三件事",
+      "items": [
+        "参数注册 → 前向 → 状态保存加载",
+        "LoRA/量化工具操作权重的底座"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "初始化",
+      "items": [
+        "scale = 1/√in 均匀初始化——方差稳定的标准做法"
+      ]
+    }
+  ]
+}

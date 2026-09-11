@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "MLX 数组与统一内存",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/mlx_metal.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "计算"
+    },
+    {
+      "label": "验证"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "np",
+      "type": "database",
+      "label": "numpy 64MB",
+      "sublabel": "host 内存",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "arr",
+      "type": "database",
+      "label": "mx.array 零拷贝",
+      "sublabel": "统一内存",
+      "stage": 1,
+      "row": 1,
+      "tag": "无显式搬运"
+    },
+    {
+      "id": "gpu",
+      "type": "cloud",
+      "label": "GPU 归约 ×10",
+      "sublabel": "sum + eval",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "数值 + 计时验证",
+      "sublabel": "逐元素一致",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "n",
+      "from": "np",
+      "to": "arr",
+      "label": "实体化",
+      "variant": "default"
+    },
+    {
+      "id": "g",
+      "from": "arr",
+      "to": "gpu",
+      "label": "惰性触发",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "gpu",
+      "to": "v",
+      "label": "比对",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "统一内存的红利",
+      "items": [
+        "CPU 与 GPU 引用同一物理内存，无 host↔device 拷贝",
+        "mx.array 建数组是零拷贝视图，eval 才实体化"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "验证",
+      "items": [
+        "arange×3 逐元素一致 + 10 次 64MB 归约耗时量级",
+        "惰性 + 零拷贝是 MLX 性能的两块基石"
+      ]
+    }
+  ]
+}

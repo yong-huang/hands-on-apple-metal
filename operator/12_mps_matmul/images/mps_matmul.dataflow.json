@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "MPS 矩阵乘法",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/mps_matmul.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "算子"
+    },
+    {
+      "label": "输出"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "a",
+      "type": "database",
+      "label": "MPSMatrix A 1024²",
+      "sublabel": "buffer + 描述符",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "b",
+      "type": "database",
+      "label": "MPSMatrix B 1024²",
+      "sublabel": "",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "k",
+      "type": "backend",
+      "label": "MPS 矩阵乘法",
+      "sublabel": "MPSMatrixMultiplication",
+      "stage": 1,
+      "row": 1,
+      "tag": "商业级 GEMM",
+      "width": 150
+    },
+    {
+      "id": "c",
+      "type": "database",
+      "label": "结果 C 1024²",
+      "sublabel": "",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "验证 + 计时",
+      "sublabel": "1270 GFLOPS",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "ia",
+      "from": "a",
+      "to": "k",
+      "label": "left",
+      "variant": "default"
+    },
+    {
+      "id": "ib",
+      "from": "b",
+      "to": "k",
+      "label": "right",
+      "variant": "default"
+    },
+    {
+      "id": "o",
+      "from": "k",
+      "to": "c",
+      "label": "alpha·A·B",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "c",
+      "to": "v",
+      "label": "抽样比对",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "MPSMatrix 的抽象",
+      "items": [
+        "buffer + 描述符（行列/步长/类型）= 矩阵视图",
+        "描述 M/N/K 与 alpha/beta，内核选择交给 MPS"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "对照手写",
+      "items": [
+        "1270 vs 90 GFLOPS——商业与教学内核的差距",
+        "差距本身就是优化的地图"
+      ]
+    }
+  ]
+}

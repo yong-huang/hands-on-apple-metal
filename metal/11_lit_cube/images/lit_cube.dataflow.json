@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "光照立方体：漫反射 + 环境光",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/lit_cube.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "资源"
+    },
+    {
+      "label": "顶点着色"
+    },
+    {
+      "label": "片元光照"
+    },
+    {
+      "label": "显示"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "verts",
+      "type": "database",
+      "label": "顶点 + 法线",
+      "sublabel": "面法线由叉积算出",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "light",
+      "type": "database",
+      "label": "光源方向",
+      "sublabel": "世界空间固定",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "vs",
+      "type": "backend",
+      "label": "vertex_main",
+      "sublabel": "位置与法线变换",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "fs",
+      "type": "backend",
+      "label": "fragment_main",
+      "sublabel": "0.25 环境光 + dot(N,L)",
+      "stage": 2,
+      "row": 1,
+      "tag": "光照方程"
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "明暗面流转",
+      "sublabel": "",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "v",
+      "from": "verts",
+      "to": "vs",
+      "label": "逐顶点",
+      "variant": "default"
+    },
+    {
+      "id": "vo",
+      "from": "vs",
+      "to": "fs",
+      "label": "插值后的法线",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "id": "lo",
+      "from": "light",
+      "to": "fs",
+      "label": "L 方向",
+      "variant": "default"
+    },
+    {
+      "id": "o",
+      "from": "fs",
+      "to": "screen",
+      "label": "上色",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "光照方程",
+      "items": [
+        "diffuse = max(dot(N,L), 0)：夹角越小越亮",
+        "ambient 常数项保证背面不死黑"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "法线为什么要矩阵",
+      "items": [
+        "模型旋转带动法线旋转，一个矩阵顺手完成",
+        "含非均匀缩放时需逆转置矩阵——纯旋转可免"
+      ]
+    }
+  ]
+}

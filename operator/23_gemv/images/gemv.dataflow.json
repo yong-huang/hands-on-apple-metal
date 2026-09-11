@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "自定义 GEMV 内核",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/gemv.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "内核"
+    },
+    {
+      "label": "输出"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "wx",
+      "type": "database",
+      "label": "W 512×1024 + x",
+      "sublabel": "LLM 解码形态",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "k",
+      "type": "backend",
+      "label": "my_gemv",
+      "sublabel": "一组一行 + 组内规约",
+      "stage": 1,
+      "row": 1,
+      "tag": "03 的规约复用"
+    },
+    {
+      "id": "y",
+      "type": "database",
+      "label": "y 512",
+      "sublabel": "行点积结果",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "v",
+      "type": "external",
+      "label": "对答案 + 性能",
+      "sublabel": "差 2.3e-05",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "i",
+      "from": "wx",
+      "to": "k",
+      "label": "整行喂入",
+      "variant": "default"
+    },
+    {
+      "id": "o",
+      "from": "k",
+      "to": "y",
+      "label": "每行一个和",
+      "variant": "emphasis"
+    },
+    {
+      "id": "vv",
+      "from": "y",
+      "to": "v",
+      "label": "对照",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "GEMV = 规约 × GEMM",
+      "items": [
+        "解码期 batch=1：带宽决定一切",
+        "组内跨步分摊 + 树形规约直接复用 03"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "性能对照",
+      "items": [
+        "与 MLX 原生同量级：原生有 simd 优化，教学版以正确性为先"
+      ]
+    }
+  ]
+}

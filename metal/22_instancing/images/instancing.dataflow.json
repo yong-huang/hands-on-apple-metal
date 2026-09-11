@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "实例化渲染：一次 draw 画 400 个",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/instancing.html",
+    "viewBox": [
+      900,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "资源"
+    },
+    {
+      "label": "绘制"
+    },
+    {
+      "label": "显示"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "geom",
+      "type": "database",
+      "label": "单三角形几何",
+      "sublabel": "3 顶点共享",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "inst",
+      "type": "database",
+      "label": "实例缓冲 ×400",
+      "sublabel": "偏移+颜色+大小",
+      "stage": 0,
+      "row": 2,
+      "tag": "20×20 网格"
+    },
+    {
+      "id": "vs",
+      "type": "backend",
+      "label": "vertex_main",
+      "sublabel": "[[instance_id]] 取数据",
+      "stage": 1,
+      "row": 1,
+      "tag": "instanceCount=400"
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "渐变三角形阵列",
+      "sublabel": "",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "g",
+      "from": "geom",
+      "to": "vs",
+      "label": "几何 ×1",
+      "variant": "default"
+    },
+    {
+      "id": "i",
+      "from": "inst",
+      "to": "vs",
+      "label": "数据 ×400",
+      "variant": "emphasis"
+    },
+    {
+      "id": "o",
+      "from": "vs",
+      "to": "screen",
+      "label": "1 次 draw",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "为什么实例化",
+      "items": [
+        "draw call 本身是 CPU→GPU 的昂贵命令",
+        "几何一份、差异一份，400 个物体 1 次 draw"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "[[instance_id]]",
+      "items": [
+        "顶点着色器按实例编号查实例缓冲",
+        "植被/群体动画全靠这一行扩展"
+      ]
+    }
+  ]
+}

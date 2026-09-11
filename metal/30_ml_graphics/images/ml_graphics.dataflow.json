@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "ML + 图形混合管线：跨队列编排",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/ml_graphics.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "计算队列"
+    },
+    {
+      "label": "同步"
+    },
+    {
+      "label": "渲染队列"
+    },
+    {
+      "label": "显示"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "m4",
+      "type": "backend",
+      "label": "MTL4 计算队列",
+      "sublabel": "生成数据面",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "field",
+      "type": "database",
+      "label": "数据缓冲 512²",
+      "sublabel": "径向渐变",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "ev",
+      "type": "database",
+      "label": "MTLSharedEvent",
+      "sublabel": "signal → wait",
+      "stage": 1,
+      "row": 2,
+      "tag": "跨队列顺序"
+    },
+    {
+      "id": "rq",
+      "type": "backend",
+      "label": "渲染队列",
+      "sublabel": "encodeWait 后采样",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "最终画面",
+      "sublabel": "",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "g",
+      "from": "m4",
+      "to": "field",
+      "label": "kernel 写入",
+      "variant": "emphasis"
+    },
+    {
+      "id": "sg",
+      "from": "m4",
+      "to": "ev",
+      "label": "signal(1)",
+      "variant": "default"
+    },
+    {
+      "id": "wt",
+      "from": "ev",
+      "to": "rq",
+      "label": "wait(1)",
+      "variant": "default"
+    },
+    {
+      "id": "r",
+      "from": "field",
+      "to": "rq",
+      "label": "读数据",
+      "variant": "emphasis"
+    },
+    {
+      "id": "o",
+      "from": "rq",
+      "to": "screen",
+      "label": "present",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "同步骨架",
+      "items": [
+        "ML/计算与图形在不同队列，靠 SharedEvent 建立先后",
+        "数据面插槽：ML 派发就位后原位替换生成内核"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "实测数据面",
+      "items": [
+        "角落 (−0.10,0.30,0.20) 中心 (0.90,0.55,0.50)——与公式逐位吻合"
+      ]
+    }
+  ]
+}

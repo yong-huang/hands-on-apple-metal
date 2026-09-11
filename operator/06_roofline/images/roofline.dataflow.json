@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Roofline 性能测量",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/roofline.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "测量"
+    },
+    {
+      "label": "结论"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "data",
+      "type": "database",
+      "label": "数据 64MB ×3",
+      "sublabel": "超缓存测真显存",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "k",
+      "type": "backend",
+      "label": "可调强度内核",
+      "sublabel": "unroll 1→64",
+      "stage": 1,
+      "row": 1,
+      "tag": "float4"
+    },
+    {
+      "id": "table",
+      "type": "external",
+      "label": "Roofline 数据表",
+      "sublabel": "7 个强度点",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "coords",
+      "type": "external",
+      "label": "本机坐标",
+      "sublabel": "220 GB/s / 2.26 TFLOPS",
+      "stage": 3,
+      "row": 2,
+      "tag": "拐点≈10"
+    }
+  ],
+  "flows": [
+    {
+      "id": "d",
+      "from": "data",
+      "to": "k",
+      "label": "流式读写",
+      "variant": "emphasis"
+    },
+    {
+      "id": "t",
+      "from": "k",
+      "to": "table",
+      "label": "逐点计时",
+      "variant": "default"
+    },
+    {
+      "id": "c",
+      "from": "table",
+      "to": "coords",
+      "label": "拟合上下限",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Roofline 模型",
+      "items": [
+        "性能 ≤ min(峰值算力, 带宽 × 算术强度)",
+        "实测：220 GB/s 平台、2.26 TFLOPS 平台、拐点 ≈10 FLOP/B"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "用法",
+      "items": [
+        "强度 <10 优化访存：融合/向量化/布局",
+        ">10 优化计算：tiling/simd/精度"
+      ]
+    }
+  ]
+}
