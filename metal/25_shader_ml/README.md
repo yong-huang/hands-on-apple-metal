@@ -6,7 +6,7 @@
 
 ## 1. 为什么需要它
 
-面对新 API，最贵的错误是"想当然"。预期失败的演示也要真实触发一次——诊断输出就是工程数据。本实验产出一个可复用的探测脚本：换一台机器跑一遍，立刻知道 Shader ML 的就绪度。
+面对新 API，最贵的错误是"想当然"。本实验做两轮真实编译探测（运行时 makeLibrary 与 Xcode 工具链 metal CLI），用编译器诊断把就绪度与卡点定位到唯一一环——换一台机器跑一遍即可复用。
 
 ## 2. 总览：核心机制一图看懂
 
@@ -44,9 +44,11 @@ tensor 模板内核喂给运行时编译器，诊断如实输出，四步走通�
 
 MSL 直接以 `tensor<T, access>` 为内核参数，着色器内调用网络——数据不用离开 GPU 时间线。语法上它仍是 MSL，但需要 ML 专用的编译前端。
 
-### 4.2 编译链的分层
+### 4.2 两轮探测的结论（2026-09 实测）
 
-运行时 `makeLibrary` 是通用前端；tensor 模板走的是 ML 专用编译器（与 Core ML 包编译同源）。这不是"版本不够"，而是**功能分层**：如实的分层认知比盲目折腾有价值得多。
+第一轮：运行时 `makeLibrary` 报 "unknown type tensor"——通用前端不含 tensor 模块。
+第二轮：Xcode 26 工具链的 `metal` CLI **包含 `metal/metal_tensor` 模块**，`tensor<device float, extents<uint,N>, tensor_handle, tensor_offset>` 可以编译到"类型合法"，卡点收窄为最后一步：tensor 参数的 kernel 入口声明被拒（"invalid type … for input declaration"）——入口语法由 ML 专用编译路径定义，公开文档暂缺这段。
+另：Core ML 模型制作链已验证可用（coremltools 9.0，`~/.venvs/ml`，.mlpackage 保存/加载通过）。
 
 ### 4.3 探测脚本的设计
 
@@ -81,7 +83,7 @@ do {
 ## 7. 深入要点
 
 - **Shader ML 是什么？** Metal 4 允许 MSL 内核以 tensor 为参数、着色器内推理——推理与渲染共享 GPU 时间线。
-- **为什么运行时编译器编译不了 tensor 内核？** tensor 模板属 ML 专用前端，与通用 makeLibrary 分层提供。
+- **运行时编译器与 metal CLI 的差别？** 前者不含 tensor 前端；后者含 metal_tensor 模块、能把类型编到合法，最后一步卡在入口声明语法。
 - **如何向团队汇报"能不能用"？** 用可复现的探测脚本 + 诊断证据 + 卡点清单，而不是"应该可以/还不行"。
 
 ## 8. 总结
