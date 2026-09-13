@@ -72,7 +72,7 @@
 
 ---
 
-### [ ] 项目 3：EDR 扩展动态范围渲染
+### [x] 项目 3：EDR 扩展动态范围渲染  ✅ 已实现 → [system/10_edr](system/10_edr/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -88,7 +88,7 @@
 
 ---
 
-### [ ] 项目 4：同一渲染器驱动多窗口
+### [x] 项目 4：同一渲染器驱动多窗口  ✅ 已实现 → [system/11_multi_window](system/11_multi_window/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -104,7 +104,7 @@
 
 ---
 
-### [ ] 项目 5：CVDisplayLink 帧同步与掉帧 HUD
+### [x] 项目 5：CVDisplayLink 帧同步与掉帧 HUD  ✅ 已实现 → [system/12_display_hud](system/12_display_hud/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|

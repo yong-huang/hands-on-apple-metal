@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "帧率 HUD：帧时间曲线画进 Metal",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/display_hud.html",
+    "viewBox": [
+      960,
+      460
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "处理"
+    },
+    {
+      "label": "呈现"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "link",
+      "type": "frontend",
+      "label": "DisplayLink",
+      "sublabel": "帧驱动",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "hud",
+      "type": "backend",
+      "label": "HUD shader",
+      "sublabel": "帧时间曲线",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "叠加呈现",
+      "sublabel": "",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "d",
+      "from": "link",
+      "to": "hud",
+      "label": "帧时间",
+      "variant": "emphasis"
+    },
+    {
+      "id": "p",
+      "from": "hud",
+      "to": "screen",
+      "label": "叠加",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "HUD 叠加",
+      "items": [
+        "场景渲染 + HUD 帧时间曲线（两个 Pass）",
+        "HUD 显示最近 120 帧耗时"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "验证",
+      "items": [
+        "帧时间曲线可实时观察卡顿",
+        "人为 sleep 可看到尖刺"
+      ]
+    }
+  ]
+}

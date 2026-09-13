@@ -124,6 +124,9 @@ hands-on-metal/
 | 03 | [相机实时滤镜](system/03_camera_texture/README.md) | AVFoundation、CVMetalTextureCache 零拷贝、四滤镜 |
 | 04 | [三路推理基准](system/04_ane_bench/README.md) | coremltools 建模、GPU/ANE/CPU 对照 |
 | 05 | [Vision 人脸马赛克](system/05_vision_face/README.md) | Vision 检测 + Metal 量化后处理 |
+| 10 | [EDR 渲染](system/10_edr/README.md) | 扩展动态范围、HDR |
+| 11 | [多窗口渲染](system/11_multi_window/README.md) | 共享渲染器、多 CAMetalLayer |
+| 12 | [帧率 HUD](system/12_display_hud/README.md) | 帧时间曲线叠加 |
 | 06 | [超分辨率渲染](system/06_metalfx/README.md) | 低分辨率渲染 + bilinear 放大 |
 
 ## 学习路线

@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "多窗口渲染：同一渲染器驱动多窗口",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/multi_window.html",
+    "viewBox": [
+      1085,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "共享渲染器"
+    },
+    {
+      "label": "窗口 A"
+    },
+    {
+      "label": "窗口 B"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "shared",
+      "type": "backend",
+      "label": "SharedRenderer",
+      "sublabel": "共享 pipeline",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "wina",
+      "type": "frontend",
+      "label": "窗口 A",
+      "sublabel": "hue=0.3",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "winb",
+      "type": "frontend",
+      "label": "窗口 B",
+      "sublabel": "hue=0.7",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "r1",
+      "from": "shared",
+      "to": "wina",
+      "label": "渲染 A",
+      "variant": "default"
+    },
+    {
+      "id": "r2",
+      "from": "wina",
+      "to": "winb",
+      "label": "渲染 B",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "共享渲染器",
+      "items": [
+        "单例 SharedRenderer 被两个窗口共享",
+        "各自独立 displayLink + CAMetalLayer"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "验证",
+      "items": [
+        "关掉一个窗口，另一个不掉帧"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "EDR 扩展动态范围渲染",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/edr.html",
+    "viewBox": [
+      960,
+      460
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "处理"
+    },
+    {
+      "label": "呈现"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "app",
+      "type": "frontend",
+      "label": "SwiftUI 窗口",
+      "sublabel": "",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "gpu",
+      "type": "backend",
+      "label": "Metal 渲染",
+      "sublabel": "rgba16Float HDR",
+      "stage": 1,
+      "row": 1,
+      "tag": "EDR"
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "HDR 屏幕",
+      "sublabel": "",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "r",
+      "from": "app",
+      "to": "gpu",
+      "label": "渲染",
+      "variant": "emphasis"
+    },
+    {
+      "id": "p",
+      "from": "gpu",
+      "to": "screen",
+      "label": "present",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "EDR",
+      "items": [
+        "rgba16Float 精度 + extendedLinearSRGB",
+        "亮度可超 SDR 白"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "效果",
+      "items": [
+        "超亮绿光斑在 HDR 屏上真实更亮"
+      ]
+    }
+  ]
+}
