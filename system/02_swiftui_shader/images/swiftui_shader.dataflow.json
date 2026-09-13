@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "SwiftUI Shader：metal CLI → metallib → ShaderLibrary",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/swiftui_shader.html",
+    "viewBox": [
+      1085,
+      660
+    ]
+  },
+  "stages": [
+    {
+      "label": "着色器源"
+    },
+    {
+      "label": "编译"
+    },
+    {
+      "label": "加载"
+    },
+    {
+      "label": "驱动"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "src",
+      "type": "database",
+      "label": "Effects.metal",
+      "sublabel": "duotone/ripple/glitch",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "cli",
+      "type": "backend",
+      "label": "metal CLI",
+      "sublabel": "SDKROOT 指 Xcode SDK",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "lib",
+      "type": "database",
+      "label": "default.metallib",
+      "sublabel": "exe 旁可被查到",
+      "stage": 2,
+      "row": 0,
+      "tag": "ShaderLibrary 查找对象"
+    },
+    {
+      "id": "swui",
+      "type": "frontend",
+      "label": "SwiftUI 修饰符",
+      "sublabel": "color/distortion/layer",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "slider",
+      "type": "frontend",
+      "label": "Slider ×3 + Timer",
+      "sublabel": "参数实时驱动",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "check",
+      "type": "external",
+      "label": "独立自检进程",
+      "sublabel": "GPU 数学断言",
+      "stage": 3,
+      "row": 3
+    }
+  ],
+  "flows": [
+    {
+      "id": "c",
+      "from": "src",
+      "to": "cli",
+      "label": "编译",
+      "variant": "default"
+    },
+    {
+      "id": "l",
+      "from": "cli",
+      "to": "lib",
+      "label": "产出",
+      "variant": "emphasis"
+    },
+    {
+      "id": "b",
+      "from": "lib",
+      "to": "swui",
+      "label": "查找",
+      "variant": "default",
+      "labelAt": [
+        620,
+        158
+      ]
+    },
+    {
+      "id": "d",
+      "from": "swui",
+      "to": "slider",
+      "label": "参数驱动",
+      "variant": "emphasis"
+    },
+    {
+      "id": "v",
+      "from": "swui",
+      "to": "check",
+      "label": "自检断言",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "两种路线的分工",
+      "items": [
+        "SwiftUI Shader：框架托管管线，只写像素数学",
+        "手写管线（项目 01）：drawable/帧节奏全部可控——按需选择"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "实测坑位",
+      "items": [
+        "头文件名是 SwiftUI_Metal.h（常见错写 SwiftUI_M.h）",
+        "SwiftUI::Layer 库别在自检里 makeFunction 派发（崩）",
+        "裸二进制 Bundle.main = 可执行目录，metallib 放旁边即可被查找"
+      ]
+    }
+  ]
+}

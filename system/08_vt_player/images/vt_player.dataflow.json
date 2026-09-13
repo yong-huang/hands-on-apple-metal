@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Metal 滤镜视频帧处理",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/vt_player.html",
+    "viewBox": [
+      1085,
+      460
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "处理"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "gen",
+      "type": "frontend",
+      "label": "生成测试帧",
+      "sublabel": "640×360 BGRA",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "gpu",
+      "type": "backend",
+      "label": "Metal 滤镜",
+      "sublabel": "compute dispatch",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "verify",
+      "type": "external",
+      "label": "回读验证",
+      "sublabel": "逐帧像素校验",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "r",
+      "from": "gen",
+      "to": "gpu",
+      "label": "逐帧处理",
+      "variant": "emphasis"
+    },
+    {
+      "id": "v",
+      "from": "gpu",
+      "to": "verify",
+      "label": "抽帧回读",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "管线",
+      "items": [
+        "CPU 生成测试帧 → GPU 滤镜 → 回读验证"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "验证",
+      "items": [
+        "抽帧回读非零断言"
+      ]
+    }
+  ]
+}

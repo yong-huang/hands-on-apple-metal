@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "相机实时滤镜：CVMetalTextureCache 零拷贝管线",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/camera_texture.html",
+    "viewBox": [
+      1085,
+      660
+    ]
+  },
+  "stages": [
+    {
+      "label": "采集"
+    },
+    {
+      "label": "桥接"
+    },
+    {
+      "label": "Metal 滤镜"
+    },
+    {
+      "label": "呈现"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cam",
+      "type": "frontend",
+      "label": "AVCaptureSession",
+      "sublabel": "720p BGRA 30fps",
+      "stage": 0,
+      "row": 0,
+      "tag": "需相机权限"
+    },
+    {
+      "id": "synth",
+      "type": "frontend",
+      "label": "合成帧回退",
+      "sublabel": "无权限时自动切换",
+      "stage": 0,
+      "row": 2,
+      "tag": "同管线验证"
+    },
+    {
+      "id": "cache",
+      "type": "database",
+      "label": "CVMetalTextureCache",
+      "sublabel": "像素缓冲零拷贝",
+      "stage": 1,
+      "row": 1,
+      "tag": "须 IOSurface"
+    },
+    {
+      "id": "frag",
+      "type": "backend",
+      "label": "fragment_main",
+      "sublabel": "四滤镜 1-4 切换",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "layer",
+      "type": "external",
+      "label": "CAMetalLayer",
+      "sublabel": "30fps 实测稳定",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "c",
+      "from": "cam",
+      "to": "cache",
+      "label": "CVPixelBuffer",
+      "variant": "default"
+    },
+    {
+      "id": "s",
+      "from": "synth",
+      "to": "cache",
+      "label": "测试图案",
+      "variant": "dashed"
+    },
+    {
+      "id": "f",
+      "from": "cache",
+      "to": "frag",
+      "label": "Metal 纹理",
+      "variant": "emphasis"
+    },
+    {
+      "id": "o",
+      "from": "frag",
+      "to": "layer",
+      "label": "present",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "零拷贝的代价",
+      "items": [
+        "CVMetalTextureCache 是像素缓冲与 Metal 纹理间的零拷贝桥梁",
+        "合成缓冲必须显式声明 IOSurface——否则纹理创建返回 -6660（实测踩过）",
+        "CPU 锁着缓冲时不能创建纹理：先填完解锁再渲染"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "权限降级",
+      "items": [
+        "相机未授权时自动回退合成帧，管线验证不被阻塞",
+        "四种滤镜：原图/黑白/反色/漫画量化+边缘"
+      ]
+    }
+  ]
+}

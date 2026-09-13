@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "脱离 MTKView：直接驱动 CAMetalLayer",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/cametal_layer.html",
+    "viewBox": [
+      960,
+      520
+    ]
+  },
+  "stages": [
+    {
+      "label": "桥接"
+    },
+    {
+      "label": "驱动"
+    },
+    {
+      "label": "绘制"
+    },
+    {
+      "label": "呈现"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "swiftui",
+      "type": "frontend",
+      "label": "SwiftUI 窗口",
+      "sublabel": "NSViewRepresentable",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "link",
+      "type": "backend",
+      "label": "DisplayLink",
+      "sublabel": "CAFrameRateRange 锁 60",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "layer",
+      "type": "database",
+      "label": "CAMetalLayer",
+      "sublabel": "drawable 池",
+      "stage": 1,
+      "row": 2,
+      "tag": "layer 替换"
+    },
+    {
+      "id": "enc",
+      "type": "backend",
+      "label": "每帧编码",
+      "sublabel": "渐变 + os_signpost",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "渐变上屏",
+      "sublabel": "60.0 fps 实测",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "d",
+      "from": "swiftui",
+      "to": "link",
+      "label": "驱动",
+      "variant": "default"
+    },
+    {
+      "id": "l",
+      "from": "link",
+      "to": "enc",
+      "label": "每帧回调",
+      "variant": "emphasis"
+    },
+    {
+      "id": "dl",
+      "from": "layer",
+      "to": "enc",
+      "label": "nextDrawable",
+      "variant": "default"
+    },
+    {
+      "id": "o",
+      "from": "enc",
+      "to": "screen",
+      "label": "present",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "三件套的替代关系",
+      "items": [
+        "MTKView 托管的循环全部手写：layer 替换 + DisplayLink + 手动取 drawable",
+        "无顶点缓冲的全屏三角形 + fragment 渐变，管线最小化"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "验收证据",
+      "items": [
+        "每秒打印 fps：稳定 60.0（首秒 54.6 为启动抖动）",
+        "os_signpost 每帧打点，xctrace 可直接查看帧时间线"
+      ]
+    }
+  ]
+}

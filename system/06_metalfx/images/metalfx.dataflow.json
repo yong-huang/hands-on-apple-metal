@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "超分辨率渲染：低分辨率 + 放大",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/metalfx.html",
+    "viewBox": [
+      960,
+      460
+    ]
+  },
+  "stages": [
+    {
+      "label": "场景渲染"
+    },
+    {
+      "label": "纹理"
+    },
+    {
+      "label": "放大呈现"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "scene",
+      "type": "backend",
+      "label": "场景渲染",
+      "sublabel": "1/4 分辨率",
+      "stage": 0,
+      "row": 1,
+      "tag": "省 GPU 时间"
+    },
+    {
+      "id": "low",
+      "type": "database",
+      "label": "低分辨率纹理",
+      "sublabel": "bilinear 可采样",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "up",
+      "type": "backend",
+      "label": "放大呈现",
+      "sublabel": "bilinear 放大",
+      "stage": 2,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "r",
+      "from": "scene",
+      "to": "low",
+      "label": "渲染",
+      "variant": "default"
+    },
+    {
+      "id": "u",
+      "from": "low",
+      "to": "up",
+      "label": "放大",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "超分的核心思想",
+      "items": [
+        "以 1/4 分辨率渲染（省 4 倍 GPU 时间）",
+        "放大阶段用 bilinear 或 MetalFX 补回像素"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "生产建议",
+      "items": [
+        "生产环境用 MetalFX SpatialScaler（AI 超分）",
+        "效果远优于 bilinear：智能补细节而非简单插值"
+      ]
+    }
+  ]
+}

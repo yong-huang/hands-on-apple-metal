@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "三路推理基准：GPU / Neural Engine / CPU",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/ane_bench.html",
+    "viewBox": [
+      1085,
+      660
+    ]
+  },
+  "stages": [
+    {
+      "label": "模型"
+    },
+    {
+      "label": "编译"
+    },
+    {
+      "label": "基准"
+    },
+    {
+      "label": "对照"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "gen",
+      "type": "frontend",
+      "label": "coremltools",
+      "sublabel": "生成 mlpackage",
+      "stage": 0,
+      "row": 1,
+      "tag": "784-256-10"
+    },
+    {
+      "id": "compile",
+      "type": "backend",
+      "label": "compileModel",
+      "sublabel": "mlpackage→mlmodelc",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "gpu",
+      "type": "backend",
+      "label": "cpuAndGPU",
+      "sublabel": "Metal 委托执行",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "ane",
+      "type": "cloud",
+      "label": ".all",
+      "sublabel": "ANE 自动调度",
+      "stage": 2,
+      "row": 1,
+      "tag": "神经引擎"
+    },
+    {
+      "id": "cpu",
+      "type": "backend",
+      "label": "cpuOnly",
+      "sublabel": "CPU 参照",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "report",
+      "type": "external",
+      "label": "延迟对照表",
+      "sublabel": "0.061 / 0.015 / 0.015 ms",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "gen",
+      "to": "compile",
+      "label": "保存",
+      "variant": "default"
+    },
+    {
+      "id": "f2",
+      "from": "compile",
+      "to": "gpu",
+      "label": "Metal 委托",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f4",
+      "from": "compile",
+      "to": "cpu",
+      "label": "CPU",
+      "variant": "default"
+    },
+    {
+      "id": "f5",
+      "from": "gpu",
+      "to": "report",
+      "label": "GPU 0.061ms",
+      "variant": "emphasis",
+      "labelDy": -10
+    },
+    {
+      "id": "f7",
+      "from": "cpu",
+      "to": "report",
+      "label": "CPU 0.015",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "读表方法",
+      "items": [
+        "中位延迟抗抖动，最优延迟反映真实能力",
+        "小模型上 GPU 反而最慢：调度开销吃掉收益",
+        "ANE 路与 CPU 同速：dispatch 到 ANE 的成本在小网络不划算"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "交叉验证",
+      "items": [
+        "三路 argmax 全部 = 4（CPU 参照），推理结果一致",
+        "延迟差异 310%——引擎差异真实可复现，不是测量噪声"
+      ]
+    }
+  ]
+}

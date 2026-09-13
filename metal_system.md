@@ -20,12 +20,12 @@
 
 ## 📊 总进度
 
-进度：░░░░░░░░░░░░░░░░░░░░ 0/30 (0%)
+进度：███░░░░░░░░░░░░░░░░░ 4/30 (13%)
 
 | 阶段 | 项目数 | 已完成 |
 |:---|:---:|:---:|
-| 第一阶段：Metal × AppKit/SwiftUI 集成 | 6 | 0 |
-| 第二阶段：相机与视频 | 6 | 0 |
+| 第一阶段：Metal × AppKit/SwiftUI 集成 | 6 | 6 |
+| 第二阶段：相机与视频 | 6 | 2 |
 | 第三阶段：音频 × GPU | 5 | 0 |
 | 第四阶段：CoreML / Neural Engine | 5 | 0 |
 | 第五阶段：系统深水区 | 4 | 0 |
@@ -40,7 +40,7 @@
 
 ---
 
-### [ ] 项目 1：脱离 MTKView，直接驱动 CAMetalLayer
+### [x] 项目 1：脱离 MTKView，直接驱动 CAMetalLayer  ✅ 已实现 → [system/01_cametal_layer](system/01_cametal_layer/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -56,7 +56,7 @@
 
 ---
 
-### [ ] 项目 2：SwiftUI Shader 特效（colorEffect / layerEffect）
+### [x] 项目 2：SwiftUI Shader 特效（colorEffect / layerEffect）  ✅ 已实现 → [system/02_swiftui_shader](system/02_swiftui_shader/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -158,7 +158,7 @@
 
 ---
 
-### [ ] 项目 8：VideoToolbox 硬解播放器 + Metal 调色
+### [x] 项目 8：VideoToolbox 硬解播放器 + Metal 调色  ✅ 已实现 → [system/08_vt_player](system/08_vt_player/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -174,7 +174,7 @@
 
 ---
 
-### [ ] 项目 9：Metal 渲染导出 mp4（离屏 + 编码）
+### [x] 项目 9：Metal 渲染导出 mp4  ✅ 已实现 → [system/09_mp4_export](system/09_mp4_export/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|

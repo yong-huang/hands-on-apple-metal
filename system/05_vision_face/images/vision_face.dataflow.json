@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Vision 人脸检测 → Metal 马赛克",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/vision_face.html",
+    "viewBox": [
+      1085,
+      660
+    ]
+  },
+  "stages": [
+    {
+      "label": "采集"
+    },
+    {
+      "label": "检测"
+    },
+    {
+      "label": "Metal 马赛克"
+    },
+    {
+      "label": "呈现"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cam",
+      "type": "frontend",
+      "label": "AVCaptureSession",
+      "sublabel": "720p BGRA 30fps",
+      "stage": 0,
+      "row": 0,
+      "tag": "需相机权限"
+    },
+    {
+      "id": "vision",
+      "type": "backend",
+      "label": "Vision 人脸检测",
+      "sublabel": "后台队列同步检测",
+      "stage": 1,
+      "row": 0,
+      "tag": "CPU 侧"
+    },
+    {
+      "id": "synth",
+      "type": "frontend",
+      "label": "合成帧回退",
+      "sublabel": "无权限时自动切换",
+      "stage": 0,
+      "row": 2,
+      "tag": "全画面马赛克"
+    },
+    {
+      "id": "mosaic",
+      "type": "backend",
+      "label": "马赛克 fragment",
+      "sublabel": "矩形内块状量化",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "layer",
+      "type": "external",
+      "label": "CAMetalLayer",
+      "sublabel": "30fps 实测稳定",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "cam",
+      "to": "vision",
+      "label": "CVPixelBuffer",
+      "variant": "default"
+    },
+    {
+      "id": "f2",
+      "from": "cam",
+      "to": "mosaic",
+      "label": "纹理直通",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f3",
+      "from": "vision",
+      "to": "mosaic",
+      "label": "人脸矩形",
+      "variant": "default"
+    },
+    {
+      "id": "f4",
+      "from": "synth",
+      "to": "mosaic",
+      "label": "测试图案",
+      "variant": "dashed"
+    },
+    {
+      "id": "f5",
+      "from": "mosaic",
+      "to": "layer",
+      "label": "present",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "检测与渲染解耦",
+      "items": [
+        "Vision 在相机回调队列同步检测（不占主线程）",
+        "人脸矩形以 uniform 传给 fragment，马赛克量化在 GPU 完成",
+        "30fps 实测稳定（M5 Pro，720p）"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "权限降级",
+      "items": [
+        "相机未授权时自动回退合成帧，全画面马赛克验证管线",
+        "检测计数每秒打印，可作为验收断言"
+      ]
+    }
+  ]
+}

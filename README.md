@@ -42,6 +42,7 @@ hands-on-metal/
 │   └── load_resources.sh # 公共脚本：Metal 环境体检
 ├── metal/NN_xxx/         # 渲染线：README + xxx.sh + Swift 程序 + images 三件套
 ├── operator/NN_xxx/      # 算子线：结构同上（14+ 为 Python/MLX）
+├── system/NN_xxx/        # 系统级线：Metal × 相机/视频/音频/CoreML，见 metal_system.md
 ```
 
 每个实验目录：README（8 编号章节）· `xxx.sh`（build→observe→clean）·
@@ -111,6 +112,19 @@ hands-on-metal/
 | 28 | [28 轻量推理引擎](operator/28_mini_engine/README.md) | 5 算子注册表 + 图编排 |
 | 29 | [29 自定义滤镜](operator/29_custom_filter/README.md) | MPS + 自研内核流水线 |
 | 30 | [30 基准测试框架](operator/30_benchmark/README.md) | 预热/多轮/双回归 |
+
+## 系统级线实验（system/）
+
+> 清单见 [metal_system.md](metal_system.md)：Metal 与相机/视频/音频/CoreML 的跨界整合，产出可日常使用的作品。
+
+| # | 实验 | 主题 |
+|:--|:--|:--|
+| 01 | [脱离 MTKView](system/01_cametal_layer/README.md) | CAMetalLayer 裸驱动、DisplayLink、SwiftUI 集成 |
+| 02 | [SwiftUI Shader 特效](system/02_swiftui_shader/README.md) | colorEffect/distortion/layer 三特效、metallib 链路 |
+| 03 | [相机实时滤镜](system/03_camera_texture/README.md) | AVFoundation、CVMetalTextureCache 零拷贝、四滤镜 |
+| 04 | [三路推理基准](system/04_ane_bench/README.md) | coremltools 建模、GPU/ANE/CPU 对照 |
+| 05 | [Vision 人脸马赛克](system/05_vision_face/README.md) | Vision 检测 + Metal 量化后处理 |
+| 06 | [超分辨率渲染](system/06_metalfx/README.md) | 低分辨率渲染 + bilinear 放大 |
 
 ## 学习路线
 
