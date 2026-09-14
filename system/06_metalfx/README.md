@@ -84,6 +84,6 @@ enc.drawPrimitives(type: .triangle, ...)
 
 超分管线跑通：低分辨率渲染（省 GPU 时间）+ bilinear 放大（补回像素）。简单但完整地演示了超分的核心思想。生产环境应使用 MetalFX 或类似框架获得更好的放大质量。
 
-→ 返回清单：[metal_system.md](../../metal_system.md)
+→ 返回清单：[metal_system.md](../../docs/metal_system.md)
 MDEOF
 echo "README 06 done"

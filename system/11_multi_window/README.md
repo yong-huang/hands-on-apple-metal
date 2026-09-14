@@ -17,4 +17,4 @@
 ## 4. 深入要点
 - 单例模式共享 Metal 资源，避免重复创建
 - 各窗口独立帧率，互不阻塞
-→ 返回清单：[metal_system.md](../../metal_system.md)
+→ 返回清单：[metal_system.md](../../docs/metal_system.md)

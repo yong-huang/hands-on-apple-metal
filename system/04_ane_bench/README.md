@@ -107,6 +107,6 @@ ct.models.MLModel(builder.spec).save("Model.mlpackage")
 
 三路基准给出了"该选哪个引擎"的可复现答案。下一篇开始把 AI 推理接入实时画面——Vision 人脸检测 + Metal 马赛克。
 
-→ 下一篇：[05 · Vision 人脸马赛克]（清单 metal_system.md 项目 5，待实现）
+→ 下一篇：[05 · Vision 人脸马赛克]（清单 docs/metal_system.md 项目 5，待实现）
 MDEOF
 echo "README 04 done"

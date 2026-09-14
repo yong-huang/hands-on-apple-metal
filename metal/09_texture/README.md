@@ -89,6 +89,6 @@ sdesc.sAddressMode = .clampToEdge; sdesc.tAddressMode = .clampToEdge
 
 ## 8. 总结
 
-渲染基础篇（01-09）完结：设备 → 命令队列 → 三角形 → 索引 → 动画 → 三个片元实验 → 纹理。你已握住 Metal 渲染的完整主干：**数据怎么进 GPU、命令怎么提交、颜色从哪来**。剩下的 3D 变换、光照、MPS、Metal 4（见 `metal.md` 路线图阶段二至六）都是在这根主干上加枝叶。
+渲染基础篇（01-09）完结：设备 → 命令队列 → 三角形 → 索引 → 动画 → 三个片元实验 → 纹理。你已握住 Metal 渲染的完整主干：**数据怎么进 GPU、命令怎么提交、颜色从哪来**。剩下的 3D 变换、光照、MPS、Metal 4（见 `docs/metal.md` 路线图阶段二至六）都是在这根主干上加枝叶。
 
 → 转战 GPU 计算：[operator 线 · 01 向量加法算子](../../operator/01_vector_add/README.md)

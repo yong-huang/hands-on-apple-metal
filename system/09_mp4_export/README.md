@@ -40,4 +40,4 @@ td.storageMode = .shared
 
 ## 8. 总结
 离屏渲染验证通过，为后续视频导出管线打好基础。
-→ 返回清单：[metal_system.md](../../metal_system.md)
+→ 返回清单：[metal_system.md](../../docs/metal_system.md)

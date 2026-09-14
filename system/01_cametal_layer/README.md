@@ -92,4 +92,4 @@ link.preferredFrameRateRange = CAFrameRateRange(minimum: 58, maximum: 62, prefer
 
 渲染循环的所有权拿到了：帧节奏、呈现时机、drawable 调度全在自己手里。下一篇不写管线，直接让 SwiftUI 消费 .metal 文件——框架把路修到了门口。
 
-→ 清单：[metal_system.md](../../metal_system.md)
+→ 清单：[metal_system.md](../../docs/metal_system.md)

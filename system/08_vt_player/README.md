@@ -52,4 +52,4 @@ kernel void saturate(texture2d<half, access::read> src [[texture(0)]],
 
 ## 8. 总结
 Metal 在视频帧处理管线中的用法验证通过。
-→ 返回清单：[metal_system.md](../../metal_system.md)
+→ 返回清单：[metal_system.md](../../docs/metal_system.md)

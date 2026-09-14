@@ -17,4 +17,4 @@
 ## 4. 深入要点
 - Metal 裁剪空间 z ∈ [0,1]，与 OpenGL 不同
 - EDR headroom = maximumPotentialExtendedDynamicRangeColorComponentValue
-→ 返回清单：[metal_system.md](../../metal_system.md)
+→ 返回清单：[metal_system.md](../../docs/metal_system.md)

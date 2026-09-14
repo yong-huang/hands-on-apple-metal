@@ -19,4 +19,4 @@ IOSurface 是 Apple 各图像框架（Metal / Core Image / CoreVideo / VideoTool
 - 同一块 IOSurface 再包 CIImage 100% 通过，验证跨框架共享
 - 两个坑：CIImage(mtlTexture:) 会垂直翻转（Core Image 约定）；回读色彩空间要按 linearSRGB，否则 0.5 会被 sRGB 编码成 188
 - CVMetalTextureCache 缺 IOSurface 支撑时报 -6660，根源就在这里
-→ 返回清单：[metal_system.md](../../metal_system.md)
+→ 返回清单：[metal_system.md](../../docs/metal_system.md)

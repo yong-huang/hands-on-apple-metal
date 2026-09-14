@@ -18,4 +18,4 @@ vDSP 走 CPU 向量单元免提交零开销；Metal 每次 commit + waitUntilCom
 - 1M float 下 vDSP 达 ~350 GB/s，Metal 只有 ~33 GB/s——不是 GPU 慢，是每次提交的同步开销（~0.25ms）主导了小任务耗时
 - 计带宽务必按单次迭代时间算（总耗时 ÷ 迭代次数），否则结果差 100 倍
 - 结论：小数据/单次同步任务用 vDSP；数据量大（几十 MB+）或可批量提交时 Metal 带宽优势才显现
-→ 返回清单：[metal_system.md](../../metal_system.md)
+→ 返回清单：[metal_system.md](../../docs/metal_system.md)

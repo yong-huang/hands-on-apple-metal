@@ -18,4 +18,4 @@
 - CIContext 绑定 MTLDevice 后，滤镜链全程留在 GPU，无需 CPU 中转
 - 本实验回读像素做差验证 91% 像素被修改——滤镜链真实生效
 - 互操作两条路：CIImage(texture:) 包 MTLTexture 进滤镜链；ciContext.render 输出到 MTLTexture 给后续 Metal pass 用
-→ 返回清单：[metal_system.md](../../metal_system.md)
+→ 返回清单：[metal_system.md](../../docs/metal_system.md)

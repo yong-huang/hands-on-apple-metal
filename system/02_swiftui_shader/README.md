@@ -103,6 +103,6 @@ half4 glitch(half4 color, SwiftUI::Layer layer, float2 position,
 
 SwiftUI 的 shader 快车道跑通：框架托管管线，你只写像素数学。两种路线（手写管线 × 托管特效）从此都在工具箱里。下一篇开始把真实世界接进来——相机实时滤镜。
 
-→ 下一篇：[03 · 相机实时滤镜]（清单 metal_system.md 项目 3，待实现）
+→ 下一篇：[03 · 相机实时滤镜]（清单 docs/metal_system.md 项目 3，待实现）
 MDEOF
 echo "README 02 done"

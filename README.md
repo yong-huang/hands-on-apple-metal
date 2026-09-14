@@ -36,13 +36,15 @@ scripts/load_resources.sh   # 一键体检：芯片 / swiftc / Metal 设备
 hands-on-metal/
 ├── README.md             # 本文档：系列总目录
 ├── LICENSE               # MIT
-├── metal.md              # 路线图：30 项目清单（已标注重复项与完成状态）
-├── operator.md           # 路线图：30 项目清单（同上）
+├── docs/
+│   ├── metal.md          # 路线图：30 项目清单（已标注重复项与完成状态）
+│   ├── operator.md       # 路线图：30 项目清单（同上）
+│   └── metal_system.md   # 路线图：系统级 30 项目清单
 ├── scripts/
 │   └── load_resources.sh # 公共脚本：Metal 环境体检
 ├── metal/NN_xxx/         # 渲染线：README + xxx.sh + Swift 程序 + images 三件套
 ├── operator/NN_xxx/      # 算子线：结构同上（14+ 为 Python/MLX）
-├── system/NN_xxx/        # 系统级线：Metal × 相机/视频/音频/CoreML，见 metal_system.md
+├── system/NN_xxx/        # 系统级线：Metal × 相机/视频/音频/CoreML，见 docs/metal_system.md
 ```
 
 每个实验目录：README（8 编号章节）· `xxx.sh`（build→observe→clean）·

@@ -96,6 +96,6 @@ CVPixelBufferCreate(kCFAllocatorDefault, w, h, .bgra8Unorm, attrs as CFDictionar
 
 视频管线的地基打完：采集、零拷贝、滤镜、降级策略一应俱全。下一篇在此之上叠加 AI——CoreML/Neural Engine 推理结果变成 Metal 的输入。
 
-→ 下一篇：[04 · 三路推理基准]（清单 metal_system.md 项目 4，待实现）
+→ 下一篇：[04 · 三路推理基准]（清单 docs/metal_system.md 项目 4，待实现）
 MDEOF
 echo "README 03 done"

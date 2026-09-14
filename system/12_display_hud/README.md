@@ -17,4 +17,4 @@
 ## 4. 深入要点
 - HUD 显示最近 120 帧耗时曲线，可实时观察卡顿
 - 人为 sleep 可看到尖刺——性能分析可视化
-→ 返回清单：[metal_system.md](../../metal_system.md)
+→ 返回清单：[metal_system.md](../../docs/metal_system.md)
