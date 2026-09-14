@@ -43,7 +43,7 @@
 
 ---
 
-### [x] 项目 1：Hello World — 获取 GPU 设备  ✅ 已实现
+### [x] 项目 1：Hello World — 获取 GPU 设备  ✅ 已实现 → [metal/01_gpu_info](metal/01_gpu_info/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -59,7 +59,7 @@
 
 ---
 
-### [x] 项目 2：创建第一个命令队列  ✅ 已实现
+### [x] 项目 2：创建第一个命令队列  ✅ 已实现 → [metal/02_command_queue](metal/02_command_queue/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -75,7 +75,7 @@
 
 ---
 
-### [x] 项目 3：渲染一个三角形（MetalKit）  ✅ 已实现
+### [x] 项目 3：渲染一个三角形（MetalKit）  ✅ 已实现 → [metal/03_triangle](metal/03_triangle/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -91,7 +91,7 @@
 
 ---
 
-### [x] 项目 4：渲染一个彩色矩形（顶点与索引缓冲）  ✅ 已实现
+### [x] 项目 4：渲染一个彩色矩形（顶点与索引缓冲）  ✅ 已实现 → [metal/04_rectangle](metal/04_rectangle/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -107,7 +107,7 @@
 
 ---
 
-### [x] 项目 5：动画旋转的三角形  ✅ 已实现
+### [x] 项目 5：动画旋转的三角形  ✅ 已实现 → [metal/05_animated_triangle](metal/05_animated_triangle/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -129,7 +129,7 @@
 
 ---
 
-### [x] 项目 6：使用片元着色器绘制棋盘格  ✅ 已实现
+### [x] 项目 6：使用片元着色器绘制棋盘格  ✅ 已实现 → [metal/06_chessboard](metal/06_chessboard/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -145,7 +145,7 @@
 
 ---
 
-### [x] 项目 7：绘制圆形（使用 length 函数）  ✅ 已实现
+### [x] 项目 7：绘制圆形（使用 length 函数）  ✅ 已实现 → [metal/07_circle](metal/07_circle/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -161,7 +161,7 @@
 
 ---
 
-### [x] 项目 8：颜色渐变（使用 mix 和 smoothstep）  ✅ 已实现
+### [x] 项目 8：颜色渐变（使用 mix 和 smoothstep）  ✅ 已实现 → [metal/08_gradient](metal/08_gradient/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -177,7 +177,7 @@
 
 ---
 
-### [x] 项目 9：纹理贴图（加载和采样纹理）  ✅ 已实现
+### [x] 项目 9：纹理贴图（加载和采样纹理）  ✅ 已实现 → [metal/09_texture](metal/09_texture/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -193,7 +193,7 @@
 
 ---
 
-### [x] 项目 10：3D 立方体（透视投影）  ✅ 已实现
+### [x] 项目 10：3D 立方体（透视投影）  ✅ 已实现 → [metal/10_cube](metal/10_cube/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -209,7 +209,7 @@
 
 ---
 
-### [x] 项目 11：光照立方体（漫反射 + 环境光）  ✅ 已实现
+### [x] 项目 11：光照立方体（漫反射 + 环境光）  ✅ 已实现 → [metal/11_lit_cube](metal/11_lit_cube/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -265,7 +265,7 @@
 
 ---
 
-### [x] 项目 14：GPU 图像滤镜（灰度转换）  ✅ 已实现
+### [x] 项目 14：GPU 图像滤镜（灰度转换）  ✅ 已实现 → [metal/14_grayscale](metal/14_grayscale/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -281,7 +281,7 @@
 
 ---
 
-### [x] 项目 15：GPU 粒子系统（基本实现）  ✅ 已实现
+### [x] 项目 15：GPU 粒子系统（基本实现）  ✅ 已实现 → [metal/15_particles](metal/15_particles/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -297,7 +297,7 @@
 
 ---
 
-### [x] 项目 16：Compute → Render 管线（计算输出直接渲染）  ✅ 已实现
+### [x] 项目 16：Compute → Render 管线（计算输出直接渲染）  ✅ 已实现 → [metal/16_compute_to_render](metal/16_compute_to_render/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -387,7 +387,7 @@
 
 ---
 
-### [x] 项目 21：光线追踪基础（MPSRayIntersector）  ✅ 已实现
+### [x] 项目 21：光线追踪基础（MPSRayIntersector）  ✅ 已实现 → [metal/21_raytracer](metal/21_raytracer/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -409,7 +409,7 @@
 
 ---
 
-### [x] 项目 22：实例化渲染（Instancing）  ✅ 已实现
+### [x] 项目 22：实例化渲染（Instancing）  ✅ 已实现 → [metal/22_instancing](metal/22_instancing/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -425,7 +425,7 @@
 
 ---
 
-### [x] 项目 23：帧捕获与 GPU 调试  ✅ 已实现
+### [x] 项目 23：帧捕获与 GPU 调试  ✅ 已实现 → [metal/23_gpu_capture](metal/23_gpu_capture/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -441,7 +441,7 @@
 
 ---
 
-### [x] 项目 24：加载并渲染 3D 模型（Obj 文件）  ✅ 已实现
+### [x] 项目 24：加载并渲染 3D 模型（Obj 文件）  ✅ 已实现 → [metal/24_obj_model](metal/24_obj_model/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -457,7 +457,7 @@
 
 ---
 
-### [x] 项目 25：阴影贴图（Shadow Mapping）  ✅ 已实现
+### [x] 项目 25：阴影贴图（Shadow Mapping）  ✅ 已实现 → [metal/25_shadow_map](metal/25_shadow_map/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -473,7 +473,7 @@
 
 ---
 
-### [x] 项目 26：延迟着色（Deferred Shading）  ✅ 已实现
+### [x] 项目 26：延迟着色（Deferred Shading）  ✅ 已实现 → [metal/26_deferred](metal/26_deferred/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -495,7 +495,7 @@
 
 ---
 
-### [x] 项目 27：创建 MTLTensor  ✅ 已实现
+### [x] 项目 27：创建 MTLTensor  ✅ 已实现 → [metal/27_mtl_tensor](metal/27_mtl_tensor/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -511,7 +511,7 @@
 
 ---
 
-### [x] 项目 28：使用 ML Command Encoder 运行 CoreML 模型  ✅ 已实现
+### [x] 项目 28：使用 ML Command Encoder 运行 CoreML 模型  ✅ 已实现 → [metal/28_ml_encoder](metal/28_ml_encoder/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -527,7 +527,7 @@
 
 ---
 
-### [x] 项目 29：Shader ML — 在着色器中嵌入神经网络  ✅ 已实现
+### [x] 项目 29：Shader ML — 在着色器中嵌入神经网络  ✅ 已实现 → [metal/29_shader_ml](metal/29_shader_ml/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -543,7 +543,7 @@
 
 ---
 
-### [x] 项目 30：ML + 图形混合管线（端到端）  ✅ 已实现
+### [x] 项目 30：ML + 图形混合管线（端到端）  ✅ 已实现 → [metal/30_ml_graphics](metal/30_ml_graphics/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|

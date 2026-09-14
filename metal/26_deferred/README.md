@@ -1,4 +1,4 @@
-# 22 · 延迟着色：G-Buffer + 屏幕空间光照
+# 26 · 延迟着色：G-Buffer + 屏幕空间光照
 
 > 前向渲染里，每加一盏灯，每个物体都要重算一遍光照。
 > 延迟着色换个顺序：先把几何属性"拍照"存下来，光照推迟到全屏一次做完。
@@ -12,7 +12,7 @@
 
 ![延迟着色数据流](images/deferred.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/22_deferred/images/deferred.html)（或本地打开 [`images/deferred.html`](images/deferred.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/26_deferred/images/deferred.html)（或本地打开 [`images/deferred.html`](images/deferred.html)）。
 
 Pass1 把反照率与法线写进两张 G-Buffer 纹理（MRT），Pass2 全屏逐像素读它们算光照。一句话心智模型：**先拍照存证据，再统一审案**。
 
@@ -94,4 +94,4 @@ struct GOutFrag {
 
 渲染篇工业级架构落地：MRT、G-Buffer、屏幕空间光照。至此渲染线的老项目全部实现。接下来进入 Metal 4 时代——从张量开始。
 
-→ 下一篇：[27 · MTLTensor](../23_mtl_tensor/README.md)
+→ 下一篇：[27 · MTLTensor](../27_mtl_tensor/README.md)

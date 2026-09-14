@@ -1,4 +1,4 @@
-# 23 · Metal 4 · MTLTensor
+# 27 · Metal 4 · MTLTensor
 
 > Metal 4 把"张量"升格为一等资源：比 buffer 多出 shape/strides 语义，
 > 是 Shader ML 与 ML Command Encoder 的原生数据面。
@@ -12,7 +12,7 @@
 
 ![MTLTensor 数据流](images/mtl_tensor.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/23_mtl_tensor/images/mtl_tensor.html)（或本地打开 [`images/mtl_tensor.html`](images/mtl_tensor.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/27_mtl_tensor/images/mtl_tensor.html)（或本地打开 [`images/mtl_tensor.html`](images/mtl_tensor.html)）。
 
 描述符声明维度与类型，`makeTensor` 产出张量，能力探测记录访问边界。一句话心智模型：**MTLTensor = 知道自己形状的内存**。
 
@@ -88,4 +88,4 @@ let tensor = try device.makeTensor(descriptor: desc)
 
 Metal 4 数据面就位。下一篇上新命令栈——Allocator、参数表、ResidencySet，并诚实探测 ML 派发的那块拼图。
 
-→ 下一篇：[28 · MTL4 命令栈](../24_ml_encoder/README.md)
+→ 下一篇：[28 · MTL4 命令栈](../28_ml_encoder/README.md)

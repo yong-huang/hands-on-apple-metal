@@ -1,4 +1,4 @@
-// 28 · Metal 24 · MTL4 命令栈与 ML Command Encoder
+// 28 · Metal 4 · MTL4 命令栈与 ML Command Encoder
 // Metal 4 的三大架构变化全部落地在本实验：
 //   1) Allocator 显式管理命令内存；Buffer 显式 begin/end
 //   2) 资源绑定改用 ArgumentTable（不再逐 draw setBuffer）
@@ -73,13 +73,17 @@ func runMlEncoder() {
         print(ok ? "✅ MTL4 栈 compute kernel 验证通过：1024 元素 ×2 全对" : "❌ 计算结果错误")
 
         // —— 6) ML Command Encoder：如实探测前置条件 ——
-        // ML 派发还需要 MTL4MachineLearningPipelineState，它来自"已编译的 Core ML 包"，
-        // 该编译步骤目前只有 Xcode 26 构建链提供——命令行环境无法补齐。
+        // ML 派发需要 MTL4MachineLearningPipelineState（经 MTL4Compiler 的
+        // makeMachineLearningPipelineState 创建），其函数描述符必须是 GPU 特化的
+        // Core ML 二进制函数（内部走 executableWithDeviceSelection:）。
+        // 实测：coremltools 与 Xcode coremlcompiler 的编译产物只有 espresso / model.mil，
+        // 不含该二进制；只有 Xcode 26 构建链在构建 app 时对模型做 Metal 特化才会生成——
+        // 这是本实验未完成 ML 派发的唯一原因，硬件与系统已就绪。
         cmdBuf.beginCommandBuffer(allocator: allocator)
         let mlEncoder = cmdBuf.makeMachineLearningCommandEncoder()
         cmdBuf.endCommandBuffer()
         print(mlEncoder != nil
-            ? "⚠️ ML Command Encoder 可创建，但派发网络还需 Xcode 26 编译的 Core ML 包（.mlpackage → PipelineState）——这是本实验未完成 ML 派发的唯一原因，硬件与系统已就绪"
+            ? "⚠️ ML Command Encoder 可创建，但派发网络还需 Xcode 26 构建链对 Core ML 模型做 GPU 特化（命令行编译只产出 espresso/model.mil，缺 MTL4 二进制函数）——硬件与系统已就绪"
             : "❌ machineLearningCommandEncoder 不可用")
     } catch {
         print("❌ \(error.localizedDescription)"); exit(1)

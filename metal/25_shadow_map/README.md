@@ -1,4 +1,4 @@
-# 21 · 阴影贴图：两遍渲染
+# 25 · 阴影贴图：两遍渲染
 
 > 光照有了，但物体悬浮在地面上方却不投影——画面在"说谎"。
 > 阴影贴图是实时阴影的经典解法：先站在光源的位置把世界"看"一遍。
@@ -12,7 +12,7 @@
 
 ![阴影贴图数据流](images/shadow_map.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/21_shadow_map/images/shadow_map.html)（或本地打开 [`images/shadow_map.html`](images/shadow_map.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/25_shadow_map/images/shadow_map.html)（或本地打开 [`images/shadow_map.html`](images/shadow_map.html)）。
 
 场景几何喂给光深 Pass 写进阴影图，主渲染采样比较后输出带阴影画面。一句话心智模型：**Pass1 站在光源处记录"我离谁最近"，Pass2 逐片元核对"我是否被挡"**。
 
@@ -86,4 +86,4 @@ float shadow = (lp.z - bias) > shadowMap.sample(..., uv) ? 0.35 : 1.0;
 
 影子落地的瞬间，画面才算" physical"。下一篇把光照推到工业形态：延迟着色。
 
-→ 下一篇：[26 · 延迟着色](../22_deferred/README.md)
+→ 下一篇：[26 · 延迟着色](../26_deferred/README.md)

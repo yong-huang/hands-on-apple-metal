@@ -63,21 +63,21 @@ hands-on-metal/
 | 07 | [07 距离场画圆](metal/07_circle/README.md) | length 距离场、smoothstep 抗锯齿 |
 | 08 | [08 颜色渐变](metal/08_gradient/README.md) | mix 权重插值 |
 | 09 | [09 纹理贴图](metal/09_texture/README.md) | MTLTexture、Sampler、采样管线 |
-| 12 | [12 3D 立方体](metal/12_cube/README.md) | 透视投影、MVP、深度测试 |
-| 13 | [13 光照立方体](metal/13_lit_cube/README.md) | 法线、漫反射 + 环境光 |
+| 10 | [10 3D 立方体](metal/10_cube/README.md) | 透视投影、MVP、深度测试 |
+| 11 | [11 光照立方体](metal/11_lit_cube/README.md) | 法线、漫反射 + 环境光 |
 | 14 | [14 GPU 灰度滤镜](metal/14_grayscale/README.md) | compute 读写纹理、CPU 回读验证 |
 | 15 | [15 GPU 粒子系统](metal/15_particles/README.md) | 万级粒子状态更新、point 图元 |
 | 16 | [16 Compute→Render](metal/16_compute_to_render/README.md) | 同命令缓冲编排、程序化几何 |
-| 17 | [17 光线追踪](metal/17_raytracer/README.md) | MPSRayIntersector、重心坐标着色 |
-| 18 | [18 实例化渲染](metal/18_instancing/README.md) | 400 实例 1 次 draw |
-| 19 | [19 帧捕获](metal/19_gpu_capture/README.md) | MTLCaptureManager、.gputrace |
-| 20 | [20 OBJ 模型](metal/20_obj_model/README.md) | 最小解析器、资产到渲染 |
-| 21 | [21 阴影贴图](metal/21_shadow_map/README.md) | 光深 Pass、采样比较、Metal z 坑 |
-| 22 | [22 延迟着色](metal/22_deferred/README.md) | G-Buffer、MRT、屏幕空间光照 |
-| 23 | [23 MTLTensor](metal/23_mtl_tensor/README.md) | Metal 4 张量、shape 语义 |
-| 24 | [24 MTL4 命令栈](metal/24_ml_encoder/README.md) | Allocator/ArgumentTable/ResidencySet |
-| 25 | [25 Shader ML 探测](metal/25_shader_ml/README.md) | tensor 模板编译链卡点定位 |
-| 26 | [26 ML+图形混合管线](metal/26_ml_graphics/README.md) | MTL4 队列 + SharedEvent + 渲染 |
+| 21 | [21 光线追踪](metal/21_raytracer/README.md) | MPSRayIntersector、重心坐标着色 |
+| 22 | [22 实例化渲染](metal/22_instancing/README.md) | 400 实例 1 次 draw |
+| 23 | [23 帧捕获](metal/23_gpu_capture/README.md) | MTLCaptureManager、.gputrace |
+| 24 | [24 OBJ 模型](metal/24_obj_model/README.md) | 最小解析器、资产到渲染 |
+| 25 | [25 阴影贴图](metal/25_shadow_map/README.md) | 光深 Pass、采样比较、Metal z 坑 |
+| 26 | [26 延迟着色](metal/26_deferred/README.md) | G-Buffer、MRT、屏幕空间光照 |
+| 27 | [27 MTLTensor](metal/27_mtl_tensor/README.md) | Metal 4 张量、shape 语义 |
+| 28 | [28 MTL4 命令栈](metal/28_ml_encoder/README.md) | Allocator/ArgumentTable/ResidencySet |
+| 29 | [29 Shader ML 全链路](metal/29_shader_ml/README.md) | tensor 模板编译链卡点定位 |
+| 30 | [30 ML+图形混合管线](metal/30_ml_graphics/README.md) | MTL4 队列 + SharedEvent + 渲染 |
 
 
 ## 算子线实验（operator/）

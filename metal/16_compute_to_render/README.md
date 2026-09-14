@@ -91,4 +91,4 @@ cb.present(drawable); cb.commit()
 
 同缓冲编排的最短闭环完成。现在可以挑战真正的"大家伙"了：换掉整个渲染范式，用光线追踪重新成像。
 
-→ 下一篇：[21 · 光线追踪](../17_raytracer/README.md)
+→ 下一篇：[21 · 光线追踪](../21_raytracer/README.md)

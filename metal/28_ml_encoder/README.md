@@ -1,4 +1,4 @@
-# 24 · Metal 4 · MTL4 命令栈与 ML Command Encoder
+# 28 · Metal 4 · MTL4 命令栈与 ML Command Encoder
 
 > Metal 4 不是加几个 API，而是重构了命令提交的骨架：
 > 命令内存显式归 Allocator、资源绑定集中进参数表、资源常驻要登记、
@@ -12,7 +12,7 @@ MTL4 的架构变化决定了未来十年的 Metal 代码形态：更少的隐�
 
 ![MTL4 命令栈](images/ml_encoder.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/24_ml_encoder/images/ml_encoder.html)（或本地打开 [`images/ml_encoder.html`](images/ml_encoder.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/28_ml_encoder/images/ml_encoder.html)（或本地打开 [`images/ml_encoder.html`](images/ml_encoder.html)）。
 
 命令栈 → 参数表绑定 → kernel 执行 → SharedEvent 同步，ML 编码器作为插槽被如实探测。一句话心智模型：**MTL4 把"框架帮你做的"全部改成"你必须声明的"**。
 
@@ -49,7 +49,7 @@ MTL4 没有 `waitUntilCompleted`：队列 `signalEvent(event, value:)` + CPU 侧
 
 ### 4.4 ML 派发的诚实边界
 
-`machineLearningCommandEncoder` 可创建，但派发网络需要 `MTL4MachineLearningPipelineState`，它来自**已编译的 Core ML 包**——该编译目前只有 Xcode 26 构建链提供。硬件与系统已就绪，缺口唯一且明确。
+`machineLearningCommandEncoder` 可创建，但派发网络需要 `MTL4MachineLearningPipelineState`（经 `MTL4Compiler.makeMachineLearningPipelineState` 创建）。实测：它的函数描述符必须是 GPU 特化的 Core ML 二进制函数（内部走 `executableWithDeviceSelection:`），而 coremltools 与 Xcode 的 `coremlcompiler` 命令行编译产物只有 espresso / `model.mil` 格式，不含该二进制——只有 Xcode 26 构建链在构建 app 时对模型做 Metal 特化才会生成。硬件与系统已就绪，缺口唯一且明确。
 
 ## 5. 关键 API 与字段
 
@@ -87,4 +87,4 @@ event.wait(untilSignaledValue: 1, timeoutMS: 5000)
 
 新命令栈跑通，ML 缺口定位明确。下一篇把"最后一公里"的探测做完：Shader ML 的编译链到底卡在哪。
 
-→ 下一篇：[29 · Shader ML](../25_shader_ml/README.md)
+→ 下一篇：[29 · Shader ML](../29_shader_ml/README.md)

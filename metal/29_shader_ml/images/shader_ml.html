@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="archify 2.17.0-dev.1">
-  <title>Shader ML 可行性探测</title>
+  <title>Shader ML：tensor kernel 全链路</title>
   <script>
     // Resolve the theme before first paint so light-preference users don't
     // see a dark flash. The toolbar script below re-applies with UI state.
@@ -4955,7 +4955,7 @@
            data-preset-badge-blueprint="蓝图 / 修订 01"
            data-preset-badge-editorial="编辑风格 / 现场笔记">
         <div class="pulse-dot"></div>
-        <h1>Shader ML 可行性探测</h1>
+        <h1>Shader ML：tensor kernel 全链路</h1>
       </div>
     </div>
 
@@ -5004,8 +5004,8 @@
     <!-- Main Diagram -->
     <div class="diagram-container" data-detail-level="read"
          data-preset-badge-editorial-plate="ARCHIFY / 图版 04">
-      <svg viewBox="0 0 960 520" role="img" lang="zh-CN" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
-        <title id="archify-diagram-title">Shader ML 可行性探测</title>
+      <svg viewBox="0 0 960 560" role="img" lang="zh-CN" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
+        <title id="archify-diagram-title">Shader ML：tensor kernel 全链路</title>
         <desc id="archify-diagram-description">由 Archify 生成的数据流图。</desc>
         <!-- Definitions -->
         <defs>
@@ -5030,99 +5030,168 @@
         <rect width="100%" height="100%" fill="url(#grid)" />
 
         <!-- Data Stages -->
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="0" x="16" y="46" width="168" height="400" rx="10" class="c-lane" stroke-width="1"/>
-        <text x="100" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">01 / 输入</text>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="0" x="16" y="46" width="168" height="440" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="100" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">01 / 编译</text>
 
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="1" x="231" y="46" width="168" height="400" rx="10" class="c-lane" stroke-width="1"/>
-        <text x="315" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">02 / 尝试</text>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="1" x="231" y="46" width="168" height="440" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="315" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">02 / GPU 数据面</text>
 
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="2" x="446" y="46" width="168" height="400" rx="10" class="c-lane" stroke-width="1"/>
-        <text x="530" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">03 / 诊断</text>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="2" x="446" y="46" width="168" height="440" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="530" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">03 / 张量计算</text>
 
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="3" x="661" y="46" width="168" height="400" rx="10" class="c-lane" stroke-width="1"/>
-        <text x="745" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">04 / 结论</text>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="3" x="661" y="46" width="168" height="440" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="745" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">04 / 验证</text>
 
         <!-- Flow paths -->
-        <path data-edge-from="src" data-edge-to="attempt" data-edge-label="喂编译器" data-edge-key="0" data-edge-id="s" data-composition-points="156,271;259,271" d="M 156 271 L 259 271" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="attempt" data-edge-to="diag" data-edge-label="捕获" data-edge-key="1" data-edge-id="d" data-composition-points="371,271;474,271" d="M 371 271 L 474 271" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="diag" data-edge-to="path" data-edge-label="定位卡点" data-edge-key="2" data-edge-id="p" data-composition-points="586,271;689,271" d="M 586 271 L 689 271" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="msl" data-edge-to="metallib" data-edge-label="编译" data-edge-key="0" data-edge-id="f1" data-composition-points="100,300;100,356" d="M 100 300 L 100 356" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="metallib" data-edge-to="mtl4" data-edge-label="加载" data-edge-key="1" data-edge-id="f2" data-composition-points="156,385;259,385" d="M 156 385 L 259 385" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tensor" data-edge-to="mtl4" data-edge-label="gpuResourceID" data-edge-key="2" data-edge-id="f3" data-composition-points="315,186;315,356" d="M 315 186 L 315 356" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="mtl4" data-edge-to="kfill" data-edge-label="派发 fill" data-edge-key="3" data-edge-id="f4" data-composition-points="371,385;422.5,385;422.5,157;474,157" d="M 371 385 L 422.5 385 L 422.5 157 L 474 157" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="mtl4" data-edge-to="kdbl" data-edge-label="派发 double" data-edge-key="4" data-edge-id="f5" data-composition-points="371,385;474,385" d="M 371 385 L 474 385" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="kdbl" data-edge-to="kout" data-edge-label="张量传递" data-edge-key="5" data-edge-id="f6" data-composition-points="586,385;637.5,385;637.5,271;689,271" d="M 586 385 L 637.5 385 L 637.5 271 L 689 271" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="kout" data-edge-to="cpu" data-edge-label="buffer 回读" data-edge-key="6" data-edge-id="f7" data-composition-points="745,242;745,186" d="M 745 242 L 745 186" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
 
         <!-- Nodes -->
-        <g id="node-src" data-node-id="src" data-node-label="tensor 模板内核" tabindex="0" role="button" aria-label="聚焦tensor 模板内核，MSL 4 语法, 01 / 输入" aria-pressed="false" data-node-kind="database" data-node-sublabel="MSL 4 语法" data-node-context="01 / 输入">
-          <title>tensor 模板内核 · MSL 4 语法 · 01 / 输入</title>
+        <g id="node-msl" data-node-id="msl" data-node-label="tensor kernel" tabindex="0" role="button" aria-label="聚焦tensor kernel，dextents + [[buffer]] 语法, 01 / 编译" aria-pressed="false" data-node-kind="database" data-node-sublabel="dextents + [[buffer]] 语法" data-node-tag="MSL 4" data-node-context="01 / 编译">
+          <title>tensor kernel · dextents + [[buffer]] 语法 · 01 / 编译 · MSL 4</title>
           <rect x="44" y="242" width="112" height="58" rx="6" class="c-mask"/>
           <rect x="44" y="242" width="112" height="58" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(50 248) scale(0.6875)">
             <ellipse cx="8" cy="4" rx="5" ry="2"/>
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="100" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">tensor 模板内核</text>
-          <text data-detail="context" x="100" y="279" class="t-muted" font-size="7" text-anchor="middle">MSL 4 语法</text>
+          <text data-node-label="" data-detail-anchor="" x="100" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">tensor kernel</text>
+          <text data-detail="context" x="100" y="279" class="t-muted" font-size="6.6" text-anchor="middle">dextents + [[buffer]] 语法</text>
+        <text data-detail="fine" x="100" y="289" class="t-database" font-size="7" text-anchor="middle">MSL 4</text>
         </g>
 
-        <g id="node-attempt" data-node-id="attempt" data-node-label="真实编译尝试" tabindex="0" role="button" aria-label="聚焦真实编译尝试，makeLibrary, 02 / 尝试" aria-pressed="false" data-node-kind="backend" data-node-sublabel="makeLibrary" data-node-context="02 / 尝试">
-          <title>真实编译尝试 · makeLibrary · 02 / 尝试</title>
-          <rect x="259" y="242" width="112" height="58" rx="6" class="c-mask"/>
-          <rect x="259" y="242" width="112" height="58" rx="6" class="c-backend" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(265 248) scale(0.6875)">
+        <g id="node-metallib" data-node-id="metallib" data-node-label="metal CLI" tabindex="0" role="button" aria-label="聚焦metal CLI，编译打包 metallib, 01 / 编译" aria-pressed="false" data-node-kind="backend" data-node-sublabel="编译打包 metallib" data-node-context="01 / 编译">
+          <title>metal CLI · 编译打包 metallib · 01 / 编译</title>
+          <rect x="44" y="356" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="44" y="356" width="112" height="58" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(50 362) scale(0.6875)">
             <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="315" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">真实编译尝试</text>
-          <text data-detail="context" x="315" y="279" class="t-muted" font-size="7" text-anchor="middle">makeLibrary</text>
+          <text data-node-label="" data-detail-anchor="" x="100" y="377" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">metal CLI</text>
+          <text data-detail="context" x="100" y="393" class="t-muted" font-size="7" text-anchor="middle">编译打包 metallib</text>
         </g>
 
-        <g id="node-diag" data-node-id="diag" data-node-label="诊断输出" tabindex="0" role="button" aria-label="聚焦诊断输出，预期内失败已触发, 03 / 诊断" aria-pressed="false" data-node-kind="external" data-node-sublabel="预期内失败已触发" data-node-context="03 / 诊断">
-          <title>诊断输出 · 预期内失败已触发 · 03 / 诊断</title>
-          <rect x="474" y="242" width="112" height="58" rx="6" class="c-mask"/>
-          <rect x="474" y="242" width="112" height="58" rx="6" class="c-external" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(480 248) scale(0.6875)">
-            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
-            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
+        <g id="node-tensor" data-node-id="tensor" data-node-label="MTLTensor ×2" tabindex="0" role="button" aria-label="聚焦MTLTensor ×2，buffer=nil 无 CPU 指针, 02 / GPU 数据面" aria-pressed="false" data-node-kind="database" data-node-sublabel="buffer=nil 无 CPU 指针" data-node-context="02 / GPU 数据面">
+          <title>MTLTensor ×2 · buffer=nil 无 CPU 指针 · 02 / GPU 数据面</title>
+          <rect x="259" y="128" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="259" y="128" width="112" height="58" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(265 134) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="530" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">诊断输出</text>
-          <text data-detail="context" x="530" y="279" class="t-muted" font-size="7" text-anchor="middle">预期内失败已触发</text>
+          <text data-node-label="" data-detail-anchor="" x="315" y="149" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">MTLTensor ×2</text>
+          <text data-detail="context" x="315" y="165" class="t-muted" font-size="7" text-anchor="middle">buffer=nil 无 CPU 指针</text>
         </g>
 
-        <g id="node-path" data-node-id="path" data-node-label="走通路径" tabindex="0" role="button" aria-label="聚焦走通路径，编译链是唯一卡点, 04 / 结论" aria-pressed="false" data-node-kind="external" data-node-sublabel="编译链是唯一卡点" data-node-context="04 / 结论">
-          <title>走通路径 · 编译链是唯一卡点 · 04 / 结论</title>
+        <g id="node-mtl4" data-node-id="mtl4" data-node-label="MTL4 命令栈" tabindex="0" role="button" aria-label="聚焦MTL4 命令栈，argTable.setResource 绑定, 02 / GPU 数据面" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="argTable.setResource 绑定" data-node-tag="GPU" data-node-context="02 / GPU 数据面">
+          <title>MTL4 命令栈 · argTable.setResource 绑定 · 02 / GPU 数据面 · GPU</title>
+          <rect x="259" y="356" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="259" y="356" width="112" height="58" rx="6" class="c-messagebus" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(265 362) scale(0.6875)">
+            <path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/>
+            <circle cx="5" cy="4.5" r="1" class="sigil-fill"/>
+            <circle cx="10.5" cy="8" r="1" class="sigil-fill"/>
+            <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="315" y="377" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">MTL4 命令栈</text>
+          <text data-detail="context" x="315" y="393" class="t-muted" font-size="6.9" text-anchor="middle">argTable.setResource 绑定</text>
+        <text data-detail="fine" x="315" y="403" class="t-messagebus" font-size="7" text-anchor="middle">GPU</text>
+        </g>
+
+        <g id="node-kfill" data-node-id="kfill" data-node-label="fill_tensor" tabindex="0" role="button" aria-label="聚焦fill_tensor，写入 i, 03 / 张量计算" aria-pressed="false" data-node-kind="backend" data-node-sublabel="写入 i" data-node-context="03 / 张量计算">
+          <title>fill_tensor · 写入 i · 03 / 张量计算</title>
+          <rect x="474" y="128" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="474" y="128" width="112" height="58" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(480 134) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="530" y="149" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">fill_tensor</text>
+          <text data-detail="context" x="530" y="165" class="t-muted" font-size="7" text-anchor="middle">写入 i</text>
+        </g>
+
+        <g id="node-kdbl" data-node-id="kdbl" data-node-label="double_tensor" tabindex="0" role="button" aria-label="聚焦double_tensor，×2, 03 / 张量计算" aria-pressed="false" data-node-kind="backend" data-node-sublabel="×2" data-node-context="03 / 张量计算">
+          <title>double_tensor · ×2 · 03 / 张量计算</title>
+          <rect x="474" y="356" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="474" y="356" width="112" height="58" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(480 362) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="530" y="377" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">double_tensor</text>
+          <text data-detail="context" x="530" y="393" class="t-muted" font-size="7" text-anchor="middle">×2</text>
+        </g>
+
+        <g id="node-kout" data-node-id="kout" data-node-label="tensor_to_buffer" tabindex="0" role="button" aria-label="聚焦tensor_to_buffer，搬回普通 buffer, 04 / 验证" aria-pressed="false" data-node-kind="backend" data-node-sublabel="搬回普通 buffer" data-node-context="04 / 验证">
+          <title>tensor_to_buffer · 搬回普通 buffer · 04 / 验证</title>
           <rect x="689" y="242" width="112" height="58" rx="6" class="c-mask"/>
-          <rect x="689" y="242" width="112" height="58" rx="6" class="c-external" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(695 248) scale(0.6875)">
+          <rect x="689" y="242" width="112" height="58" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(695 248) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="745" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">tensor_to_buffer</text>
+          <text data-detail="context" x="745" y="279" class="t-muted" font-size="7" text-anchor="middle">搬回普通 buffer</text>
+        </g>
+
+        <g id="node-cpu" data-node-id="cpu" data-node-label="CPU 验证" tabindex="0" role="button" aria-label="聚焦CPU 验证，1024 元素全对, 04 / 验证" aria-pressed="false" data-node-kind="external" data-node-sublabel="1024 元素全对" data-node-context="04 / 验证">
+          <title>CPU 验证 · 1024 元素全对 · 04 / 验证</title>
+          <rect x="689" y="128" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="689" y="128" width="112" height="58" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(695 134) scale(0.6875)">
             <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="745" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">走通路径</text>
-          <text data-detail="context" x="745" y="279" class="t-muted" font-size="7" text-anchor="middle">编译链是唯一卡点</text>
+          <text data-node-label="" data-detail-anchor="" x="745" y="149" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">CPU 验证</text>
+          <text data-detail="context" x="745" y="165" class="t-muted" font-size="7" text-anchor="middle">1024 元素全对</text>
         </g>
 
         <!-- Flow labels -->
-        <g data-detail="context" data-edge-from="src" data-edge-to="attempt" data-edge-label="喂编译器" data-edge-key="0" data-edge-id="s">
-          <rect x="181.9" y="250" width="51.2" height="16" rx="4" class="c-mask"/>
-          <text x="207.5" y="261" class="t-backend" font-size="8" text-anchor="middle">喂编译器</text>
+        <g data-detail="context" data-edge-from="msl" data-edge-to="metallib" data-edge-label="编译" data-edge-key="0" data-edge-id="f1">
+          <rect x="83" y="325" width="34" height="16" rx="4" class="c-mask"/>
+          <text x="100" y="336" class="t-muted" font-size="8" text-anchor="middle">编译</text>
         </g>
-        <g data-detail="context" data-edge-from="attempt" data-edge-to="diag" data-edge-label="捕获" data-edge-key="1" data-edge-id="d">
-          <rect x="405.5" y="250" width="34" height="16" rx="4" class="c-mask"/>
-          <text x="422.5" y="261" class="t-muted" font-size="8" text-anchor="middle">捕获</text>
+        <g data-detail="context" data-edge-from="metallib" data-edge-to="mtl4" data-edge-label="加载" data-edge-key="1" data-edge-id="f2">
+          <rect x="190.5" y="364" width="34" height="16" rx="4" class="c-mask"/>
+          <text x="207.5" y="375" class="t-muted" font-size="8" text-anchor="middle">加载</text>
         </g>
-        <g data-detail="context" data-edge-from="diag" data-edge-to="path" data-edge-label="定位卡点" data-edge-key="2" data-edge-id="p">
-          <rect x="611.9" y="250" width="51.2" height="16" rx="4" class="c-mask"/>
-          <text x="637.5" y="261" class="t-muted" font-size="8" text-anchor="middle">定位卡点</text>
+        <g data-detail="context" data-edge-from="tensor" data-edge-to="mtl4" data-edge-label="gpuResourceID" data-edge-key="2" data-edge-id="f3">
+          <rect x="277.15" y="189" width="75.7" height="16" rx="4" class="c-mask"/>
+          <text x="315" y="200" class="t-backend" font-size="8" text-anchor="middle">gpuResourceID</text>
+        </g>
+        <g data-detail="context" data-edge-from="mtl4" data-edge-to="kfill" data-edge-label="派发 fill" data-edge-key="3" data-edge-id="f4">
+          <rect x="394.45" y="230" width="56.1" height="16" rx="4" class="c-mask"/>
+          <text x="422.5" y="241" class="t-muted" font-size="8" text-anchor="middle">派发 fill</text>
+        </g>
+        <g data-detail="context" data-edge-from="mtl4" data-edge-to="kdbl" data-edge-label="派发 double" data-edge-key="4" data-edge-id="f5">
+          <rect x="389.55" y="398" width="65.9" height="16" rx="4" class="c-mask"/>
+          <text x="422.5" y="409" class="t-muted" font-size="8" text-anchor="middle">派发 double</text>
+        </g>
+        <g data-detail="context" data-edge-from="kdbl" data-edge-to="kout" data-edge-label="张量传递" data-edge-key="5" data-edge-id="f6">
+          <rect x="611.9" y="307" width="51.2" height="16" rx="4" class="c-mask"/>
+          <text x="637.5" y="318" class="t-backend" font-size="8" text-anchor="middle">张量传递</text>
+        </g>
+        <g data-detail="context" data-edge-from="kout" data-edge-to="cpu" data-edge-label="buffer 回读" data-edge-key="6" data-edge-id="f7">
+          <rect x="712.05" y="193" width="65.9" height="16" rx="4" class="c-mask"/>
+          <text x="745" y="204" class="t-backend" font-size="8" text-anchor="middle">buffer 回读</text>
         </g>
 
         <!-- Legend -->
         <g data-legend="" data-legend-bridge="">
-          <text x="40" y="464" class="t-primary" font-size="12" font-weight="650">图例</text>
-          <g data-legend-semantic-kind="emphasis" data-legend-x="40" data-legend-baseline="484" data-legend-width="83">
-            <path d="M 40 481 L 74 481" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-            <text x="83" y="484" class="t-muted" font-size="10" font-weight="500">主要数据</text>
+          <text x="40" y="504" class="t-primary" font-size="12" font-weight="650">图例</text>
+          <g data-legend-semantic-kind="emphasis" data-legend-x="40" data-legend-baseline="524" data-legend-width="83">
+            <path d="M 40 521 L 74 521" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+            <text x="83" y="524" class="t-muted" font-size="10" font-weight="500">主要数据</text>
           </g>
-          <g data-legend-semantic-kind="database" data-legend-kind="database" data-legend-label="数据存储" data-legend-x="145" data-legend-baseline="484" data-legend-width="83">
-            <rect x="145" y="476" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
-            <text x="167" y="484" class="t-muted" font-size="10" font-weight="500">数据存储</text>
+          <g data-legend-semantic-kind="database" data-legend-kind="database" data-legend-label="数据存储" data-legend-x="145" data-legend-baseline="524" data-legend-width="83">
+            <rect x="145" y="516" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
+            <text x="167" y="524" class="t-muted" font-size="10" font-weight="500">数据存储</text>
           </g>
-          <g data-legend-semantic-kind="default" data-legend-x="250" data-legend-baseline="484" data-legend-width="73">
-            <path d="M 250 481 L 284 481" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
-            <text x="293" y="484" class="t-muted" font-size="10" font-weight="500">数据流</text>
+          <g data-legend-semantic-kind="default" data-legend-x="250" data-legend-baseline="524" data-legend-width="73">
+            <path d="M 250 521 L 284 521" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+            <text x="293" y="524" class="t-muted" font-size="10" font-weight="500">数据流</text>
           </g>
         </g>
       </svg>
@@ -5313,22 +5382,34 @@
     <div class="cards">
       <div class="card">
         <div class="card-header">
-          <div class="card-dot rose"></div>
-          <h3>诚实工程</h3>
+          <div class="card-dot cyan"></div>
+          <h3>正确语法</h3>
         </div>
         <ul>
-          <li>&bull; 预期失败也要真实触发一次——诊断输出就是本实验的数据</li>
-          <li>&bull; 卡点唯一且明确：ML 专用着色器编译链</li>
+          <li>&bull; tensor&lt;device T, dextents&lt;int, R&gt;&gt; 配 [[buffer(i)]]，普通 kernel 入口即可</li>
+          <li>&bull; extents&lt;uint,N&gt; + tensor_handle + [[binding]] 是错误写法</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
-          <div class="card-dot cyan"></div>
-          <h3>四步清单</h3>
+          <div class="card-dot emerald"></div>
+          <h3>数据进出张量</h3>
         </div>
         <ul>
-          <li>&bull; 硬件✅ 数据面✅（27） 编译链❌ 编码器✅（28）——按序补齐</li>
+          <li>&bull; MTLTensor 无 CPU 指针，靠 kernel 搬运（fill / tensor_to_buffer）</li>
+          <li>&bull; argTable.setResource(tensor.gpuResourceID, bufferIndex:) 完成绑定</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot orange"></div>
+          <h3>边界</h3>
+        </div>
+        <ul>
+          <li>&bull; ML Command Encoder 的 ML pipeline 仍需 Core ML GPU 特化二进制（实验 24）</li>
+          <li>&bull; 手写 tensor shader 不受此限，普通 compute 管线即可派发</li>
         </ul>
       </div>
     </div>

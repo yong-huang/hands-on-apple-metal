@@ -1,4 +1,4 @@
-# 12 · 3D 立方体：透视投影与深度测试
+# 10 · 3D 立方体：透视投影与深度测试
 
 > 前九个实验都在二维平面里打转——三角形、矩形、渐变，本质是"把数画到屏幕"。
 > 进入 3D 需要三件新事物：投影矩阵、深度缓冲、还有"绕着物体转"的相机。
@@ -12,7 +12,7 @@
 
 ![3D 立方体架构](images/cube.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/12_cube/images/cube.html)（或本地打开 [`images/cube.html`](images/cube.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/10_cube/images/cube.html)（或本地打开 [`images/cube.html`](images/cube.html)）。
 
 顶点缓冲与 MVP 矩阵汇入 `vertex_main`，经深度测试后呈现。一句话心智模型：**MVP 决定"在哪"，深度缓冲决定"谁在前"**。
 
@@ -88,4 +88,4 @@ encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 36)
 
 3D 骨架立起来了：投影给位置，深度给遮挡。下一篇给表面加"光照"——法线登场，明暗随光源流转。
 
-→ 下一篇：[11 · 光照立方体](../13_lit_cube/README.md)
+→ 下一篇：[11 · 光照立方体](../11_lit_cube/README.md)

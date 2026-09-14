@@ -1,4 +1,4 @@
-# 17 · 光线追踪：MPSRayIntersector
+# 21 · 光线追踪：MPSRayIntersector
 
 > 光栅化问"每个三角形盖住哪些像素"，光线追踪问"每个像素看到了谁"。
 > 视角一换，反射、折射、软阴影都变成自然推论。
@@ -12,7 +12,7 @@
 
 ![光线追踪数据流](images/raytracer.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/17_raytracer/images/raytracer.html)（或本地打开 [`images/raytracer.html`](images/raytracer.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/21_raytracer/images/raytracer.html)（或本地打开 [`images/raytracer.html`](images/raytracer.html)）。
 
 针孔相机生成 26 万根主光线，MPS 加速结构求最近交点，CPU 按重心坐标插值着色。一句话心智模型：**每个像素发射一根问题，场景回答"撞到哪、撞到谁"**。
 
@@ -97,4 +97,4 @@ intersector.encodeIntersection(commandBuffer: cb, intersectionType: .nearest,
 
 光追闭环打通，MPS 家族初体验。下一篇回到光栅化，解决另一个极端问题：怎么用一次 draw 画 400 个物体。
 
-→ 下一篇：[22 · 实例化渲染](../18_instancing/README.md)
+→ 下一篇：[22 · 实例化渲染](../22_instancing/README.md)

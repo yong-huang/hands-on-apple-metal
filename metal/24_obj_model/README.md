@@ -1,4 +1,4 @@
-# 20 · 加载 OBJ 模型并渲染
+# 24 · 加载 OBJ 模型并渲染
 
 > 之前的几何都是代码里手写的数组——真实世界的模型来自文件。
 > OBJ 是最朴素的 3D 格式：纯文本、逐行可读、40 行代码就能写个解析器。
@@ -12,7 +12,7 @@
 
 ![OBJ 模型数据流](images/obj_model.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/20_obj_model/images/obj_model.html)（或本地打开 [`images/obj_model.html`](images/obj_model.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/24_obj_model/images/obj_model.html)（或本地打开 [`images/obj_model.html`](images/obj_model.html)）。
 
 文本资产经最小解析器变成 Metal 顶点缓冲，再走 11 的光照管线。一句话心智模型：**OBJ = 索引化的几何清单，渲染前展开成流式顶点**。
 
@@ -94,4 +94,4 @@ case "f":  // "1//1" → 索引对，各减 1 转 0-based
 
 资产链路打通：文件 → 解析 → 缓冲 → 光照 → 屏幕。渲染基础篇（10-24）至此收官，下一站是 Metal 4 的第一站——张量。
 
-→ 下一篇：[25 · 阴影贴图](../21_shadow_map/README.md)
+→ 下一篇：[25 · 阴影贴图](../25_shadow_map/README.md)

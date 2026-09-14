@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Shader ML：tensor kernel 全链路",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/shader_ml.html",
+    "viewBox": [
+      960,
+      560
+    ]
+  },
+  "stages": [
+    {
+      "label": "编译"
+    },
+    {
+      "label": "GPU 数据面"
+    },
+    {
+      "label": "张量计算"
+    },
+    {
+      "label": "验证"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "msl",
+      "type": "database",
+      "label": "tensor kernel",
+      "sublabel": "dextents + [[buffer]] 语法",
+      "stage": 0,
+      "row": 1,
+      "tag": "MSL 4"
+    },
+    {
+      "id": "metallib",
+      "type": "backend",
+      "label": "metal CLI",
+      "sublabel": "编译打包 metallib",
+      "stage": 0,
+      "row": 2
+    },
+    {
+      "id": "tensor",
+      "type": "database",
+      "label": "MTLTensor ×2",
+      "sublabel": "buffer=nil 无 CPU 指针",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "mtl4",
+      "type": "messagebus",
+      "label": "MTL4 命令栈",
+      "sublabel": "argTable.setResource 绑定",
+      "stage": 1,
+      "row": 2,
+      "tag": "GPU"
+    },
+    {
+      "id": "kfill",
+      "type": "backend",
+      "label": "fill_tensor",
+      "sublabel": "写入 i",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "kdbl",
+      "type": "backend",
+      "label": "double_tensor",
+      "sublabel": "×2",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "kout",
+      "type": "backend",
+      "label": "tensor_to_buffer",
+      "sublabel": "搬回普通 buffer",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "cpu",
+      "type": "external",
+      "label": "CPU 验证",
+      "sublabel": "1024 元素全对",
+      "stage": 3,
+      "row": 0
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "msl",
+      "to": "metallib",
+      "label": "编译",
+      "variant": "default",
+      "labelDy": 46
+    },
+    {
+      "id": "f2",
+      "from": "metallib",
+      "to": "mtl4",
+      "label": "加载",
+      "variant": "default"
+    },
+    {
+      "id": "f3",
+      "from": "tensor",
+      "to": "mtl4",
+      "label": "gpuResourceID",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "id": "f4",
+      "from": "mtl4",
+      "to": "kfill",
+      "label": "派发 fill",
+      "variant": "default",
+      "labelDy": -20
+    },
+    {
+      "id": "f5",
+      "from": "mtl4",
+      "to": "kdbl",
+      "label": "派发 double",
+      "variant": "default",
+      "labelDy": 34,
+      "route": "straight"
+    },
+    {
+      "id": "f6",
+      "from": "kdbl",
+      "to": "kout",
+      "label": "张量传递",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f7",
+      "from": "kout",
+      "to": "cpu",
+      "label": "buffer 回读",
+      "variant": "emphasis",
+      "labelDy": -28
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "正确语法",
+      "items": [
+        "tensor<device T, dextents<int, R>> 配 [[buffer(i)]]，普通 kernel 入口即可",
+        "extents<uint,N> + tensor_handle + [[binding]] 是错误写法"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "数据进出张量",
+      "items": [
+        "MTLTensor 无 CPU 指针，靠 kernel 搬运（fill / tensor_to_buffer）",
+        "argTable.setResource(tensor.gpuResourceID, bufferIndex:) 完成绑定"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "边界",
+      "items": [
+        "ML Command Encoder 的 ML pipeline 仍需 Core ML GPU 特化二进制（实验 24）",
+        "手写 tensor shader 不受此限，普通 compute 管线即可派发"
+      ]
+    }
+  ]
+}

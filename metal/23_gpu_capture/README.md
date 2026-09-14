@@ -1,4 +1,4 @@
-# 19 · 帧捕获：MTLCaptureManager 程序化调试
+# 23 · 帧捕获：MTLCaptureManager 程序化调试
 
 > GPU 出了问题只能靠猜？Metal 可以把一帧的执行明细完整"录"下来。
 > 本实验不开 Xcode、不点按钮，用三行 API 把 3 个计算 pass 捕获成 .gputrace 文件，
@@ -12,7 +12,7 @@ GPU 调试的信息缺口巨大：命令提交了吗？kernel 跑了多久？缓
 
 ![帧捕获数据流](images/gpu_capture.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/19_gpu_capture/images/gpu_capture.html)（或本地打开 [`images/gpu_capture.html`](images/gpu_capture.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/23_gpu_capture/images/gpu_capture.html)（或本地打开 [`images/gpu_capture.html`](images/gpu_capture.html)）。
 
 计算负载被捕获器录成 gputrace 文件，供 Xcode 离线分析；同场进行正确性双回归。一句话心智模型：**捕获 = 给 GPU 时间线开行车记录仪**。
 
@@ -98,4 +98,4 @@ manager.stopCapture()
 
 GPU 有了行车记录仪。下一篇回到几何管线：从文本文件加载一个真正的 3D 模型。
 
-→ 下一篇：[24 · OBJ 模型](../20_obj_model/README.md)
+→ 下一篇：[24 · OBJ 模型](../24_obj_model/README.md)

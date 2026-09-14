@@ -1,4 +1,4 @@
-# 18 · 实例化渲染：一次 draw 画 400 个
+# 22 · 实例化渲染：一次 draw 画 400 个
 
 > 400 个物体 = 400 次 draw call？CPU 提交命令的开销会让 GPU 吃不饱。
 > 实例化把"同一几何的 N 份拷贝"压成一次绘制：几何存一份，差异存一份。
@@ -12,7 +12,7 @@ draw call 本身有 CPU 侧成本（状态验证、驱动开销），万级物�
 
 ![实例化数据流](images/instancing.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/18_instancing/images/instancing.html)（或本地打开 [`images/instancing.html`](images/instancing.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/22_instancing/images/instancing.html)（或本地打开 [`images/instancing.html`](images/instancing.html)）。
 
 单三角形几何与 400 份实例数据汇入顶点着色器，一次 draw 输出整个阵列。一句话心智模型：**[[instance_id]] 是"我是第几份拷贝"的自查**。
 
@@ -90,4 +90,4 @@ float2 p = v.position * d.scale + d.offset;
 
 一次 draw 的威力到手。下一篇转向 GPU 调试：不看画面，直接把 GPU 的执行明细"录"下来。
 
-→ 下一篇：[23 · 帧捕获](../19_gpu_capture/README.md)
+→ 下一篇：[23 · 帧捕获](../23_gpu_capture/README.md)
