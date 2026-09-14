@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1080 620" role="img" lang="zh-CN" aria-labelledby="archify-diagram-title archify-diagram-description" data-preset="classic" data-quality-profile="showcase">
+        <title id="archify-diagram-title">Accelerate/vDSP vs Metal 同任务对照</title>
+        <desc id="archify-diagram-description">由 Archify 生成的数据流图。</desc>
+        <!-- Definitions -->
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-default" />
+          </marker>
+          <marker id="arrowhead-emphasis" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-emphasis" />
+          </marker>
+          <marker id="arrowhead-security" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-security" />
+          </marker>
+          <marker id="arrowhead-dashed" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" class="m-dashed" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" class="c-grid" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <!-- Background Grid -->
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- Data Stages -->
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="0" x="16" y="46" width="168" height="500" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="100" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">01 / 输入</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="1" x="231" y="46" width="168" height="500" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="315" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">02 / 引擎 A（CPU）</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="2" x="446" y="46" width="168" height="500" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="530" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">03 / 引擎 B（GPU）</text>
+
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="stage" data-composition-frame-id="3" x="661" y="46" width="168" height="500" rx="10" class="c-lane" stroke-width="1"/>
+        <text x="745" y="68" class="t-dim" font-size="9" font-weight="600" text-anchor="middle">04 / 计量</text>
+
+        <!-- Flow paths -->
+        <path data-edge-from="data" data-edge-to="vdsp" data-edge-label="免提交" data-edge-key="0" data-edge-id="a" data-composition-points="156,264;207.5,264;207.5,157;259,157" d="M 156 264 L 207.5 264 L 207.5 157 L 259 157" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="data" data-edge-to="metal" data-edge-label="command buffer" data-edge-key="1" data-edge-id="b" data-composition-points="156,278;315,278;315,385;474,385" d="M 156 278 L 315 278 L 315 385 L 474 385" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="vdsp" data-edge-to="bench" data-edge-label="2.4 ms/100 次" data-edge-key="2" data-edge-id="c" data-composition-points="371,157;530,157;530,264;689,264" d="M 371 157 L 530 157 L 530 264 L 689 264" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="metal" data-edge-to="bench" data-edge-label="25.7 ms/100 次" data-edge-key="3" data-edge-id="d" data-composition-points="586,385;637.5,385;637.5,278;689,278" d="M 586 385 L 637.5 385 L 637.5 278 L 689 278" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+
+        <!-- Nodes -->
+        <g id="node-data" data-node-id="data" data-node-label="1M float" tabindex="0" role="button" aria-label="聚焦1M float，向量缩放 2.0, 01 / 输入" aria-pressed="false" data-node-kind="database" data-node-sublabel="向量缩放 2.0" data-node-tag="4 MB" data-node-context="01 / 输入">
+          <title>1M float · 向量缩放 2.0 · 01 / 输入 · 4 MB</title>
+          <rect x="44" y="242" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="44" y="242" width="112" height="58" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(50 248) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="100" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">1M float</text>
+          <text data-detail="context" x="100" y="279" class="t-muted" font-size="7" text-anchor="middle">向量缩放 2.0</text>
+        <text data-detail="fine" x="100" y="289" class="t-database" font-size="7" text-anchor="middle">4 MB</text>
+        </g>
+
+        <g id="node-vdsp" data-node-id="vdsp" data-node-label="vDSP_vsmul" tabindex="0" role="button" aria-label="聚焦vDSP_vsmul，CPU 向量单元, 02 / 引擎 A（CPU）" aria-pressed="false" data-node-kind="backend" data-node-sublabel="CPU 向量单元" data-node-tag="~350 GB/s" data-node-context="02 / 引擎 A（CPU）">
+          <title>vDSP_vsmul · CPU 向量单元 · 02 / 引擎 A（CPU） · ~350 GB/s</title>
+          <rect x="259" y="128" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="259" y="128" width="112" height="58" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(265 134) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="315" y="149" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">vDSP_vsmul</text>
+          <text data-detail="context" x="315" y="165" class="t-muted" font-size="7" text-anchor="middle">CPU 向量单元</text>
+        <text data-detail="fine" x="315" y="175" class="t-backend" font-size="7" text-anchor="middle">~350 GB/s</text>
+        </g>
+
+        <g id="node-metal" data-node-id="metal" data-node-label="Metal kernel" tabindex="0" role="button" aria-label="聚焦Metal kernel，commit + wait 同步, 03 / 引擎 B（GPU）" aria-pressed="false" data-node-kind="backend" data-node-sublabel="commit + wait 同步" data-node-tag="~33 GB/s" data-node-context="03 / 引擎 B（GPU）">
+          <title>Metal kernel · commit + wait 同步 · 03 / 引擎 B（GPU） · ~33 GB/s</title>
+          <rect x="474" y="356" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="474" y="356" width="112" height="58" rx="6" class="c-backend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(480 362) scale(0.6875)">
+            <path d="M6 3 3 8l3 5M10 3l3 5-3 5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="530" y="377" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Metal kernel</text>
+          <text data-detail="context" x="530" y="393" class="t-muted" font-size="7" text-anchor="middle">commit + wait 同步</text>
+        <text data-detail="fine" x="530" y="403" class="t-backend" font-size="7" text-anchor="middle">~33 GB/s</text>
+        </g>
+
+        <g id="node-bench" data-node-id="bench" data-node-label="带宽对照" tabindex="0" role="button" aria-label="聚焦带宽对照，各 100 次计量, 04 / 计量" aria-pressed="false" data-node-kind="external" data-node-sublabel="各 100 次计量" data-node-context="04 / 计量">
+          <title>带宽对照 · 各 100 次计量 · 04 / 计量</title>
+          <rect x="689" y="242" width="112" height="58" rx="6" class="c-mask"/>
+          <rect x="689" y="242" width="112" height="58" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(695 248) scale(0.6875)">
+            <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
+            <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="745" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">带宽对照</text>
+          <text data-detail="context" x="745" y="279" class="t-muted" font-size="7" text-anchor="middle">各 100 次计量</text>
+        </g>
+
+        <!-- Flow labels -->
+        <g data-detail="context" data-edge-from="data" data-edge-to="vdsp" data-edge-label="免提交" data-edge-key="0" data-edge-id="a">
+          <rect x="186.8" y="189.5" width="41.4" height="16" rx="4" class="c-mask"/>
+          <text x="207.5" y="200.5" class="t-backend" font-size="8" text-anchor="middle">免提交</text>
+        </g>
+        <g data-detail="context" data-edge-from="data" data-edge-to="metal" data-edge-label="command buffer" data-edge-key="1" data-edge-id="b">
+          <rect x="274.7" y="310.5" width="80.6" height="16" rx="4" class="c-mask"/>
+          <text x="315" y="321.5" class="t-muted" font-size="8" text-anchor="middle">command buffer</text>
+        </g>
+        <g data-detail="context" data-edge-from="vdsp" data-edge-to="bench" data-edge-label="2.4 ms/100 次" data-edge-key="2" data-edge-id="c">
+          <rect x="492.15" y="189.5" width="75.7" height="16" rx="4" class="c-mask"/>
+          <text x="530" y="200.5" class="t-backend" font-size="8" text-anchor="middle">2.4 ms/100 次</text>
+        </g>
+        <g data-detail="context" data-edge-from="metal" data-edge-to="bench" data-edge-label="25.7 ms/100 次" data-edge-key="3" data-edge-id="d">
+          <rect x="597.2" y="310.5" width="80.6" height="16" rx="4" class="c-mask"/>
+          <text x="637.5" y="321.5" class="t-muted" font-size="8" text-anchor="middle">25.7 ms/100 次</text>
+        </g>
+
+        <!-- Legend -->
+        <g data-legend="" data-legend-bridge="">
+          <text x="40" y="564" class="t-primary" font-size="12" font-weight="650">图例</text>
+          <g data-legend-semantic-kind="emphasis" data-legend-x="40" data-legend-baseline="584" data-legend-width="83">
+            <path d="M 40 581 L 74 581" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+            <text x="83" y="584" class="t-muted" font-size="10" font-weight="500">主要数据</text>
+          </g>
+          <g data-legend-semantic-kind="database" data-legend-kind="database" data-legend-label="数据存储" data-legend-x="145" data-legend-baseline="584" data-legend-width="83">
+            <rect x="145" y="576" width="14" height="9" rx="2" class="c-database" stroke-width="1"/>
+            <text x="167" y="584" class="t-muted" font-size="10" font-weight="500">数据存储</text>
+          </g>
+          <g data-legend-semantic-kind="default" data-legend-x="250" data-legend-baseline="584" data-legend-width="73">
+            <path d="M 250 581 L 284 581" class="a-default" stroke-width="1.4" marker-end="url(#arrowhead)"/>
+            <text x="293" y="584" class="t-muted" font-size="10" font-weight="500">数据流</text>
+          </g>
+        </g>
+      </svg>

@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Accelerate/vDSP vs Metal 同任务对照",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/vdsp_metal.html",
+    "viewBox": [
+      1080,
+      620
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "引擎 A（CPU）"
+    },
+    {
+      "label": "引擎 B（GPU）"
+    },
+    {
+      "label": "计量"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "data",
+      "type": "database",
+      "label": "1M float",
+      "sublabel": "向量缩放 2.0",
+      "stage": 0,
+      "row": 1,
+      "tag": "4 MB"
+    },
+    {
+      "id": "vdsp",
+      "type": "backend",
+      "label": "vDSP_vsmul",
+      "sublabel": "CPU 向量单元",
+      "stage": 1,
+      "row": 0,
+      "tag": "~350 GB/s"
+    },
+    {
+      "id": "metal",
+      "type": "backend",
+      "label": "Metal kernel",
+      "sublabel": "commit + wait 同步",
+      "stage": 2,
+      "row": 2,
+      "tag": "~33 GB/s"
+    },
+    {
+      "id": "bench",
+      "type": "external",
+      "label": "带宽对照",
+      "sublabel": "各 100 次计量",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "a",
+      "from": "data",
+      "to": "vdsp",
+      "label": "免提交",
+      "variant": "emphasis"
+    },
+    {
+      "id": "b",
+      "from": "data",
+      "to": "metal",
+      "label": "command buffer",
+      "variant": "default"
+    },
+    {
+      "id": "c",
+      "from": "vdsp",
+      "to": "bench",
+      "label": "2.4 ms/100 次",
+      "variant": "emphasis"
+    },
+    {
+      "id": "d",
+      "from": "metal",
+      "to": "bench",
+      "label": "25.7 ms/100 次",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "差距来自同步开销",
+      "items": [
+        "Metal 每次 commit + waitUntilCompleted 约 0.25ms，主导小任务耗时",
+        "vDSP 走 CPU 向量单元，无提交零开销"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "选型结论",
+      "items": [
+        "小数据 / 单次同步任务用 vDSP",
+        "数据量几十 MB 以上或可批量提交时，Metal 带宽优势显现"
+      ]
+    }
+  ]
+}

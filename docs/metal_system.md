@@ -120,7 +120,7 @@
 
 ---
 
-### [ ] 项目 6：MetalFX 超分——低分辨率渲染放大 4K
+### [x] 项目 6：MetalFX 超分——低分辨率渲染放大 4K  ✅ 已实现 → [system/06_metalfx](system/06_metalfx/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -142,7 +142,7 @@
 
 ---
 
-### [ ] 项目 7：相机实时滤镜（CVMetalTextureCache）
+### [x] 项目 7：相机实时滤镜（CVMetalTextureCache）  ✅ 已实现 → [system/03_camera_texture](system/03_camera_texture/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -334,7 +334,7 @@
 
 ---
 
-### [ ] 项目 18：GPU / Neural Engine / CPU 三路基准
+### [x] 项目 18：GPU / Neural Engine / CPU 三路基准  ✅ 已实现 → [system/04_ane_bench](system/04_ane_bench/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -350,7 +350,7 @@
 
 ---
 
-### [ ] 项目 19：Vision 人脸检测 → Metal 实时马赛克
+### [x] 项目 19：Vision 人脸检测 → Metal 实时马赛克  ✅ 已实现 → [system/05_vision_face](system/05_vision_face/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -423,7 +423,7 @@
 
 ---
 
-### [ ] 项目 23：Core Image ↔ Metal 互操作
+### [x] 项目 23：Core Image ↔ Metal 互操作  ✅ 已实现 → [system/13_ci_metal](system/13_ci_metal/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|
@@ -439,7 +439,7 @@
 
 ---
 
-### [ ] 项目 24：Accelerate/vDSP vs Metal 同任务对照
+### [x] 项目 24：Accelerate/vDSP vs Metal 同任务对照  ✅ 已实现 → [system/14_vdsp_metal](system/14_vdsp_metal/README.md)
 
 | 项目信息 | 详情 |
 |:---|:---|

@@ -115,7 +115,7 @@ hands-on-metal/
 
 ## 系统级线实验（system/）
 
-> 清单见 [metal_system.md](metal_system.md)：Metal 与相机/视频/音频/CoreML 的跨界整合，产出可日常使用的作品。
+> 清单见 [metal_system.md](docs/metal_system.md)：Metal 与相机/视频/音频/CoreML 的跨界整合，产出可日常使用的作品。
 
 | # | 实验 | 主题 |
 |:--|:--|:--|

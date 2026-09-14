@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Core Image 滤镜链与 Metal 互操作",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/ci_metal.html",
+    "viewBox": [
+      1080,
+      620
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "滤镜链"
+    },
+    {
+      "label": "GPU 渲染"
+    },
+    {
+      "label": "Metal 互操作"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "src",
+      "type": "frontend",
+      "label": "测试图",
+      "sublabel": "渐变 + 色块 256²",
+      "stage": 0,
+      "row": 1,
+      "tag": "CIImage"
+    },
+    {
+      "id": "hue",
+      "type": "backend",
+      "label": "CIHueAdjust",
+      "sublabel": "色相旋转 1.5rad",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "expo",
+      "type": "backend",
+      "label": "CIExposureAdjust",
+      "sublabel": "曝光 +0.5EV",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "render",
+      "type": "messagebus",
+      "label": "CIContext",
+      "sublabel": "mtlDevice 共享 GPU",
+      "stage": 2,
+      "row": 1,
+      "tag": "GPU"
+    },
+    {
+      "id": "mtl",
+      "type": "external",
+      "label": "MTLTexture",
+      "sublabel": "CIImage(texture:) 互通",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "src",
+      "to": "hue",
+      "label": "输入图",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f2",
+      "from": "hue",
+      "to": "expo",
+      "label": "色相输出",
+      "variant": "default",
+      "labelDy": 24
+    },
+    {
+      "id": "f3",
+      "from": "expo",
+      "to": "render",
+      "label": "滤镜结果",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f5",
+      "from": "render",
+      "to": "mtl",
+      "label": "纹理互通",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "滤镜链全程在 GPU",
+      "items": [
+        "CIContext(mtlDevice:) 让 Core Image 跑在同一块 Metal 设备上",
+        "CIHueAdjust → CIExposureAdjust 无 CPU 中转"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "互操作两条路",
+      "items": [
+        "CIImage(texture:) 把 MTLTexture 包进滤镜链",
+        "ciContext.render 输出到 MTLTexture 供后续 Metal Pass 使用",
+        "回读像素做差验证：91% 像素被修改"
+      ]
+    }
+  ]
+}
