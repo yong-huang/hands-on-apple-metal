@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "IOSurface 跨框架零拷贝",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/iosurface.html",
+    "viewBox": [
+      1080,
+      620
+    ]
+  },
+  "stages": [
+    {
+      "label": "共享存储"
+    },
+    {
+      "label": "CPU 读回"
+    },
+    {
+      "label": "Metal 包装"
+    },
+    {
+      "label": "Core Image 复用"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "iosurface",
+      "type": "database",
+      "label": "IOSurface",
+      "sublabel": "BGRA 256² 共享内存",
+      "stage": 0,
+      "row": 1,
+      "tag": "零拷贝源"
+    },
+    {
+      "id": "cpu",
+      "type": "external",
+      "label": "CPU 读回",
+      "sublabel": "基址采样 100% 一致",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "mtltex",
+      "type": "backend",
+      "label": "MTLTexture",
+      "sublabel": "compute 渐变写入",
+      "stage": 2,
+      "row": 2,
+      "tag": "GPU"
+    },
+    {
+      "id": "cictx",
+      "type": "messagebus",
+      "label": "CIImage → CIContext",
+      "sublabel": "linearSRGB 回读 100%",
+      "stage": 3,
+      "row": 1
+    }
+  ],
+  "flows": [
+    {
+      "id": "f1",
+      "from": "iosurface",
+      "to": "cpu",
+      "label": "直接读基址",
+      "variant": "emphasis"
+    },
+    {
+      "id": "f2",
+      "from": "iosurface",
+      "to": "mtltex",
+      "label": "包装纹理",
+      "variant": "default"
+    },
+    {
+      "id": "f3",
+      "from": "mtltex",
+      "to": "cictx",
+      "label": "跨框架共享",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "为什么零拷贝成立",
+      "items": [
+        "IOSurface 是各图像框架共享像素的公共货币",
+        "Metal、CPU、Core Image 读写的是同一块物理内存"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "两个坑",
+      "items": [
+        "CIImage(mtlTexture:) 会垂直翻转，属 Core Image 约定",
+        "回读要按 linearSRGB 色彩空间，否则 0.5 被 sRGB 编码成 188"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "关联机制",
+      "items": [
+        "CVPixelBuffer 需 IOSurface 属性 + Metal 兼容键才能绑定纹理",
+        "CVMetalTextureCache 底层正是 IOSurface，缺了报 -6660"
+      ]
+    }
+  ]
+}
