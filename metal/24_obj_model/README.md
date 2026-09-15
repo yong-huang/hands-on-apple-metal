@@ -12,7 +12,7 @@
 
 ![OBJ 模型数据流](images/obj_model.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/24_obj_model/images/obj_model.html)（或本地打开 [`images/obj_model.html`](images/obj_model.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/24_obj_model/images/obj_model.html)（或本地打开 [`images/obj_model.html`](images/obj_model.html)）。
 
 文本资产经最小解析器变成 Metal 顶点缓冲，再走 11 的光照管线。一句话心智模型：**OBJ = 索引化的几何清单，渲染前展开成流式顶点**。
 

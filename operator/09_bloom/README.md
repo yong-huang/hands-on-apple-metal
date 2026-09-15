@@ -11,7 +11,7 @@
 
 ![Bloom 数据流](images/bloom.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/09_bloom/images/bloom.html)（或本地打开 [`images/bloom.html`](images/bloom.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/09_bloom/images/bloom.html)（或本地打开 [`images/bloom.html`](images/bloom.html)）。
 
 场景图依次流过阈值、模糊、加法三站，辉光图叠回原图。一句话心智模型：**高光提取后糊开再贴回去**。
 

@@ -12,7 +12,7 @@
 
 ![SwiftUI Shader 数据流](images/swiftui_shader.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/system/02_swiftui_shader/images/swiftui_shader.html)（或本地打开 [`images/swiftui_shader.html`](images/swiftui_shader.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/system/02_swiftui_shader/images/swiftui_shader.html)（或本地打开 [`images/swiftui_shader.html`](images/swiftui_shader.html)）。
 
 Effects.metal 经 metal CLI 编成 default.metallib（SwiftUI ShaderLibrary 的查找对象），三个 shader 由 Slider 实时驱动叠加。一句话心智模型：**colorEffect 改颜色，distortionEffect 改采样位置，layerEffect 回采原图任意处**。
 

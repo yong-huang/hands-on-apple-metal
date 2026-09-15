@@ -12,7 +12,7 @@
 
 ![规约数据流](images/reduction.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/03_reduction/images/reduction.html)（或本地打开 [`images/reduction.html`](images/reduction.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/03_reduction/images/reduction.html)（或本地打开 [`images/reduction.html`](images/reduction.html)）。
 
 1M 乘积经组内树形规约压成 4096 个部分和，再经组间收尾归一。一句话心智模型：**组内做树，组间做接力**。
 

@@ -12,7 +12,7 @@
 
 ![KV Cache 数据流](images/kv_cache.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/26_kv_cache/images/kv_cache.html)（或本地打开 [`images/kv_cache.html`](images/kv_cache.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/26_kv_cache/images/kv_cache.html)（或本地打开 [`images/kv_cache.html`](images/kv_cache.html)）。
 
 环形缓存经写入内核追加 300 步，再以连续布局进 attention。一句话心智模型：**写进槽位 pos % CAP，读走连续段**。
 

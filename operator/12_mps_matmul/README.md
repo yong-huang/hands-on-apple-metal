@@ -12,7 +12,7 @@
 
 ![MPS GEMM 数据流](images/mps_matmul.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/12_mps_matmul/images/mps_matmul.html)（或本地打开 [`images/mps_matmul.html`](images/mps_matmul.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/12_mps_matmul/images/mps_matmul.html)（或本地打开 [`images/mps_matmul.html`](images/mps_matmul.html)）。
 
 两个 MPSMatrix 喂给乘法算子出结果矩阵，抽样验证 + 计时。一句话心智模型：**描述"乘什么"，不描述"怎么乘"**。
 

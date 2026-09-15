@@ -12,7 +12,7 @@ GPU 调试的信息缺口巨大：命令提交了吗？kernel 跑了多久？缓
 
 ![帧捕获数据流](images/gpu_capture.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/23_gpu_capture/images/gpu_capture.html)（或本地打开 [`images/gpu_capture.html`](images/gpu_capture.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/23_gpu_capture/images/gpu_capture.html)（或本地打开 [`images/gpu_capture.html`](images/gpu_capture.html)）。
 
 计算负载被捕获器录成 gputrace 文件，供 Xcode 离线分析；同场进行正确性双回归。一句话心智模型：**捕获 = 给 GPU 时间线开行车记录仪**。
 

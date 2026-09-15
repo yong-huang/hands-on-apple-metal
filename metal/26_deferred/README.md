@@ -12,7 +12,7 @@
 
 ![延迟着色数据流](images/deferred.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/26_deferred/images/deferred.html)（或本地打开 [`images/deferred.html`](images/deferred.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/26_deferred/images/deferred.html)（或本地打开 [`images/deferred.html`](images/deferred.html)）。
 
 Pass1 把反照率与法线写进两张 G-Buffer 纹理（MRT），Pass2 全屏逐像素读它们算光照。一句话心智模型：**先拍照存证据，再统一审案**。
 

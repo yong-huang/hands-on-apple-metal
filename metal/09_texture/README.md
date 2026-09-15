@@ -12,7 +12,7 @@
 
 ![纹理采样架构](images/texture.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/09_texture/images/texture.html)（或本地打开 [`images/texture.html`](images/texture.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/09_texture/images/texture.html)（或本地打开 [`images/texture.html`](images/texture.html)）。
 
 像素数组经 `replace()` 上传成 `MTLTexture`，与 `MTLSamplerState`（linear 过滤）一起在 fragment shader 中按 uv 采样，输出贴图矩形。一句话心智模型：**纹理是数据，采样器是取数规则，uv 是取数地址**。
 

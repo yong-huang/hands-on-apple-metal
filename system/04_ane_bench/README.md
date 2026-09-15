@@ -12,7 +12,7 @@ CoreML 的 `computeUnits` 有三个选项，但"全给系统调度"并不总是�
 
 ![三路基准数据流](images/ane_bench.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/system/04_ane_bench/images/ane_bench.html)（或本地打开 [`images/ane_bench.html`](images/ane_bench.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/system/04_ane_bench/images/ane_bench.html)（或本地打开 [`images/ane_bench.html`](images/ane_bench.html)）。
 
 coremltools 生成 mlpackage → 系统编译成 mlmodelc → 三路 computeUnits 各跑 100 次推理出延迟表。一句话心智模型：**模型只有一份，引擎三条路，选哪条看延迟表**。
 

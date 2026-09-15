@@ -12,7 +12,7 @@
 
 ![RMSNorm 数据流](images/rmsnorm.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/17_rmsnorm/images/rmsnorm.html)（或本地打开 [`images/rmsnorm.html`](images/rmsnorm.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/17_rmsnorm/images/rmsnorm.html)（或本地打开 [`images/rmsnorm.html`](images/rmsnorm.html)）。
 
 同一输入喂给手写实现与内置 fast 内核，最大绝对差判定。一句话心智模型：**x ÷ rms(x) × w，eps 加在均值上**。
 

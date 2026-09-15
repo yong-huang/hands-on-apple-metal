@@ -12,7 +12,7 @@
 
 ![基准框架数据流](images/benchmark.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/30_benchmark/images/benchmark.html)（或本地打开 [`images/benchmark.html`](images/benchmark.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/30_benchmark/images/benchmark.html)（或本地打开 [`images/benchmark.html`](images/benchmark.html)）。
 
 五个规模的 MatMul 经框架计时，产出延迟/TFLOPS/带宽表 + 精度回归。一句话心智模型：**性能报告必须附带精度签证**。
 
@@ -89,4 +89,4 @@ def bench(fn, iters=20, warmup=3):
 
 算子线（operator/）30 个项目全部实现完毕。至此两份路线图上的所有非重复项目——**54 个实验**——都已真实跑通。回到总目录，看看整个系列的版图。
 
-→ 返回总目录：[hands-on-metal](../../README.md)
+→ 返回总目录：[hands-on-apple-metal](../../README.md)

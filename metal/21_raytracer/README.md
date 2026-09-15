@@ -12,7 +12,7 @@
 
 ![光线追踪数据流](images/raytracer.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/21_raytracer/images/raytracer.html)（或本地打开 [`images/raytracer.html`](images/raytracer.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/21_raytracer/images/raytracer.html)（或本地打开 [`images/raytracer.html`](images/raytracer.html)）。
 
 针孔相机生成 26 万根主光线，MPS 加速结构求最近交点，CPU 按重心坐标插值着色。一句话心智模型：**每个像素发射一根问题，场景回答"撞到哪、撞到谁"**。
 

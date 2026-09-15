@@ -12,7 +12,7 @@
 
 ![光照立方体架构](images/lit_cube.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/11_lit_cube/images/lit_cube.html)（或本地打开 [`images/lit_cube.html`](images/lit_cube.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/11_lit_cube/images/lit_cube.html)（或本地打开 [`images/lit_cube.html`](images/lit_cube.html)）。
 
 顶点+法线、光源方向汇入顶点着色，插值后的法线在片元做光照。一句话心智模型：**位置交给 MVP，亮度交给 dot(N, L)**。
 

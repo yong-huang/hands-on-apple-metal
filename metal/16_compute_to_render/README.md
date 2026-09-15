@@ -12,7 +12,7 @@
 
 ![Compute→Render 编排](images/compute_to_render.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/16_compute_to_render/images/compute_to_render.html)（或本地打开 [`images/compute_to_render.html`](images/compute_to_render.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/16_compute_to_render/images/compute_to_render.html)（或本地打开 [`images/compute_to_render.html`](images/compute_to_render.html)）。
 
 同一命令缓冲里先编码 compute 再编码 render，顶点缓冲是两者的接合点。一句话心智模型：**编码顺序 = 执行顺序**。
 

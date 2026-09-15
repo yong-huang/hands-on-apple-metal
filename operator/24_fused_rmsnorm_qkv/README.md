@@ -12,7 +12,7 @@ mx.compile 只能融合逐元素子图；跨"归约 + 矩阵乘"边界的融合�
 
 ![融合算子数据流](images/fused_rmsnorm_qkv.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/24_fused_rmsnorm_qkv/images/fused_rmsnorm_qkv.html)（或本地打开 [`images/fused_rmsnorm_qkv.html`](images/fused_rmsnorm_qkv.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/24_fused_rmsnorm_qkv/images/fused_rmsnorm_qkv.html)（或本地打开 [`images/fused_rmsnorm_qkv.html`](images/fused_rmsnorm_qkv.html)）。
 
 x 与四组权重一次读入融合内核，与分离执行对答案。一句话心智模型：**归约一次 rms，然后 Q/K/V 三条投影并行奔流**。
 

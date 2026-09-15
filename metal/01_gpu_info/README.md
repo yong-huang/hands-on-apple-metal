@@ -14,7 +14,7 @@
 
 ![MTLDevice 能力探测架构](images/gpu_info.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/01_gpu_info/images/gpu_info.html)（或本地打开 [`images/gpu_info.html`](images/gpu_info.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/01_gpu_info/images/gpu_info.html)（或本地打开 [`images/gpu_info.html`](images/gpu_info.html)）。
 
 一条主链路：程序向 Metal 框架要设备 → Metal 经驱动读取硬件属性 → `MTLDevice` 句柄交回程序 → 打印报告。一句话心智模型：**`MTLDevice` 是能力查询的总入口，也是一切 GPU 对象的工厂**。
 

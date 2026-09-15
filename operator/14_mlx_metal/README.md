@@ -12,7 +12,7 @@
 
 ![MLX 统一内存数据流](images/mlx_metal.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/14_mlx_metal/images/mlx_metal.html)（或本地打开 [`images/mlx_metal.html`](images/mlx_metal.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/14_mlx_metal/images/mlx_metal.html)（或本地打开 [`images/mlx_metal.html`](images/mlx_metal.html)）。
 
 numpy 数据实体化为 mx.array，GPU 归约后逐元素验证。一句话心智模型：**同一块内存，两颗芯片轮流用**。
 

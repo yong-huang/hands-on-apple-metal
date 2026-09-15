@@ -12,7 +12,7 @@ MTL4 的架构变化决定了未来十年的 Metal 代码形态：更少的隐�
 
 ![MTL4 命令栈](images/ml_encoder.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/28_ml_encoder/images/ml_encoder.html)（或本地打开 [`images/ml_encoder.html`](images/ml_encoder.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/28_ml_encoder/images/ml_encoder.html)（或本地打开 [`images/ml_encoder.html`](images/ml_encoder.html)）。
 
 命令栈 → 参数表绑定 → kernel 执行 → SharedEvent 同步，ML 编码器作为插槽被如实探测。一句话心智模型：**MTL4 把"框架帮你做的"全部改成"你必须声明的"**。
 

@@ -11,7 +11,7 @@
 
 ![阈值化数据流](images/threshold.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/10_threshold/images/threshold.html)（或本地打开 [`images/threshold.html`](images/threshold.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/10_threshold/images/threshold.html)（或本地打开 [`images/threshold.html`](images/threshold.html)）。
 
 0→255 渐变图经三档阈值二值化，保留列数与解析解比对。一句话心智模型：**x > T 保留原值，否则清零**。
 

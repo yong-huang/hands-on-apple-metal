@@ -12,7 +12,7 @@
 
 ![灰度滤镜数据流](images/grayscale.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/14_grayscale/images/grayscale.html)（或本地打开 [`images/grayscale.html`](images/grayscale.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/14_grayscale/images/grayscale.html)（或本地打开 [`images/grayscale.html`](images/grayscale.html)）。
 
 CPU 生成的测试图经 `replace()` 上传，compute 逐像素读 src 写 dst，dst 一边供渲染采样、一边供 CPU 回读验证。一句话心智模型：**纹理 = 带坐标的二维数组，kernel = 逐像素函数**。
 

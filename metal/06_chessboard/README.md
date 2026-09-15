@@ -12,7 +12,7 @@
 
 ![棋盘格数据流](images/chessboard.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/06_chessboard/images/chessboard.html)（或本地打开 [`images/chessboard.html`](images/chessboard.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/06_chessboard/images/chessboard.html)（或本地打开 [`images/chessboard.html`](images/chessboard.html)）。
 
 片元坐标 → 乘格子数 N 后 `fract` 折叠进 0…1（空间重复）→ `(x+y)` 奇偶经 `step` 判定 0/1 → 黑白上色。一句话心智模型：**fract 把无限平面折叠进一个格子，step 在格子内一分为二**。
 

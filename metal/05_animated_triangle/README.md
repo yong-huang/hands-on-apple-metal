@@ -12,7 +12,7 @@
 
 ![每帧渲染循环](images/animated_triangle.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/05_animated_triangle/images/animated_triangle.html)（或本地打开 [`images/animated_triangle.html`](images/animated_triangle.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/05_animated_triangle/images/animated_triangle.html)（或本地打开 [`images/animated_triangle.html`](images/animated_triangle.html)）。
 
 上泳道 CPU 每帧三步：`draw(in:)` 回调 → 算角度 → 矩阵写入 Uniform；下泳道 GPU 拿矩阵变换顶点；底部虚线是"下一帧"回环。一句话心智模型：**CPU 每帧只递一张小纸条（矩阵），GPU 按纸条重画整个世界**。
 

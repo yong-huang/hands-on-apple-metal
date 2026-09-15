@@ -1,4 +1,4 @@
-# hands-on-metal
+# hands-on-apple-metal
 
 Apple Metal 动手学习系列：**54 个可真实跑通的实验**，从渲染第一个三角形
 一路写到 Metal 4 张量与融合算子。每条线统一结构：原理讲解（README）、
@@ -7,7 +7,7 @@ Apple Metal 动手学习系列：**54 个可真实跑通的实验**，从渲染�
 > 🖼️ **交互式架构图**：每个实验自带图三件套——图源 JSON（Typed JSON IR）、
 > 可交互 HTML（缩放 / 节点聚焦 / 连线追踪 / 深浅主题）与双主题矢量 SVG（README 内嵌），
 > 全部通过质量门禁校验，由 [Archify](https://github.com/tt-a1i/archify) 工具生成。
-> 开启 GitHub Pages 后可[在线查看](https://yong-huang.github.io/hands-on-metal/)。
+> 开启 GitHub Pages 后可[在线查看](https://yong-huang.github.io/hands-on-apple-metal/)。
 
 ## 两条学习线
 
@@ -33,7 +33,7 @@ scripts/load_resources.sh   # 一键体检：芯片 / swiftc / Metal 设备
 ## 目录结构
 
 ```
-hands-on-metal/
+hands-on-apple-metal/
 ├── README.md             # 本文档：系列总目录
 ├── LICENSE               # MIT
 ├── docs/

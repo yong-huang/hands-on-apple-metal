@@ -11,7 +11,7 @@
 
 ![逐元素加法数据流](images/mps_elementwise.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/13_mps_elementwise/images/mps_elementwise.html)（或本地打开 [`images/mps_elementwise.html`](images/mps_elementwise.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/13_mps_elementwise/images/mps_elementwise.html)（或本地打开 [`images/mps_elementwise.html`](images/mps_elementwise.html)）。
 
 A/B 两块 16MB 缓冲经 float4 加法内核写入 C。一句话心智模型：**算术强度 0.5 的算子，优化 = 把带宽打满**。
 

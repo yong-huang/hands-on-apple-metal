@@ -12,7 +12,7 @@
 
 ![相机滤镜数据流](images/camera_texture.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/system/03_camera_texture/images/camera_texture.html)（或本地打开 [`images/camera_texture.html`](images/camera_texture.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/system/03_camera_texture/images/camera_texture.html)（或本地打开 [`images/camera_texture.html`](images/camera_texture.html)）。
 
 相机帧与合成回退帧都汇入 CVMetalTextureCache 零拷贝桥，fragment 四滤镜后呈现。一句话心智模型：**像素缓冲即 Metal 纹理，桥只递地址不搬数据**。
 

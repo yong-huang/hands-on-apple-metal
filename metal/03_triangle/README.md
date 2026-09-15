@@ -12,7 +12,7 @@
 
 ![渲染管线数据流](images/triangle.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/03_triangle/images/triangle.html)（或本地打开 [`images/triangle.html`](images/triangle.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/03_triangle/images/triangle.html)（或本地打开 [`images/triangle.html`](images/triangle.html)）。
 
 顶点缓冲 → `vertex_main`（逐顶点）→ 光栅化器（硬件固定管线，插值）→ `fragment_main`（逐片元）→ drawable 呈现。一句话心智模型：**vertex 决定"形状在哪儿"，光栅化器把三角形打碎成像素，fragment 决定"每个像素什么色"**。
 

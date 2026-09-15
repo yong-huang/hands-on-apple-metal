@@ -12,7 +12,7 @@
 
 ![Roofline 数据流](images/roofline.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/06_roofline/images/roofline.html)（或本地打开 [`images/roofline.html`](images/roofline.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/06_roofline/images/roofline.html)（或本地打开 [`images/roofline.html`](images/roofline.html)）。
 
 64MB×3 的流式数据喂给算术强度可调的内核，7 个 unroll 档位扫出两个平台。一句话心智模型：**算术强度 = 每 1 字节访存换来几个 FLOP**。
 

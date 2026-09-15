@@ -12,7 +12,7 @@ AI 推理结果的"消费端"几乎总是渲染。本实验演示两者的正确
 
 ![Vision 人脸马赛克数据流](images/vision_face.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/system/05_vision_face/images/vision_face.html)（或本地打开 [`images/vision_face.html`](images/vision_face.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/system/05_vision_face/images/vision_face.html)（或本地打开 [`images/vision_face.html`](images/vision_face.html)）。
 
 相机帧分两路：一路进 Vision 检测出人脸矩形，一路作为纹理直通 fragment；fragment 用人脸矩形对纹理采样位置做块状量化。一句话心智模型：**CPU 出"哪里"，GPU 出"怎么画"**。
 

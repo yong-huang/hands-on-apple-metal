@@ -12,7 +12,7 @@
 
 ![超分渲染数据流](images/metalfx.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/system/06_metalfx/images/metalfx.html)（或本地打开 [`images/metalfx.html`](images/metalfx.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/system/06_metalfx/images/metalfx.html)（或本地打开 [`images/metalfx.html`](images/metalfx.html)）。
 
 低分辨率渲染 → bilinear 放大呈现。一句话心智模型：**小画布画，大画布挂**。
 

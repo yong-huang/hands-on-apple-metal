@@ -12,7 +12,7 @@
 
 ![Attention 数据流](images/attention.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/20_attention/images/attention.html)（或本地打开 [`images/attention.html`](images/attention.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/20_attention/images/attention.html)（或本地打开 [`images/attention.html`](images/attention.html)）。
 
 Q/K/V 三输入分别喂给手写三步链路与融合内核，双向对答案。一句话心智模型：**softmax(QKᵀ/√d)·V——加权求和，权重由相似度决定**。
 

@@ -12,7 +12,7 @@
 
 ![线程层级架构](images/thread_index.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/02_thread_index/images/thread_index.html)（或本地打开 [`images/thread_index.html`](images/thread_index.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/02_thread_index/images/thread_index.html)（或本地打开 [`images/thread_index.html`](images/thread_index.html)）。
 
 256 线程的 grid 划成 4 个 threadgroup（每组 64），每个 kernel 调用把三个坐标写进输出缓冲。一句话心智模型：**全局索引 = 组号 × 组大小 + 组内索引——线程的"门牌号"由三段坐标拼出**。
 
@@ -116,4 +116,4 @@ kernel void print_thread_info(device ThreadInfo* output [[buffer(0)]],
 
 线程的"门牌号"体系已看穿：全局、组号、组内三个坐标拼出每个线程的身份。至此算子编程的两块地基——命令骨架（op01）与线程模型（op02）——都已夯实。路线图后续项目（规约、Naive/Tiled GEMM、Roofline、MPS、MLX，见 `docs/operator.md`）将在这两块地基上逐层起楼。
 
-→ 返回系列总目录：[hands-on-metal](../../README.md)
+→ 返回系列总目录：[hands-on-apple-metal](../../README.md)

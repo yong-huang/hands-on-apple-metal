@@ -8,7 +8,7 @@
 
 ## 2. 总览：核心机制一图看懂
 ![视频帧处理数据流](images/vt_player.svg)
-> 🌐 **交互版**：[在线打开](https://yong-huang.github.io/hands-on-metal/system/08_vt_player/images/vt_player.html)
+> 🌐 **交互版**：[在线打开](https://yong-huang.github.io/hands-on-apple-metal/system/08_vt_player/images/vt_player.html)
 
 ## 3. 快速开始
 ```bash

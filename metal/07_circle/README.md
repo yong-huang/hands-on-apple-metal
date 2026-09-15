@@ -12,7 +12,7 @@
 
 ![距离场画圆数据流](images/circle.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/07_circle/images/circle.html)（或本地打开 [`images/circle.html`](images/circle.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/07_circle/images/circle.html)（或本地打开 [`images/circle.html`](images/circle.html)）。
 
 居中 UV → `length(uv)` 得每像素到圆心的距离 d → d 与半径 r 一起送进 `smoothstep` → 输出 0…1 的透明度。一句话心智模型：**圆不是画出来的，是距离场 `d < r` 的等值线**。
 

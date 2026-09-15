@@ -12,7 +12,7 @@ AI 生成内容（超分、神经材质、生成式贴图）都在走"推理 →
 
 ![混合管线数据流](images/ml_graphics.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/30_ml_graphics/images/ml_graphics.html)（或本地打开 [`images/ml_graphics.html`](images/ml_graphics.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/30_ml_graphics/images/ml_graphics.html)（或本地打开 [`images/ml_graphics.html`](images/ml_graphics.html)）。
 
 MTL4 队列生成数据面并 signal 事件，渲染队列 encodeWait 后采样。一句话心智模型：**事件是队列之间的红绿灯**。
 

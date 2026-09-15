@@ -12,7 +12,7 @@
 
 ![命令缓冲的一生](images/command_queue.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/02_command_queue/images/command_queue.html)（或本地打开 [`images/command_queue.html`](images/command_queue.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/02_command_queue/images/command_queue.html)（或本地打开 [`images/command_queue.html`](images/command_queue.html)）。
 
 三层骨架：`MTLDevice` 创建 `MTLCommandQueue`（生产线），队列生产 `MTLCommandBuffer`（集装箱），缓冲经 `commit()` 入队由 GPU 异步执行。一句话心智模型：**队列是提交通道，缓冲是执行单元，`commit()` 是 CPU 时间线与 GPU 时间线的分界线**。
 

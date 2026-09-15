@@ -12,7 +12,7 @@
 
 ![推理引擎数据流](images/mini_engine.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/28_mini_engine/images/mini_engine.html)（或本地打开 [`images/mini_engine.html`](images/mini_engine.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/28_mini_engine/images/mini_engine.html)（或本地打开 [`images/mini_engine.html`](images/mini_engine.html)）。
 
 五个算子注册进表，链式图顺序执行输出概率分布。一句话心智模型：**引擎 = 算子协议 + 注册表 + 编排器**。
 

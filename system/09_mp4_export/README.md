@@ -7,7 +7,7 @@
 
 ## 2. 总览
 ![离屏渲染数据流](images/mp4_export.svg)
-> 🌐 **交互版**：[在线打开](https://yong-huang.github.io/hands-on-metal/system/09_mp4_export/images/mp4_export.html)
+> 🌐 **交互版**：[在线打开](https://yong-huang.github.io/hands-on-apple-metal/system/09_mp4_export/images/mp4_export.html)
 
 ## 3. 快速开始
 ```bash

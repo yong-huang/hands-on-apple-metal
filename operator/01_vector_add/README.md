@@ -12,7 +12,7 @@
 
 ![向量加法时序](images/vector_add.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/01_vector_add/images/vector_add.html)（或本地打开 [`images/vector_add.html`](images/vector_add.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/01_vector_add/images/vector_add.html)（或本地打开 [`images/vector_add.html`](images/vector_add.html)）。
 
 CPU 写入 A/B → 编码 pipeline 与缓冲 → `dispatchThreadgroups 4×256` → commit → GPU 上 1024 个线程并行执行 `C[i]=A[i]+B[i]` → waitUntilCompleted → CPU 读回逐元素比对。一句话心智模型：**算子 = 一次"传数据过去、派线程去算、等结果回来"的往返**。
 

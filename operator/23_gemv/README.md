@@ -12,7 +12,7 @@ GEMV 是"规约 × GEMM"的合体练习：既要有每行的点乘结构，又�
 
 ![GEMV 数据流](images/gemv.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/23_gemv/images/gemv.html)（或本地打开 [`images/gemv.html`](images/gemv.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/23_gemv/images/gemv.html)（或本地打开 [`images/gemv.html`](images/gemv.html)）。
 
 W 逐行喂给线程组，组内规约出每行的点积写进 y。一句话心智模型：**一行一组，组内吃干**。
 

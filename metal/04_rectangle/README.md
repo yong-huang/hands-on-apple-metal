@@ -12,7 +12,7 @@ GPU 画图元的单位是三角形，而相邻三角形几乎总要共享顶点�
 
 ![索引缓冲数据流](images/rectangle.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/04_rectangle/images/rectangle.html)（或本地打开 [`images/rectangle.html`](images/rectangle.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/04_rectangle/images/rectangle.html)（或本地打开 [`images/rectangle.html`](images/rectangle.html)）。
 
 顶点缓冲（4 个四角）与索引缓冲（6 个序号）汇入 `TriangleStrip` 组装器 → 折叠出 2 个三角形 → 填充成四色矩形。一句话心智模型：**索引是顶点的点名册，每 3 个连续索引唱名出一个三角形**。
 

@@ -11,7 +11,7 @@
 
 ![INT4 GEMV 数据流](images/int4_gemv.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/25_int4_gemv/images/int4_gemv.html)（或本地打开 [`images/int4_gemv.html`](images/int4_gemv.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/25_int4_gemv/images/int4_gemv.html)（或本地打开 [`images/int4_gemv.html`](images/int4_gemv.html)）。
 
 FP32 权重逐组打包成 nibble，融合内核解量化与点乘一气呵成。一句话心智模型：**存的是 4-bit，算的时候才还原，还原不落显存**。
 

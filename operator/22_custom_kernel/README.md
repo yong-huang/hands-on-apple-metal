@@ -12,7 +12,7 @@ MLX 内置算子覆盖不到的地方（自定义量化格式、奇异融合、�
 
 ![自定义内核数据流](images/custom_kernel.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/22_custom_kernel/images/custom_kernel.html)（或本地打开 [`images/custom_kernel.html`](images/custom_kernel.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/22_custom_kernel/images/custom_kernel.html)（或本地打开 [`images/custom_kernel.html`](images/custom_kernel.html)）。
 
 输入数组进内核体（签名由 MLX 代生成），输出逐元素断言；反例演示线程不足的后果。一句话心智模型：**声明 IO 名字，只写函数体**。
 

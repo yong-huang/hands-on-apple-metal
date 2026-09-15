@@ -12,7 +12,7 @@
 
 ![激活函数数据流](images/activations.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/19_activations/images/activations.html)（或本地打开 [`images/activations.html`](images/activations.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/19_activations/images/activations.html)（或本地打开 [`images/activations.html`](images/activations.html)）。
 
 同一输入施加三种激活，曲线对比 + 4096² 大规模计时。一句话心智模型：**ReLU 是开关，SiLU/GELU 是带负半轴"小水沟"的软开关**。
 

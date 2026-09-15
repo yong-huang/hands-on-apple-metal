@@ -12,7 +12,7 @@
 
 ![GELU 融合数据流](images/gelu_compile.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/16_gelu_compile/images/gelu_compile.html)（或本地打开 [`images/gelu_compile.html`](images/gelu_compile.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/16_gelu_compile/images/gelu_compile.html)（或本地打开 [`images/gelu_compile.html`](images/gelu_compile.html)）。
 
 同一输入分别走手写 5 算子链与融合内核，数值与性能双验证。一句话心智模型：**5×64MB 的搬运压缩成 1×64MB**。
 

@@ -12,7 +12,7 @@ draw call 本身有 CPU 侧成本（状态验证、驱动开销），万级物�
 
 ![实例化数据流](images/instancing.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/22_instancing/images/instancing.html)（或本地打开 [`images/instancing.html`](images/instancing.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/22_instancing/images/instancing.html)（或本地打开 [`images/instancing.html`](images/instancing.html)）。
 
 单三角形几何与 400 份实例数据汇入顶点着色器，一次 draw 输出整个阵列。一句话心智模型：**[[instance_id]] 是"我是第几份拷贝"的自查**。
 

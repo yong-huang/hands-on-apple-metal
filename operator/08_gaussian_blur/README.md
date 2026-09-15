@@ -12,7 +12,7 @@
 
 ![高斯模糊数据流](images/gaussian_blur.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/08_gaussian_blur/images/gaussian_blur.html)（或本地打开 [`images/gaussian_blur.html`](images/gaussian_blur.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/08_gaussian_blur/images/gaussian_blur.html)（或本地打开 [`images/gaussian_blur.html`](images/gaussian_blur.html)）。
 
 噪声图经三档 sigma 模糊，梯度能量统计验证单调性。一句话心智模型：**sigma 越大，高频越少，图像越平**。
 

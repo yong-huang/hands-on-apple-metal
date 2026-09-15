@@ -12,7 +12,7 @@ GEMM 优化的第一课不是 simd 也不是 tensor core，而是**数据复用*
 
 ![Tiled GEMM 数据流](images/matmul_tiled.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/05_matmul_tiled/images/matmul_tiled.html)（或本地打开 [`images/matmul_tiled.html`](images/matmul_tiled.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/05_matmul_tiled/images/matmul_tiled.html)（或本地打开 [`images/matmul_tiled.html`](images/matmul_tiled.html)）。
 
 A/B 的 tile 协作搬入共享内存，块内点乘累加后推进下一块。一句话心智模型：**分块搬运，块内吃干榨尽**。
 

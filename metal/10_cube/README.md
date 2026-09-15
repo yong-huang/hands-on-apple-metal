@@ -12,7 +12,7 @@
 
 ![3D 立方体架构](images/cube.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/10_cube/images/cube.html)（或本地打开 [`images/cube.html`](images/cube.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/10_cube/images/cube.html)（或本地打开 [`images/cube.html`](images/cube.html)）。
 
 顶点缓冲与 MVP 矩阵汇入 `vertex_main`，经深度测试后呈现。一句话心智模型：**MVP 决定"在哪"，深度缓冲决定"谁在前"**。
 

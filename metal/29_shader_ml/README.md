@@ -11,7 +11,7 @@ Metal 4 的 MSL 引入了 tensor 类型。正确语法是什么、哪条编译�
 
 ![Shader ML 数据流](images/shader_ml.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/29_shader_ml/images/shader_ml.html)（或本地打开 [`images/shader_ml.html`](images/shader_ml.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/29_shader_ml/images/shader_ml.html)（或本地打开 [`images/shader_ml.html`](images/shader_ml.html)）。
 
 三轮递进：运行时编译 → 工具链编译 → MTL4 栈派发验证。一句话心智模型：**tensor 是绑在 buffer 槽上的 GPU 资源，普通 kernel 就能用**。
 

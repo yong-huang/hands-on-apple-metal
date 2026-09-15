@@ -12,7 +12,7 @@
 
 ![粒子系统数据流](images/particles.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/15_particles/images/particles.html)（或本地打开 [`images/particles.html`](images/particles.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/15_particles/images/particles.html)（或本地打开 [`images/particles.html`](images/particles.html)）。
 
 位置/速度两块缓冲喂给 compute 积分，新位置直接供渲染画点。一句话心智模型：**缓冲即世界状态，kernel 即物理定律**。
 

@@ -12,7 +12,7 @@
 
 ![融合 GEMM+GELU 数据流](images/fused_gemm_act.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/27_fused_gemm_act/images/fused_gemm_act.html)（或本地打开 [`images/fused_gemm_act.html`](images/fused_gemm_act.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/27_fused_gemm_act/images/fused_gemm_act.html)（或本地打开 [`images/fused_gemm_act.html`](images/fused_gemm_act.html)）。
 
 同一个内核用 `fused` 标志切换"裸 GEMM"与"GEMM+GELU"两种输出。一句话心智模型：**累加结果还没落地，激活就地完成**。
 

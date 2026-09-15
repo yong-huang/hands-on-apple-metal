@@ -12,7 +12,7 @@
 
 ![颜色渐变数据流](images/gradient.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/08_gradient/images/gradient.html)（或本地打开 [`images/gradient.html`](images/gradient.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/08_gradient/images/gradient.html)（或本地打开 [`images/gradient.html`](images/gradient.html)）。
 
 `uv.x`（左 0 → 右 1）经 `smoothstep` 变成首尾减速的权重 t → 红、蓝两端值送入 `mix` → 每像素输出一个插值色。一句话心智模型：**渐变 = 两端颜色 + 一个 0…1 的权重，`mix` 负责在中间走钢丝**。
 

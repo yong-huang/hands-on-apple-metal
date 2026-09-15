@@ -12,7 +12,7 @@
 
 ![MTLTensor 数据流](images/mtl_tensor.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/27_mtl_tensor/images/mtl_tensor.html)（或本地打开 [`images/mtl_tensor.html`](images/mtl_tensor.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/27_mtl_tensor/images/mtl_tensor.html)（或本地打开 [`images/mtl_tensor.html`](images/mtl_tensor.html)）。
 
 描述符声明维度与类型，`makeTensor` 产出张量，能力探测记录访问边界。一句话心智模型：**MTLTensor = 知道自己形状的内存**。
 

@@ -12,7 +12,7 @@
 
 ![自定义滤镜数据流](images/custom_filter.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/29_custom_filter/images/custom_filter.html)（或本地打开 [`images/custom_filter.html`](images/custom_filter.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/29_custom_filter/images/custom_filter.html)（或本地打开 [`images/custom_filter.html`](images/custom_filter.html)）。
 
 渐变图先过 MPS 模糊再进 posterize 量化，输出灰度级统计验证。一句话心智模型：**posterize = floor(c/step)*step + step/2，色彩塌缩到级中心**。
 

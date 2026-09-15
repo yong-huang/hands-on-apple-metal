@@ -12,7 +12,7 @@
 
 ![惰性执行数据流](images/mlx_lazy.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/15_mlx_lazy/images/mlx_lazy.html)（或本地打开 [`images/mlx_lazy.html`](images/mlx_lazy.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/15_mlx_lazy/images/mlx_lazy.html)（或本地打开 [`images/mlx_lazy.html`](images/mlx_lazy.html)）。
 
 256MB 输入经过 20 层记账、一次 eval、numpy 参照比对。一句话心智模型：**构建是免费的，eval 才花钱——攒一批再结**。
 

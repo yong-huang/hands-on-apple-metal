@@ -12,7 +12,7 @@
 
 ![CAMetalLayer 架构](images/cametal_layer.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/27_cametal_layer/images/cametal_layer.html)（或本地打开 [`images/cametal_layer.html`](images/cametal_layer.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/27_cametal_layer/images/cametal_layer.html)（或本地打开 [`images/cametal_layer.html`](images/cametal_layer.html)）。
 
 SwiftUI 窗口驱动 DisplayLink（锁 60fps），每帧从 CAMetalLayer 取 drawable 编码渐变后呈现。一句话心智模型：**MTKView 托管的三件事全部手写：图层替换 + DisplayLink + 手动取 drawable**。
 

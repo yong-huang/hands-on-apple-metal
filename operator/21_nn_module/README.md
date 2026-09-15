@@ -12,7 +12,7 @@
 
 ![nn.Module 数据流](images/nn_module.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/21_nn_module/images/nn_module.html)（或本地打开 [`images/nn_module.html`](images/nn_module.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/21_nn_module/images/nn_module.html)（或本地打开 [`images/nn_module.html`](images/nn_module.html)）。
 
 定义 → 前向验证 → safetensors 落盘重建。一句话心智模型：**Module = 参数字典 + 前向函数**。
 

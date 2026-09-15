@@ -12,7 +12,7 @@
 
 ![Naive GEMM 数据流](images/matmul_naive.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/04_matmul_naive/images/matmul_naive.html)（或本地打开 [`images/matmul_naive.html`](images/matmul_naive.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/04_matmul_naive/images/matmul_naive.html)（或本地打开 [`images/matmul_naive.html`](images/matmul_naive.html)）。
 
 A 的行与 B 的列在 2D 线程网格里点乘成 C。一句话心智模型：**线程坐标 = 输出坐标**。
 

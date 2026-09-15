@@ -12,7 +12,7 @@ attention logits 上千是常态而非极端案例。数值稳定性不是理论
 
 ![Softmax 数据流](images/softmax.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/18_softmax/images/softmax.html)（或本地打开 [`images/softmax.html`](images/softmax.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/18_softmax/images/softmax.html)（或本地打开 [`images/softmax.html`](images/softmax.html)）。
 
 大数值输入同时喂给朴素版（产 nan）与稳定版（正常输出），再与内置对照。一句话心智模型：**exp 单调，减常数不改分布，只改命运**。
 

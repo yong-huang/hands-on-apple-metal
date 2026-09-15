@@ -12,7 +12,7 @@
 
 ![MPSGraph 数据流](images/mpsgraph.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/operator/11_mpsgraph/images/mpsgraph.html)（或本地打开 [`images/mpsgraph.html`](images/mpsgraph.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/operator/11_mpsgraph/images/mpsgraph.html)（或本地打开 [`images/mpsgraph.html`](images/mpsgraph.html)）。
 
 渐变数据喂进占位符，经 (x−0.5)×2 与 clamp 两站输出。一句话心智模型：**先声明关系，再喂数据**。
 

@@ -12,7 +12,7 @@
 
 ![阴影贴图数据流](images/shadow_map.svg)
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-metal/metal/25_shadow_map/images/shadow_map.html)（或本地打开 [`images/shadow_map.html`](images/shadow_map.html)）。
+> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/25_shadow_map/images/shadow_map.html)（或本地打开 [`images/shadow_map.html`](images/shadow_map.html)）。
 
 场景几何喂给光深 Pass 写进阴影图，主渲染采样比较后输出带阴影画面。一句话心智模型：**Pass1 站在光源处记录"我离谁最近"，Pass2 逐片元核对"我是否被挡"**。
 

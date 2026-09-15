@@ -10,7 +10,7 @@ import os
 // MARK: - 渲染视图：layerClass 换成 CAMetalLayer 的 NSView
 @MainActor
 class MetalLayerView: NSView {
-    static let signposter = OSSignposter(subsystem: "hands-on-metal", category: "render")
+    static let signposter = OSSignposter(subsystem: "hands-on-apple-metal", category: "render")
     var device: MTLDevice!
     var commandQueue: MTLCommandQueue!
     var pipelineState: MTLRenderPipelineState!
