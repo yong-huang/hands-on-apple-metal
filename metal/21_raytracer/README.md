@@ -1,22 +1,52 @@
 # 21 · 光线追踪：MPSRayIntersector
+> 传统渲染问"每个三角形盖住哪些像素"（光栅化），光线追踪反过来问"每个像素看到了谁"。本实验用苹果现成的求交模块发出 262144 根光线，跑通"生成光线 → 加速求交 → 着色"的最小闭环。读完本篇你能理解两种成像方式的本质区别，并有一个命中率可统计、可验证的光追实现。
 
-> 光栅化问"每个三角形盖住哪些像素"，光线追踪问"每个像素看到了谁"。
-> 视角一换，反射、折射、软阴影都变成自然推论。
-> 本实验用 MPS 加速结构做真·光线追踪：26 万根光线，命中率高到可统计。
+## Background
 
-## 1. 为什么需要它
+传统实时渲染几乎都走光栅化：把场景里每个三角形投影到屏幕上，涂满它盖住的像素。游戏画面就是这条路线，GPU 硬件为它做了几十年优化。
 
-光线追踪是渲染的两极之一，也是 Metal Performance Shaders 最"高冷"的模块。跑通"生成光线 → 加速求交 → 着色"的最小闭环，未来反射/阴影/全局光都只是"再发几根光线"的增量工作。
+光栅化回答的是"每个三角形盖住哪些像素"。一旦问题反过来——"这个像素看到的是谁？中间有没有被挡住？镜子里的画面是什么？"——逐个涂三角形就不好使了：精确的阴影、镜面反射、折射本质上都是"沿视线去场景里查询"，光栅化只能用阴影贴图之类的近似手段拼凑。
 
-## 2. 总览：核心机制一图看懂
+光线追踪把遍历方向整个反过来：从相机穿过每个像素发一根光线，去场景里找最近的交点（光线与几何的碰触点），交到什么就画什么。
 
-![光线追踪数据流](images/raytracer.svg)
+但逐对测试光线与三角形（求交）的计算量大得惊人——26 万个像素乘以场景三角形数。于是有了加速结构：把场景组织成树状结构，查询时整树整枝地排除不可能命中的部分。
 
-> 🌐 **交互版**：[在线打开（GitHub Pages）](https://yong-huang.github.io/hands-on-apple-metal/metal/21_raytracer/images/raytracer.html)（或本地打开 [`images/raytracer.html`](images/raytracer.html)）。
+苹果把现成的实现放在 Metal Performance Shaders（MPS，苹果的高性能图像与计算函数库）里，本实验用的 MPSRayIntersector 就是其中的求交模块。
 
-针孔相机生成 26 万根主光线，MPS 加速结构求最近交点，CPU 按重心坐标插值着色。一句话心智模型：**每个像素发射一根问题，场景回答"撞到哪、撞到谁"**。
+## What
 
-## 3. 快速开始
+本实验是一个用 MPSRayIntersector 实现的最小光线追踪器：针孔相机（从单一观点向四周发射光线的理想相机模型）为 512×512 的每个像素生成一根主光线（从相机出发的第一根光线），加速结构求出每根光线与场景——两个彩色三角形——的最近交点，最后按交点信息着色。
+
+一句话心智模型：**每个像素发射一根问题，场景回答"撞到哪、撞到谁"**。可以把 262144 根光线想象成同时出发的 26 万名侦察兵：各自沿直线前进，汇报第一件撞上的东西。
+
+但和真实光传播不同的是：本实验每像素只发一根光线、不做反弹，反射、折射、软阴影暂不在闭环内——在光追框架里，这些效果将来只是"再发几根光线"的增量工作。
+
+分工上，GPU 只负责求交，着色（决定每个像素最终颜色）由 CPU 完成：交点数据回读到 CPU 侧处理，顺带让验证变得直接。
+
+## When to Use
+
+这一节给判断力：什么时候值得把成像方式从光栅化换成光线追踪。
+
+典型场景：
+
+- 需要精确遮挡与物理真实感的效果——镜面反射、折射、软阴影、全局光照（光在场景中经多次反弹叠加形成的整体照明效果）：电影离线渲染、高质量实时预览。
+- 射线拾取：鼠标点一下屏幕，从相机发一根光线求交，选出点中的物体。碰撞检测、可视性查询是同一套求交设施。
+- 成像算法实验：命中数、交点分布可以统计，结果可断言验证。
+
+何时不用：
+
+- 帧率敏感的实时主画面（游戏、界面）：光栅化管线有硬件级优化，纯光追每像素的查询成本高得多。
+- 场景简单、光照简单：光栅化一个 pass 就够，光追是重装备。
+
+| 方案 | 差异 | 什么时候选它 |
+|---|---|---|
+| 光栅化 | 三角形→像素，速度快、硬件深度优化；阴影/反射靠近似手段 | 实时游戏、UI、绝大多数实时画面 |
+| MPSRayIntersector（本实验） | 现成的加速求交器，免维护、苹果级调优；几何与遍历策略不可定制 | 原型验证，或给光栅化画面补反射/阴影 |
+| 自写 BVH（层次包围盒：把场景逐层装进包围盒——框住一簇物体的最小盒子——组成的树里，查询时快速排除） | 完全控制几何类型与遍历策略；实现与调优成本高 | 需要自定义几何，或研究加速结构本身 |
+
+## Quick Start
+
+前置条件：macOS 加 Xcode 的 Swift 工具链（MPS 随系统框架提供）。在 `metal/21_raytracer/` 目录下运行：
 
 ```bash
 ./raytracer.sh               # 一条龙
@@ -34,33 +64,7 @@ AUTO_QUIT=6 ./raytracer.sh observe
 
 窗口显示两个彩色三角形的光追成像。验证方法：命中率可由场景张角解析估算；中心必命中、角落必是背景色。
 
-## 4. 核心概念
-
-### 4.1 Swift 侧布局镜像（本实验最大的坑）
-
-ray / intersection 结构体只定义在 MSL 头文件里，Swift 必须手写**内存布局一致**的镜像：
-
-```swift
-struct Ray  { var origin: SIMD3<Float>; var direction: SIMD3<Float> }              // .originDirection
-struct Hit  { var distance: Float; var primitiveIndex: UInt32; var coordinates: SIMD2<Float> }  // .distancePrimitiveIndexCoordinates
-```
-
-未命中时 `distance = -1`、`primitiveIndex = 0xFFFFFFFF`——这两个哨兵值是实测确定的。
-
-### 4.2 加速结构只吃位置
-
-`MPSTriangleAccelerationStructure.vertexBuffer` 要求紧凑的 float3 位置数组。第一次实现把颜色混进顶点结构，三角形变成乱数据、命中结果全部错误且**不报错**——布局契约必须严格遵守。
-
-### 4.3 重心坐标着色
-
-交点携带 `coordinates`：按 Apple 约定 `w0 = 1−x−y, w1 = x, w2 = y`，颜色 = 三个顶点色的加权和——与光栅化插值同一套数学。
-
-### 4.4 易错点
-
-- 枚举名记错：ray 类型叫 `.originMinDistanceDirectionMaxDistance` 而不是文档示例的简写。
-- 交点结构体字段顺序按名字想当然（distance 在前），读出"基本索引"实为浮点位模式。
-
-## 5. 关键 API 与字段
+求交调用在 `raytracer.swift` 的 `renderOnce()` 里：
 
 ```swift
 intersector.rayDataType = .originDirection
@@ -70,31 +74,53 @@ intersector.encodeIntersection(commandBuffer: cb, intersectionType: .nearest,
     intersectionBufferOffset: 0, rayCount: W * H, accelerationStructure: accel)
 ```
 
-编码进普通 compute encoder，`waitUntilCompleted` 后交点数据即可 CPU 读取。
+这段在做什么：前两行声明光线和交点各自的内存布局（MPS 按声明的布局读写缓冲），第三行把一次"最近交点"求交编码进命令缓冲——262144 根光线进去，等量的交点记录出来。求交编码进普通的并行计算编码器即可；`waitUntilCompleted` 之后，交点数据即可由 CPU 读取做着色与验证。
 
-## 6. 文件结构
+## How It Works
 
-```
-21_raytracer/
-├── README.md                    # 本文档
-├── raytracer.sh                 # 主演示脚本
-├── main.swift                   # 入口包装：调 runRaytracer()
-├── raytracer.swift              # 实验程序：相机/加速结构/求交/CPU 着色
-└── images/
-    ├── raytracer.dataflow.json  # 图源
-    ├── raytracer.html           # 交互版
-    └── raytracer.svg            # 双主题矢量版
+按数据流展开：布局镜像 → 生成光线 → 加速求交 → CPU 着色 → 显示。
+
+**Swift 侧布局镜像（本实验最大的坑）。** 光线/交点结构体只定义在 Metal 着色语言（MSL）的头文件里，Swift 必须手写内存布局完全一致的镜像：
+
+```swift
+struct Ray  { var origin: SIMD3<Float>; var direction: SIMD3<Float> }              // .originDirection
+struct Hit  { var distance: Float; var primitiveIndex: UInt32; var coordinates: SIMD2<Float> }  // .distancePrimitiveIndexCoordinates
 ```
 
-## 7. 深入要点
+为什么这样写：MPS 只按二进制布局读写缓冲，不认识 Swift 类型，字段顺序差一个就全错——读出来的"图元编号"其实是浮点数的位模式。
 
-- **光线追踪 vs 光栅化的本质区别？** 反向遍历问题域：屏幕→场景 vs 场景→屏幕；决定各自擅长效果（反射/精确遮挡 vs 速度）。
-- **加速结构解决什么？** 暴力求交 O(光线×三角形)；BVH 类结构把查询降到对数级。
-- **重心坐标的用途？** 交点在三角形内的位置参数化，用于插值任意顶点属性（颜色/法线/UV）。
-- **MPSRayIntersector 与自写 BVH 的取舍？** MPS 免维护、有苹果级调优；自写可定制几何/遍历策略。原型期用 MPS 是正解。
+`Ray` 是"起点 + 方向"；`Hit` 的三个字段是距离、命中图元（primitive，GPU 画图的基本单位：点、线段、三角形）的编号、交点的重心坐标。
 
-## 8. 总结
+未命中时 `distance = -1`、`primitiveIndex = 0xFFFFFFFF`——这两个哨兵值（用来标记特殊状态的约定值）是实测确定的，着色逻辑靠它们区分命中与未命中。
 
-光追闭环打通，MPS 家族初体验。下一篇回到光栅化，解决另一个极端问题：怎么用一次 draw 画 400 个物体。
+**生成光线。** 针孔相机在原点，把像素坐标 (x, y) 映射到 [-1, 1] 区间得到方向，归一化后连同起点填进 `rayBuffer`：512×512 = 262144 根，一像素一根。
 
-→ 下一篇：[22 · 实例化渲染](../22_instancing/README.md)
+**加速结构只吃位置。** `MPSTriangleAccelerationStructure` 的 `vertexBuffer` 要求紧凑的 float3 位置数组——只有坐标，`triangleCount = 2`，然后 `rebuild()` 建树。
+
+求交时 `intersectionType: .nearest` 表示只取最近交点，输出写进 `interBuffer`。
+
+**CPU 着色。** GPU 完成后回读 `interBuffer`：`distance >= 0` 即命中。
+
+交点携带的 `coordinates` 是重心坐标（barycentric coordinates，用三个 0~1 的权重描述"交点在三角形内位置"的参数）：按 Apple 约定 `w0 = 1−x−y, w1 = x, w2 = y`，颜色 = 三个顶点色的加权和 `c0*w0 + c1*x + c2*y`
+
+——与光栅化的插值是同一套数学。未命中的像素写背景色。结果写进一张 512×512 的纹理（texture，GPU 里按坐标读取像素值的图像数据）。
+
+**显示。** 光追结果被当作纹理，用光栅化画到一个全屏四边形上。光追成像加光栅化显示——两种成像方式并不互斥，实际项目里常这样混用。
+
+## Pitfalls & Q&A
+
+**加速结构的顶点缓冲混入了颜色。** 现象：命中率与交点全部错误，且程序不报任何错误。
+
+原因：`MPSTriangleAccelerationStructure.vertexBuffer` 要求紧凑的纯位置数组，把颜色混进顶点结构后，MPS 把颜色字节当坐标读，三角形变成乱数据。解法：给加速结构单独建一份纯位置缓冲（本实验的 `positions` 数组就是干这个的）。
+
+**光线类型枚举名拼写错误。** 现象：按记忆敲枚举名编译不过。原因：MPS 的光线类型枚举有多个变体，带最小/最大距离的变体叫 `.originMinDistanceDirectionMaxDistance`，容易记成文档示例里的简写。解法：以 Xcode 自动补全列表为准。
+
+**交点结构体字段顺序想当然。** 现象：`primitiveIndex` 读出巨大的数字。
+
+原因：字段顺序与 MPS 的实际布局不一致，"图元编号"的位置上其实是浮点数的位模式。解法：按 `.distancePrimitiveIndexCoordinates` 的名字顺序（distance、primitiveIndex、coordinates）手写镜像，并用未命中哨兵值做验证。
+
+**光线追踪和光栅化的本质区别是什么？** 反向遍历问题域：光栅化从场景出发问"每个三角形盖住哪些像素"，光追从屏幕出发问"每个像素看到了谁"。方向决定了各自擅长的效果——精确遮挡、反射是光追的自然推论，速度是光栅化的优势。
+
+**加速结构到底加速了什么？** 暴力求交的成本是 O(光线数 × 三角形数)，本实验 26 万根光线尚可，三角形一多就不可行。BVH 类结构把每次查询降到对数级——整棵树逐层排除，而不是逐三角形测试。
+
+**重心坐标除了颜色还能干什么？** 它把交点在三角形内的位置参数化，可以插值任意顶点属性：颜色、法线（决定明暗的方向向量）、UV（贴图坐标）。本实验只插了颜色，机制相同。

@@ -1,23 +1,24 @@
 # hands-on-apple-metal
 
-Apple Metal 动手学习系列：**54 个可真实跑通的实验**，从渲染第一个三角形
-一路写到 Metal 4 张量与融合算子。每条线统一结构：原理讲解（README）、
-一键演示脚本（xxx.sh）、架构图三件套（images/）。
+Apple Metal 动手学习系列：**68 个可真实跑通的实验**，从渲染第一个三角形
+一路写到 Metal 4 张量与融合算子。每条线统一结构：原理讲解（README，六段式
+技术博客）、一键演示脚本（xxx.sh）、架构图三件套（images/）。
 
-> 🖼️ **交互式架构图**：每个实验自带图三件套——图源 JSON（Typed JSON IR）、
-> 可交互 HTML（缩放 / 节点聚焦 / 连线追踪 / 深浅主题）与双主题矢量 SVG（README 内嵌），
+> 🖼️ **交互式架构图**：每个实验的 images/ 目录自带图三件套——图源 JSON（Typed JSON IR）、
+> 可交互 HTML（缩放 / 节点聚焦 / 连线追踪 / 深浅主题）与双主题矢量 SVG，
 > 全部通过质量门禁校验，由 [Archify](https://github.com/tt-a1i/archify) 工具生成。
-> 开启 GitHub Pages 后可[在线查看](https://yong-huang.github.io/hands-on-apple-metal/)。
+> README 正文不再内嵌图，可[在线查看](https://yong-huang.github.io/hands-on-apple-metal/)交互版。
 
-## 两条学习线
+## 三条学习线
 
 | 线 | 目录 | 主线 | 实验 |
 |:--|:--|:--|:--|
-| **渲染线** | `metal/` | 设备 → 命令队列 → 三角形 → 3D → 光照/阴影/延迟 → Metal 4 | 24 个（序号连续） |
+| **渲染线** | `metal/` | 设备 → 命令队列 → 三角形 → 3D → 光照/阴影/延迟 → Metal 4 | 24 个 |
 | **算子线** | `operator/` | 规约 → GEMM → MPS → MLX → 自定义内核 → 融合/量化/引擎 | 30 个 |
+| **系统线** | `system/` | Metal × 相机/视频/窗口/CoreML 的跨界整合 | 14 个 |
 
-两条线共享同一套 Metal 底座（`MTLDevice` / `MTLCommandQueue`）：
-渲染线管「画」，算子线管「算」。先渲染后计算，或交替推进皆可。
+三条线共享同一套 Metal 底座（`MTLDevice` / `MTLCommandQueue`）：
+渲染线管「画」，算子线管「算」，系统线把 Metal 接进真实系统能力。
 
 ## 环境要求
 
@@ -47,7 +48,7 @@ hands-on-apple-metal/
 ├── system/NN_xxx/        # 系统级线：Metal × 相机/视频/音频/CoreML，见 docs/metal_system.md
 ```
 
-每个实验目录：README（8 编号章节）· `xxx.sh`（build→observe→clean）·
+每个实验目录：README（六段式技术博客）· `xxx.sh`（build→observe→clean）·
 程序本体（Swift 单文件 / Python 单文件）· images 三件套。
 
 ## 渲染线实验（metal/）
@@ -117,7 +118,7 @@ hands-on-apple-metal/
 
 ## 系统级线实验（system/）
 
-> 清单见 [metal_system.md](docs/metal_system.md)：Metal 与相机/视频/音频/CoreML 的跨界整合，产出可日常使用的作品。
+> 清单见 [metal_system.md](docs/metal_system.md)：Metal 与相机/视频/窗口/CoreML 的跨界整合，产出可日常使用的作品。
 
 | # | 实验 | 主题 |
 |:--|:--|:--|
@@ -126,17 +127,22 @@ hands-on-apple-metal/
 | 03 | [相机实时滤镜](system/03_camera_texture/README.md) | AVFoundation、CVMetalTextureCache 零拷贝、四滤镜 |
 | 04 | [三路推理基准](system/04_ane_bench/README.md) | coremltools 建模、GPU/ANE/CPU 对照 |
 | 05 | [Vision 人脸马赛克](system/05_vision_face/README.md) | Vision 检测 + Metal 量化后处理 |
+| 06 | [超分辨率渲染](system/06_metalfx/README.md) | 低分辨率渲染 + bilinear 放大 |
+| 07 | [IOSurface 零拷贝](system/07_iosurface/README.md) | IOSurface 跨框架/跨进程共享 |
+| 08 | [Metal 滤镜视频帧处理](system/08_vt_player/README.md) | 视频帧纹理上传 → 内核滤镜 → 回读验证 |
+| 09 | [Metal 离屏渲染帧序列](system/09_mp4_export/README.md) | 离屏渲染、像素回读，视频导出的前置环节 |
 | 10 | [EDR 渲染](system/10_edr/README.md) | 扩展动态范围、HDR |
 | 11 | [多窗口渲染](system/11_multi_window/README.md) | 共享渲染器、多 CAMetalLayer |
 | 12 | [帧率 HUD](system/12_display_hud/README.md) | 帧时间曲线叠加 |
-| 06 | [超分辨率渲染](system/06_metalfx/README.md) | 低分辨率渲染 + bilinear 放大 |
+| 13 | [Core Image 滤镜链与 Metal 互操作](system/13_ci_metal/README.md) | 现成滤镜 vs 自写内核、共享 GPU 纹理 |
+| 14 | [vDSP 对照](system/14_vdsp_metal/README.md) | Accelerate/vDSP 与 Metal 同任务对照 |
 
 ## 学习路线
 
-1. **渲染主干**：metal 01 → 13（2D + 3D 入门）→ 14-16（渲染×计算）→ 17-22（进阶渲染）
+1. **渲染主干**：metal 01 → 11（2D + 3D 入门）→ 14-16（渲染×计算）→ 21-26（进阶渲染）→ 27-30（Metal 4）
 2. **算子主干**：operator 01 → 13（Metal 手写/MPS）→ 14-30（MLX 与融合/量化）
-3. **Metal 4 前沿**：metal 23 → 28 → 29 → 30（数据面 → 命令栈 → 编译链 → 混合管线）
-4. 深入方向见两份路线图；重复项（6 对）二选一，推荐算子线版本。
+3. **系统主线**：system 01/02（窗口与 SwiftUI）→ 03/08/09（相机与视频）→ 04/05/13/14（CoreML/图像/vDSP）→ 06/07/10/11/12（进阶系统）
+4. 深入方向见三份路线图；渲染线与算子线的重复项（6 对）二选一，推荐算子线版本。
 
 ## 性能速览（Apple M5 Pro 实测）
 
