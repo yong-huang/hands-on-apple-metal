@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "SDF Raymarching：安全气泡式的光线行进",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/raymarch.html",
+    "viewBox": [
+      980,
+      560
+    ]
+  },
+  "stages": [
+    {
+      "label": "相机"
+    },
+    {
+      "label": "逐像素光线"
+    },
+    {
+      "label": "球体追踪"
+    },
+    {
+      "label": "着色与呈现"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cam",
+      "type": "database",
+      "label": "拖拽旋转轨道相机",
+      "sublabel": "yaw / pitch / dist",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "ray",
+      "type": "backend",
+      "label": "像素 → 射线",
+      "sublabel": "uv × 相机基向量",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "sdf",
+      "type": "backend",
+      "label": "场景 SDF",
+      "sublabel": "球+盒+胶囊 smin 平面",
+      "stage": 2,
+      "row": 1,
+      "tag": "每步一次"
+    },
+    {
+      "id": "march",
+      "type": "backend",
+      "label": "球体追踪循环",
+      "sublabel": "96 步 · t += SDF(p)",
+      "stage": 2,
+      "row": 2,
+      "tag": "步长=安全距离"
+    },
+    {
+      "id": "shade",
+      "type": "backend",
+      "label": "法线 + 软阴影 + AO",
+      "sublabel": "梯度法线 · 阴影 · AO",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "光照 + 雾 + gamma",
+      "sublabel": "上屏 60 FPS",
+      "stage": 3,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "gen",
+      "from": "cam",
+      "to": "ray",
+      "label": "相机位姿",
+      "variant": "default",
+      "labelDy": 24
+    },
+    {
+      "id": "ask",
+      "from": "ray",
+      "to": "sdf",
+      "label": "这里离表面多远？",
+      "variant": "default"
+    },
+    {
+      "id": "stepf",
+      "from": "sdf",
+      "to": "march",
+      "label": "以该距离前进",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "id": "hitf",
+      "from": "march",
+      "to": "shade",
+      "label": "命中点",
+      "variant": "emphasis"
+    },
+    {
+      "id": "paint",
+      "from": "shade",
+      "to": "screen",
+      "label": "上色",
+      "variant": "default",
+      "labelDy": 24
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "无网格的世界",
+      "items": [
+        "场景是一个函数：输入一点、返回到最近表面的距离",
+        "光线按该距离迈步永远一步跨不过表面——步长即安全气泡"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "软从场里长出来",
+      "items": [
+        "smin 让胶囊与盒子隔着缝隙互相吸引，接缝自动长圆",
+        "软阴影与 AO 也靠同一个 SDF 步进与采样——没有额外资产"
+      ]
+    }
+  ]
+}

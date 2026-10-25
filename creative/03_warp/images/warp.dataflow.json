@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Domain Warping：噪声揉噪声的三层管线",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/warp.html",
+    "viewBox": [980, 560]
+  },
+  "stages": [
+    { "label": "像素输入" },
+    { "label": "噪声底料" },
+    { "label": "两层扭曲" },
+    { "label": "上色导出" }
+  ],
+  "nodes": [
+    { "id": "frag", "type": "database", "label": "像素坐标 fragCoord", "sublabel": "归一到短边 [-0.5, 0.5]", "stage": 0, "row": 2 },
+    { "id": "seed", "type": "database", "label": "seed uniform", "sublabel": "确定性之源", "stage": 1, "row": 1 },
+    { "id": "fbm", "type": "backend", "label": "fbm 噪声", "sublabel": "值噪声 × 5 个倍频程", "stage": 1, "row": 2, "tag": "基础场" },
+    { "id": "q", "type": "backend", "label": "第一层扭曲 q", "sublabel": "用 fbm 场偏移 p", "stage": 2, "row": 2 },
+    { "id": "r", "type": "backend", "label": "第二层扭曲 r", "sublabel": "偏移量再被 q 扭一次", "stage": 2, "row": 1, "tag": "纹路从此卷曲" },
+    { "id": "png", "type": "external", "label": "调色 → 4K PNG", "sublabel": "离屏渲染 · 逐字节可复现", "stage": 3, "row": 2 }
+  ],
+  "flows": [
+    { "id": "coord", "from": "frag", "to": "fbm", "label": "p = uv × scale", "variant": "default" },
+    { "id": "rand", "from": "seed", "to": "fbm", "label": "进哈希", "variant": "default", "labelDy": 24 },
+    { "id": "w1", "from": "fbm", "to": "q", "label": "fbm(p)", "variant": "default" },
+    { "id": "w2", "from": "q", "to": "r", "label": "p + strength·q", "variant": "emphasis" },
+    { "id": "w3", "from": "r", "to": "png", "label": "f = fbm(p + strength·r)，q/r 进调色", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "噪声被自己揉弯", "items": ["查询坐标 p 被前一层噪声输出推走，等值线从平行波纹挤成大理石漩涡", "两层嵌套才有大小漩涡的层次感，一层只是波纹"] },
+    { "dot": "emerald", "title": "seed 决定一切", "items": ["seed 进每次哈希：换 seed 等于重掷骰子布，图焕然一新", "不换 seed 时噪声是纯函数，4K PNG 逐字节复现"] }
+  ]
+}

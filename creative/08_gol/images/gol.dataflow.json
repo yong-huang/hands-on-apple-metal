@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "GPU 生命游戏：compute 乒乓上的百万格子",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/gol.html",
+    "viewBox": [
+      980,
+      560
+    ]
+  },
+  "stages": [
+    {
+      "label": "交互播种"
+    },
+    {
+      "label": "每代更新"
+    },
+    {
+      "label": "规则计算"
+    },
+    {
+      "label": "呈现"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "mouse",
+      "type": "database",
+      "label": "鼠标播种 / R 重置",
+      "sublabel": "brush 半径 4 · 随机汤",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "tex",
+      "type": "database",
+      "label": "r8Unorm 纹理 A/B",
+      "sublabel": "1024² · 乒乓交替",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "nb",
+      "type": "backend",
+      "label": "8 邻居求和",
+      "sublabel": "int 取模环面边界",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "rule",
+      "type": "backend",
+      "label": "B3/S23 规则",
+      "sublabel": "n==3 存活或诞生",
+      "stage": 2,
+      "row": 2,
+      "tag": "一代 0.45 ms"
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "活细胞上屏",
+      "sublabel": "空格暂停 · 60 FPS",
+      "stage": 3,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "seed",
+      "from": "mouse",
+      "to": "tex",
+      "label": "seed_kernel 写入",
+      "variant": "default",
+      "labelDy": 24
+    },
+    {
+      "id": "read",
+      "from": "tex",
+      "to": "nb",
+      "label": "读整代快照",
+      "variant": "default"
+    },
+    {
+      "id": "decide",
+      "from": "nb",
+      "to": "rule",
+      "label": "邻居数 n",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "id": "paint",
+      "from": "rule",
+      "to": "screen",
+      "label": "稳态与振荡器",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "三条规则一个表达式",
+      "items": [
+        "B3：恰好 3 个邻居的死细胞诞生；S23：2/3 邻居的活细胞存活",
+        "其余全部死亡——拥挤、孤独都活不下去"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "验收自己跑",
+      "items": [
+        "test 模式放一枚 Glider 跑 100 代，回读纹理核对包围盒平移 25 格",
+        "bench 模式计时 100 代——性能与正确性都是一条命令"
+      ]
+    }
+  ]
+}

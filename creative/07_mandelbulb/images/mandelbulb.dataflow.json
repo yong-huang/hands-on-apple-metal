@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Mandelbulb：距离估计驱动的分形雕塑",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/mandelbulb.html",
+    "viewBox": [
+      980,
+      560
+    ]
+  },
+  "stages": [
+    {
+      "label": "交互"
+    },
+    {
+      "label": "每步查询"
+    },
+    {
+      "label": "迭代与记账"
+    },
+    {
+      "label": "成面调色"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "input",
+      "type": "database",
+      "label": "拖拽 / 滚轮 / ↑↓",
+      "sublabel": "yaw·pitch·dist·power",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "ray",
+      "type": "backend",
+      "label": "像素 → 射线",
+      "sublabel": "y 翻转 · 轨道相机",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "iter",
+      "type": "backend",
+      "label": "球坐标迭代",
+      "sublabel": "z → z⁸+c · 8 轮 · 逃逸 16",
+      "stage": 2,
+      "row": 1,
+      "tag": "dr 链式记账"
+    },
+    {
+      "id": "de",
+      "type": "backend",
+      "label": "距离估计 DE",
+      "sublabel": "0.5·log(m)·√m / dr",
+      "stage": 2,
+      "row": 2,
+      "tag": "保守下界"
+    },
+    {
+      "id": "march",
+      "type": "backend",
+      "label": "球体追踪",
+      "sublabel": "110 步 · 步长封顶 0.4",
+      "stage": 3,
+      "row": 1
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "trap 调色 + AO 上屏",
+      "sublabel": "60 FPS",
+      "stage": 3,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "feed",
+      "from": "input",
+      "to": "ray",
+      "label": "更新相机与幂次",
+      "variant": "default",
+      "labelDy": 24
+    },
+    {
+      "id": "ask",
+      "from": "ray",
+      "to": "iter",
+      "label": "当前点做 8 轮迭代",
+      "variant": "default"
+    },
+    {
+      "id": "est",
+      "from": "iter",
+      "to": "de",
+      "label": "半径放大率 dr",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "id": "stepf",
+      "from": "de",
+      "to": "march",
+      "label": "保守步长前进一步",
+      "variant": "emphasis"
+    },
+    {
+      "id": "paint",
+      "from": "march",
+      "to": "screen",
+      "label": "命中即雕塑",
+      "variant": "default",
+      "labelDy": 24
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "DE 是下界不是精确值",
+      "items": [
+        "迭代每轮的半径放大率连乘取对数，约束到边界的最少距离",
+        "有限迭代数下会高估——步长乘 0.9 并封顶 0.4，防止一步跨过分形"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "调色靠 orbit trap",
+      "items": [
+        "迭代途中 |z| 的最小值记录了每个表面点与核心轨道的亲疏",
+        "金与陶土红的过渡就是这层记录的等值线"
+      ]
+    }
+  ]
+}

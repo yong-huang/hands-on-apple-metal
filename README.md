@@ -1,24 +1,30 @@
 # hands-on-apple-metal
 
-Apple Metal 动手学习系列：**68 个可真实跑通的实验**，从渲染第一个三角形
-一路写到 Metal 4 张量与融合算子。每条线统一结构：原理讲解（README，六段式
-技术博客）、一键演示脚本（xxx.sh）、架构图三件套（images/）。
+Apple Metal 动手学习系列：**79 个可真实跑通的实验**，从渲染第一个三角形
+一路写到 Metal 4 张量与融合算子，另有物理可视化教学线（规划 22，已开工 1 个）。
+每条线统一结构：原理讲解（README，六段式技术博客）、一键演示脚本（xxx.sh）、
+架构图三件套（images/）。
 
 > 🖼️ **交互式架构图**：每个实验的 images/ 目录自带图三件套——图源 JSON（Typed JSON IR）、
 > 可交互 HTML（缩放 / 节点聚焦 / 连线追踪 / 深浅主题）与双主题矢量 SVG，
 > 全部通过质量门禁校验，由 [Archify](https://github.com/tt-a1i/archify) 工具生成。
+> 例外：物理线（physics/）的图三件套是**物理场景**——交互页为手写 canvas 物理操场，
+> SVG 由 `build-scene.mjs` 从 scene.json 生成，数值口径与 Swift 实验逐字一致。
 > README 正文不再内嵌图，可[在线查看](https://yong-huang.github.io/hands-on-apple-metal/)交互版。
 
-## 三条学习线
+## 五条学习线
 
 | 线 | 目录 | 主线 | 实验 |
 |:--|:--|:--|:--|
 | **渲染线** | `metal/` | 设备 → 命令队列 → 三角形 → 3D → 光照/阴影/延迟 → Metal 4 | 24 个 |
 | **算子线** | `operator/` | 规约 → GEMM → MPS → MLX → 自定义内核 → 融合/量化/引擎 | 30 个 |
 | **系统线** | `system/` | Metal × 相机/视频/窗口/CoreML 的跨界整合 | 14 个 |
+| **创意线** | `creative/` | 生成艺术 / 游戏物理 / 声音玩具 / AI 生成（规划见 docs/metal_creative.md） | 11 个（规划 24） |
+| **物理线** | `physics/` | 普物全领域可视化：力学/波/热/电磁/混沌/相对论/量子（规划见 docs/physics.md） | 1 个（规划 22） |
 
-三条线共享同一套 Metal 底座（`MTLDevice` / `MTLCommandQueue`）：
-渲染线管「画」，算子线管「算」，系统线把 Metal 接进真实系统能力。
+五条线共享同一套 Metal 底座（`MTLDevice` / `MTLCommandQueue`）：
+渲染线管「画」，算子线管「算」，系统线把 Metal 接进真实系统能力，创意线管「玩」，
+物理线管「懂」——物理定律亲手算一遍、看得见。
 
 ## 环境要求
 
@@ -40,12 +46,16 @@ hands-on-apple-metal/
 ├── docs/
 │   ├── metal.md          # 路线图：30 项目清单（已标注重复项与完成状态）
 │   ├── operator.md       # 路线图：30 项目清单（同上）
-│   └── metal_system.md   # 路线图：系统级 30 项目清单
+│   ├── metal_system.md   # 路线图：系统级 30 项目清单
+│   ├── metal_creative.md # 路线图：创意玩具 24 项目清单（游戏/艺术/声音/AI）
+│   └── physics.md        # 路线图：物理可视化 22 项目清单（力学/波/热/电磁/混沌/量子）
 ├── scripts/
 │   └── load_resources.sh # 公共脚本：Metal 环境体检
 ├── metal/NN_xxx/         # 渲染线：README + xxx.sh + Swift 程序 + images 三件套
 ├── operator/NN_xxx/      # 算子线：结构同上（14+ 为 Python/MLX）
 ├── system/NN_xxx/        # 系统级线：Metal × 相机/视频/音频/CoreML，见 docs/metal_system.md
+├── creative/NN_xxx/      # 创意线：生成艺术/游戏/声音/AI 玩具，见 docs/metal_creative.md
+└── physics/NN_xxx/       # 物理线：普物可视化实验（规划中），见 docs/physics.md
 ```
 
 每个实验目录：README（六段式技术博客）· `xxx.sh`（build→observe→clean）·
@@ -137,12 +147,52 @@ hands-on-apple-metal/
 | 13 | [Core Image 滤镜链与 Metal 互操作](system/13_ci_metal/README.md) | 现成滤镜 vs 自写内核、共享 GPU 纹理 |
 | 14 | [vDSP 对照](system/14_vdsp_metal/README.md) | Accelerate/vDSP 与 Metal 同任务对照 |
 
+## 创意线实验（creative/）
+
+> 清单见 [metal_creative.md](docs/metal_creative.md)：独立玩具集，随做随玩，可跳跃顺序。
+
+| # | 实验 | 主题 |
+|:--|:--|:--|
+| 01 | [极光渐变板 Plasma](creative/01_plasma/README.md) | 全屏四边形、正弦叠加色场、余弦调色板、离屏导出 |
+| 02 | [分形探险家 Mandelbrot/Julia](creative/02_fractal/README.md) | 逃逸时间、平滑着色、交互缩放、10⁴ 倍深放大 |
+| 03 | [Domain Warping 壁纸生成器](creative/03_warp/README.md) | 值噪声、fbm、两层域扭曲、4K 离屏导出 |
+| 04 | [Metaballs 果冻泡泡](creative/04_metaball/README.md) | 隐式曲面、场叠加融合、高度场光照、拖拽交互 |
+| 05 | [图灵花纹 Gray-Scott](creative/05_turing/README.md) | compute 乒乓、反应扩散、9 点拉普拉斯、F-k 相图 |
+| 06 | [SDF Raymarching 小场景](creative/06_raymarch/README.md) | 有向距离场、球体追踪、smin 光滑并集、软阴影与 AO |
+| 07 | [Mandelbulb 3D 分形雕塑](creative/07_mandelbulb/README.md) | 球坐标迭代、距离估计、orbit trap 调色 |
+| 08 | [GPU 生命游戏](creative/08_gol/README.md) | 元胞自动机、compute 双缓冲、B3/S23、可执行验收 |
+| 09 | [打砖块 Breakout](creative/09_breakout/README.md) | 游戏状态机、圆 vs AABB、子步进防隧穿、实例化渲染 |
+| 10 | [烟花模拟器](creative/10_fireworks/README.md) | 粒子池 swap-remove、重力阻力积分、加法混合 |
+| 11 | [可撕裂布料](creative/11_cloth/README.md) | Verlet 积分、距离约束迭代、动态撕边、应变着色 |
+
+## 物理线实验（physics/）
+
+> 清单见 [physics.md](docs/physics.md)：**物理是主角、Metal 是教具**的教学互补线——22 个可交互普物实验，
+> 参数真实 SI 单位，验收对照教科书公式定量比对（"看着像"不算过，"对得上教科书"才算过）。
+
+| # | 实验 | 主题 |
+|:--|:--|:--|
+| 01 | [抛体运动：真空 vs 空气阻力](physics/01_projectile/README.md) | RK4 数值积分、二次空气阻力、最优射角左移、定量验收 11 断言 |
+
+规划中的其余 21 个实验按六个阶段推进：
+
+| 阶段 | 实验主题 |
+|:--|:--|
+| 第一阶段：力学地基与数值方法 | 抛体 ✅、单摆、开普勒两体、碰撞与守恒律 |
+| 第二阶段：振动与波 | 耦合摆简正模、弦振动 FDTD、双缝干涉、多普勒、拍频与 FFT |
+| 第三阶段：热学与统计 | 麦克斯韦-玻尔兹曼分布、热传导、布朗运动与扩散 |
+| 第四阶段：电磁与光 | 电场线等势面、回旋运动、光线追迹、一维 FDTD 麦克斯韦 |
+| 第五阶段：流体与混沌 | 卡门涡街 LBM、双摆混沌、Lorenz 吸引子 |
+| 第六阶段：现代物理入门 | 相对论光锥、薛定谔能级、量子隧穿 |
+
 ## 学习路线
 
 1. **渲染主干**：metal 01 → 11（2D + 3D 入门）→ 14-16（渲染×计算）→ 21-26（进阶渲染）→ 27-30（Metal 4）
 2. **算子主干**：operator 01 → 13（Metal 手写/MPS）→ 14-30（MLX 与融合/量化）
 3. **系统主线**：system 01/02（窗口与 SwiftUI）→ 03/08/09（相机与视频）→ 04/05/13/14（CoreML/图像/vDSP）→ 06/07/10/11/12（进阶系统）
-4. 深入方向见三份路线图；渲染线与算子线的重复项（6 对）二选一，推荐算子线版本。
+4. **创意线**：随做随玩不设路线；shader 艺术阶段与渲染线 06-08 手法互通，适合穿插调剂
+5. **物理线**：项目 1-4 先打数值方法地基（RK4 + 守恒监控），之后按普物章节任选；与创意线的物理玩具（烟花/布料/星系）是定量版与玩具版关系，见清单末尾对照表
+6. 深入方向见五份路线图；渲染线与算子线的重复项（6 对）二选一，推荐算子线版本。
 
 ## 性能速览（Apple M5 Pro 实测）
 

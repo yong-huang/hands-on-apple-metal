@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "分形探险家：像素到复平面的逃逸时间之旅",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/fractal.html",
+    "viewBox": [980, 560]
+  },
+  "stages": [
+    { "label": "交互参数" },
+    { "label": "坐标映射" },
+    { "label": "逐像素迭代" },
+    { "label": "上色呈现" }
+  ],
+  "nodes": [
+    { "id": "input", "type": "database", "label": "滚轮 / 拖拽 / 点击", "sublabel": "改 center·scale·mode", "stage": 0, "row": 1, "tag": "交互" },
+    { "id": "unif", "type": "database", "label": "uniforms", "sublabel": "32 字节 · 每帧下发", "stage": 0, "row": 2 },
+    { "id": "map", "type": "backend", "label": "texCoord → 复数", "sublabel": "居中 × scale + center", "stage": 1, "row": 2 },
+    { "id": "iter", "type": "backend", "label": "z → z² + c 迭代", "sublabel": "同式异初值", "stage": 2, "row": 2, "tag": "maxIter 随深度自动抬升" },
+    { "id": "smooth", "type": "backend", "label": "逃逸判定 + 平滑计数", "sublabel": "|z|>16 逃逸 · log 去条纹", "stage": 2, "row": 1 },
+    { "id": "screen", "type": "external", "label": "调色板 → 屏幕", "sublabel": "pow 归一化 · 内部涂黑", "stage": 3, "row": 2 }
+  ],
+  "flows": [
+    { "id": "set", "from": "input", "to": "unif", "label": "写视图状态", "variant": "default", "labelDy": 24 },
+    { "id": "feed", "from": "unif", "to": "map", "label": "center / scale", "variant": "default" },
+    { "id": "toiter", "from": "map", "to": "iter", "label": "每像素一个复数", "variant": "default" },
+    { "id": "smoothf", "from": "iter", "to": "smooth", "label": "逃逸时刻", "variant": "emphasis" },
+    { "id": "paint", "from": "smooth", "to": "screen", "label": "平滑计数", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "交互只是改数字", "items": ["缩放平移不改几何、不重建管线，只改 center/scale 两个 float", "每帧全图重算——GPU 两百万像素并行，一帧毫秒级"] },
+    { "dot": "emerald", "title": "两种分形一套代码", "items": ["Mandelbrot：z 从 0 起步，c 是像素；Julia：正好反过来", "平滑迭代计数抹掉整数条纹，边界细节才显得丝滑"] }
+  ]
+}

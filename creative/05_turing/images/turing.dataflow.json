@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "图灵花纹：compute 乒乓上的反应扩散",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/turing.html",
+    "viewBox": [
+      980,
+      560
+    ]
+  },
+  "stages": [
+    {
+      "label": "参数输入"
+    },
+    {
+      "label": "状态缓冲"
+    },
+    {
+      "label": "反应扩散步"
+    },
+    {
+      "label": "呈现"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "seed",
+      "type": "database",
+      "label": "seed_kernel 初始化",
+      "sublabel": "u=1 铺满 · 撒 8 粒 v=1",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "keys",
+      "type": "database",
+      "label": "键盘扫参",
+      "sublabel": "←→ 调 F · ↑↓ 调 k",
+      "stage": 0,
+      "row": 2,
+      "tag": "F-k 相图"
+    },
+    {
+      "id": "tex",
+      "type": "database",
+      "label": "纹理 A/B",
+      "sublabel": "512² · rgba16Float",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "lap",
+      "type": "backend",
+      "label": "9 点拉普拉斯",
+      "sublabel": "0.2/0.05/-1 权重",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "react",
+      "type": "backend",
+      "label": "反应项更新",
+      "sublabel": "-uv²+F(1-u) · +uv²-(F+k)v",
+      "stage": 2,
+      "row": 2,
+      "tag": "每帧 10 步"
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "v 调色上屏",
+      "sublabel": "深蓝 → 青白 · 60 FPS",
+      "stage": 3,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "init",
+      "from": "seed",
+      "to": "tex",
+      "label": "写入初态",
+      "variant": "default",
+      "labelDy": 24
+    },
+    {
+      "id": "tune",
+      "from": "keys",
+      "to": "tex",
+      "label": "改 F/k 重演",
+      "variant": "default"
+    },
+    {
+      "id": "stepf",
+      "from": "tex",
+      "to": "lap",
+      "label": "读 A 邻域",
+      "variant": "default"
+    },
+    {
+      "id": "reactf",
+      "from": "lap",
+      "to": "react",
+      "label": "∇² 供给反应项",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "id": "paint",
+      "from": "react",
+      "to": "screen",
+      "label": "稳态即花纹",
+      "variant": "emphasis",
+      "labelDx": 10
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "双缓冲乒乓",
+      "items": [
+        "同帧所有格子必须读同一时刻的邻居值——从 A 读往 B 写，下一步反向",
+        "这条骨架通用于 GPU 上的所有迭代模拟：流体、波方程、元胞自动机"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "形态是相图上的一点",
+      "items": [
+        "F 与 k 唯一决定斑图：0.030/0.062 出斑点、0.029/0.057 出迷宫条纹",
+        "跨过相图边界形态整体突变——键盘每 0.001 一步慢慢扫"
+      ]
+    }
+  ]
+}

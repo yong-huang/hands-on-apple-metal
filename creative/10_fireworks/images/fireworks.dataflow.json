@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "烟花模拟器：粒子池、重力与加法混合",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/fireworks.html",
+    "viewBox": [
+      980,
+      560
+    ]
+  },
+  "stages": [
+    {
+      "label": "发射与事件"
+    },
+    {
+      "label": "每帧积分"
+    },
+    {
+      "label": "生命周期"
+    },
+    {
+      "label": "加法混合渲染"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "click",
+      "type": "database",
+      "label": "点击发射冲天炮",
+      "sublabel": "随机 hue · 固定 seed 可复现",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "boom",
+      "type": "backend",
+      "label": "到顶引爆",
+      "sublabel": "2200 粒 · 色散 ±25%",
+      "stage": 0,
+      "row": 2,
+      "tag": "二级爆裂 22%"
+    },
+    {
+      "id": "pool",
+      "type": "database",
+      "label": "粒子池 swap-remove",
+      "sublabel": "上限 24000 · O(1) 移除",
+      "stage": 1,
+      "row": 2
+    },
+    {
+      "id": "integ",
+      "type": "backend",
+      "label": "重力 + 阻力积分",
+      "sublabel": "vy += g·dt · v *= 1-drag·dt",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "life",
+      "type": "backend",
+      "label": "寿命结算",
+      "sublabel": "到期 swap-remove",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "加法混合上屏",
+      "sublabel": "夜空 + 发光粒子 · 60 FPS",
+      "stage": 3,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "launch",
+      "from": "click",
+      "to": "boom",
+      "label": "升空 1.5s",
+      "variant": "default",
+      "labelDy": 24
+    },
+    {
+      "id": "spawn",
+      "from": "boom",
+      "to": "pool",
+      "label": "写入粒子池",
+      "variant": "default"
+    },
+    {
+      "id": "advance",
+      "from": "pool",
+      "to": "integ",
+      "label": "每帧取活粒子",
+      "variant": "default"
+    },
+    {
+      "id": "settle",
+      "from": "integ",
+      "to": "life",
+      "label": "寿命递减",
+      "variant": "default",
+      "labelDy": 24
+    },
+    {
+      "id": "paint",
+      "from": "life",
+      "to": "screen",
+      "label": "打包实例加法混合",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "swap-remove 池",
+      "items": [
+        "死亡粒子与末位交换即移除，O(1) 且不搬移内存",
+        "烟花寿命长短随机、死亡顺序无关生成顺序——任意删除正是所需"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "加法混合造光",
+      "items": [
+        "粒子颜色乘 alpha 加到背景上，重叠处自然变亮变白",
+        "重力 + 阻力让爆开的圆环拖出下坠弧线——垂柳形态即轨迹历史"
+      ]
+    }
+  ]
+}

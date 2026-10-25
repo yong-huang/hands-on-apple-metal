@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "打砖块：CPU 状态机 + GPU 实例化渲染",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/breakout.html",
+    "viewBox": [
+      980,
+      560
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入与逻辑"
+    },
+    {
+      "label": "每帧流水线"
+    },
+    {
+      "label": "碰撞物理"
+    },
+    {
+      "label": "实例化渲染"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "input",
+      "type": "database",
+      "label": "鼠标 / 点击 / R",
+      "sublabel": "控拍 · 发射 · 重开",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "fsm",
+      "type": "backend",
+      "label": "游戏状态机",
+      "sublabel": "serving→playing→终态",
+      "stage": 0,
+      "row": 2,
+      "tag": "生命 3 · 得分 · 档位"
+    },
+    {
+      "id": "sub",
+      "type": "backend",
+      "label": "子步进积分",
+      "sublabel": "每帧 4 子步 · 位移 2.2px",
+      "stage": 1,
+      "row": 2,
+      "tag": "防隧穿"
+    },
+    {
+      "id": "collide",
+      "type": "backend",
+      "label": "圆 vs AABB 碰撞",
+      "sublabel": "最小穿透轴反弹",
+      "stage": 2,
+      "row": 2,
+      "tag": "抖动防死循环"
+    },
+    {
+      "id": "inst",
+      "type": "database",
+      "label": "实例缓冲重建",
+      "sublabel": "砖 72 + 拍 + 球 · 每帧 2KB",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "gpu",
+      "type": "external",
+      "label": "实例化绘制上屏",
+      "sublabel": "两次 draw call · 60 FPS",
+      "stage": 3,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "drive",
+      "from": "input",
+      "to": "fsm",
+      "label": "事件驱动流转",
+      "variant": "default",
+      "labelDy": 24
+    },
+    {
+      "id": "tick",
+      "from": "fsm",
+      "to": "sub",
+      "label": "playing 才积分",
+      "variant": "default"
+    },
+    {
+      "id": "hit",
+      "from": "sub",
+      "to": "collide",
+      "label": "每子步检测",
+      "variant": "emphasis"
+    },
+    {
+      "id": "pack",
+      "from": "collide",
+      "to": "inst",
+      "label": "存活对象打包",
+      "variant": "default"
+    },
+    {
+      "id": "drawf",
+      "from": "inst",
+      "to": "gpu",
+      "label": "一次调用画全部",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "串行归 CPU，重复归 GPU",
+      "items": [
+        "碰撞是串行事件链（砖块存活相互影响），放 CPU 完全可控",
+        "72 块砖一次 draw call——实例化把绘制调用数从 74 压到 2"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "隧穿在物理上不可能",
+      "items": [
+        "每帧拆 4 子步，单步位移 2.2px 远小于拍高 14px",
+        "反弹角由拍上命中位置决定——边缘斜飞、中心直上，操作深度所在"
+      ]
+    }
+  ]
+}

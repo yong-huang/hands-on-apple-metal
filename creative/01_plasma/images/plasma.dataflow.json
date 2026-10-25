@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Plasma：全屏四边形上的正弦叠加调色",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/plasma.html",
+    "viewBox": [980, 560]
+  },
+  "stages": [
+    { "label": "几何" },
+    { "label": "逐像素场" },
+    { "label": "上色" },
+    { "label": "呈现" }
+  ],
+  "nodes": [
+    { "id": "quad", "type": "database", "label": "全屏四边形", "sublabel": "6 顶点 · NDC [-1,1]", "stage": 0, "row": 1 },
+    { "id": "time", "type": "database", "label": "时间 uniform", "sublabel": "CFAbsoluteTime − 起点", "stage": 0, "row": 2, "tag": "每帧更新" },
+    { "id": "vfunc", "type": "backend", "label": "vertex_main", "sublabel": "NDC → texCoord", "stage": 1, "row": 1 },
+    { "id": "field", "type": "backend", "label": "四组正弦叠加", "sublabel": "x 向 · y 向 · 对角 · 径向", "stage": 1, "row": 2, "tag": "v ∈ [0,1]" },
+    { "id": "palette", "type": "backend", "label": "余弦调色板", "sublabel": "a + b·cos(2π(ct+d))", "stage": 2, "row": 2, "tag": "3 套配色" },
+    { "id": "screen", "type": "external", "label": "MTKView 呈现", "sublabel": "每像素一色 · 60fps", "stage": 3, "row": 2 }
+  ],
+  "flows": [
+    { "id": "geom", "from": "quad", "to": "vfunc", "label": "6 顶点", "variant": "default" },
+    { "id": "cover", "from": "vfunc", "to": "field", "label": "覆盖全部像素", "variant": "default", "labelDy": 24 },
+    { "id": "clock", "from": "time", "to": "field", "label": "t 驱动流动", "variant": "emphasis" },
+    { "id": "shade", "from": "field", "to": "palette", "label": "标量场 → 颜色", "variant": "emphasis" },
+    { "id": "out", "from": "palette", "to": "screen", "label": "换配色只换系数", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "没有几何也有画面", "items": ["全屏四边形只是画布，图案由片元着色器对每个像素独立计算", "四组不同频率与相位的正弦相加，天然平滑、永无硬边"] },
+    { "dot": "emerald", "title": "配色是纯数据", "items": ["余弦调色板的 a/b/c/d 四组系数随 uniforms 每帧下发", "C 键切换配色不重建管线——改的是系数，不是着色器"] }
+  ]
+}

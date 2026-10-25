@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Metaballs：场叠加出会融合的软体",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/metaball.html",
+    "viewBox": [980, 560]
+  },
+  "stages": [
+    { "label": "交互与物理" },
+    { "label": "逐帧下发" },
+    { "label": "场叠加" },
+    { "label": "成面上色" }
+  ],
+  "nodes": [
+    { "id": "input", "type": "database", "label": "鼠标拖拽 / 甩出", "sublabel": "抓起最近的泡泡", "stage": 0, "row": 1, "tag": "交互" },
+    { "id": "phys", "type": "backend", "label": "CPU 物理积分", "sublabel": "漂移 · 反弹 · lerp 追随", "stage": 0, "row": 2 },
+    { "id": "unif", "type": "database", "label": "5 球数组 uniforms", "sublabel": "160 字节 · 每帧更新", "stage": 1, "row": 2 },
+    { "id": "field", "type": "backend", "label": "场强叠加", "sublabel": "Σ (r²/d²)² 阈值 1.0", "stage": 2, "row": 2, "tag": "缝隙越阈即出桥" },
+    { "id": "light", "type": "backend", "label": "等值面 + 高度场光照", "sublabel": "梯度 + 常数 z 组 3D 法线", "stage": 2, "row": 1 },
+    { "id": "screen", "type": "external", "label": "场强加权混色上屏", "sublabel": "60 FPS · 标题栏 HUD", "stage": 3, "row": 2 }
+  ],
+  "flows": [
+    { "id": "grab", "from": "input", "to": "phys", "label": "目标位置 / 速度", "variant": "default", "labelDy": 24 },
+    { "id": "feed", "from": "phys", "to": "unif", "label": "每帧更新位置", "variant": "default" },
+    { "id": "tofield", "from": "unif", "to": "field", "label": "球心 + 半径", "variant": "default" },
+    { "id": "tolight", "from": "field", "to": "light", "label": "数值梯度", "variant": "emphasis" },
+    { "id": "paint", "from": "light", "to": "screen", "label": "明暗 + 高光", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "融合不是特判", "items": ["每个球往全场贡献衰减场强，缝隙处两球场相加越阈，桥自己长出来", "形状边界 = 场强等值线，没有一对球的显式相交判断"] },
+    { "dot": "emerald", "title": "颜色跟着场走", "items": ["像素颜色 = 各球颜色按场强加权平均，融合桥上自然互相渗透", "立体感来自把场当高度场：梯度 + 常数 z 组成 3D 法线"] }
+  ]
+}

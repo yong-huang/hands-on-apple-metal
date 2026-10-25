@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "可撕裂布料：Verlet 积分与距离约束迭代",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "output": "images/cloth.html",
+    "viewBox": [
+      980,
+      560
+    ]
+  },
+  "stages": [
+    {
+      "label": "交互输入"
+    },
+    {
+      "label": "Verlet 积分"
+    },
+    {
+      "label": "约束迭代 ×12"
+    },
+    {
+      "label": "渲染"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "mouse",
+      "type": "database",
+      "label": "鼠标抓取 / 拖拽",
+      "sublabel": "半径 26px 最近节点",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "wind",
+      "type": "database",
+      "label": "正弦风场",
+      "sublabel": "随高度与时间变化",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "integ",
+      "type": "backend",
+      "label": "Verlet 积分",
+      "sublabel": "pos += pos - prev + g·dt²",
+      "stage": 1,
+      "row": 2,
+      "tag": "速度隐式藏在位置历史里"
+    },
+    {
+      "id": "tear",
+      "type": "backend",
+      "label": "撕裂判定",
+      "sublabel": "长度 > rest×3.2 删除",
+      "stage": 2,
+      "row": 1,
+      "tag": "先稳后撕"
+    },
+    {
+      "id": "solve",
+      "type": "backend",
+      "label": "距离约束求解",
+      "sublabel": "两端各拉回偏差一半",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "screen",
+      "type": "external",
+      "label": "应变着色渲染",
+      "sublabel": "绿→黄→红 · 60 FPS",
+      "stage": 3,
+      "row": 2
+    }
+  ],
+  "flows": [
+    {
+      "id": "grab",
+      "from": "mouse",
+      "to": "integ",
+      "label": "抓取节点钉在指针",
+      "variant": "default"
+    },
+    {
+      "id": "gust",
+      "from": "wind",
+      "to": "integ",
+      "label": "水平风力",
+      "variant": "default",
+      "labelDy": 24
+    },
+    {
+      "id": "solvef",
+      "from": "integ",
+      "to": "solve",
+      "label": "未超限校正",
+      "variant": "default"
+    },
+    {
+      "id": "check",
+      "from": "solve",
+      "to": "tear",
+      "label": "超限约束",
+      "variant": "emphasis",
+      "labelDy": -24
+    },
+    {
+      "id": "paint",
+      "from": "solve",
+      "to": "screen",
+      "label": "按应变着色",
+      "variant": "default"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "速度藏在位置里",
+      "items": [
+        "Verlet 不存速度：动量隐式在\"两帧位置之差\"中，改位置即改速度",
+        "因此数值永不爆炸——稳定性不依赖步长与刚度的权衡"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "撕裂是免费的赠品",
+      "items": [
+        "约束本义是\"不超过 rest 的杆\"，超限删除即获得可撕性",
+        "阈值 3.2 由静置零撕断的下限与强拉撕裂的上限夹出——先稳后撕"
+      ]
+    }
+  ]
+}
